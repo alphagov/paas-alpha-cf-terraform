@@ -32,3 +32,8 @@ variable "os_image" {
   description = "OS image to boot VMs using"
   default = "ubuntu-1404-trusty-v20150316"
 }
+
+variable "bastion_cidr" {
+  description = "CIDR for bastion network"
+  default = "10.10.0.0/24"
+}
