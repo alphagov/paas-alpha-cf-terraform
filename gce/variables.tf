@@ -13,6 +13,11 @@ variable "gce_region" {
   default = "europe-west1"
 }
 
+variable "gce_region_zone" {
+  description = "GCE Region to use"
+  default = "europe-west1-b"
+}
+
 variable "gce_zones" {
   description = "GCE Zones to choose from"
   default = "europe-west1-b,europe-west1-c,europe-west1-d"
