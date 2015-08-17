@@ -3,6 +3,11 @@ resource "google_compute_network" "bastion" {
   ipv4_range = "${var.bastion_cidr}"
 }
 
+resource "google_compute_address" "bastion" {
+    name = "${var.env}-bastion"
+}
+
 resource "google_compute_address" "bosh" {
     name = "${var.env}-bosh"
 }
+

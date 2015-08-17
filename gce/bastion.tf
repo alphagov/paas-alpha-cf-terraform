@@ -6,7 +6,8 @@ resource "template_file" "manifest" {
         gce_project_id   =  "${var.gce_project}"
         gce_default_zone =  "${var.gce_region_zone}"
         gce_ssh_user     =  "${var.ssh_user}"
-        gce_ssh_key_path =  "/home/ubuntu/.ssh/insecure-deployer"
+        gce_ssh_key_path =  "/home/ubuntu/.ssh/id_rsa"
+        gce_microbosh_net = "${google_compute_network.bastion.name}"
     }
 }
 
@@ -19,7 +20,9 @@ resource "google_compute_instance" "bastion" {
   }
   network_interface {
     network = "${google_compute_network.bastion.name}"
-    access_config { }
+    access_config {
+      nat_ip = "${google_compute_address.bastion.address}"
+     }
   }
   metadata {
     sshKeys = "${var.user}:${file("${var.ssh_key_path}")}"
@@ -37,10 +40,14 @@ resource "google_compute_instance" "bastion" {
          "EOF"]
   }
 
-
   provisioner "file" {
           source = "${path.module}/ssh/insecure-deployer"
-          destination = "/home/ubuntu/.ssh/insecure-deployer"
+          destination = "/home/ubuntu/.ssh/id_rsa"
+  }
+
+  provisioner "file" {
+          source = "${path.module}/ssh/insecure-deployer.pub"
+          destination = "/home/ubuntu/.ssh/id_rsa.pub"
   }
 
   provisioner "file"{
