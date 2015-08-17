@@ -6,10 +6,18 @@ cd $HOME
 sudo apt-get update
 sudo apt-get install -y build-essential git zlibc zlib1g-dev ruby ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3
 
+# Set correct permissions for the ssh key we copied
+chmod 400 ~/.ssh/id_rsa
+chmod 400 ~/.ssh/id_rsa.pub
+
 # Generate the key that will be used to ssh between the inception server and the
 # microbosh machine
-ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+#ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 
+# start the ssh-agent and add the keys
+eval `ssh-agent`
+#ssh-add ~/.ssh/insecure-deployer
+ssh-add ~/.ssh/id_rsa
 
 # account.json file exists
 # Variable to replace in Yaml file: ACOUNT_JSON

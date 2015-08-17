@@ -42,3 +42,4 @@ variable "bastion_cidr" {
   description = "CIDR for bastion network"
   default = "10.10.0.0/24"
 }
+

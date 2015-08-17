@@ -11,7 +11,7 @@ releases:
 
 resource_pools:
   - name: vms
-    network: private
+    network: public
     stemcell:
       url: http://storage.googleapis.com/bosh-stemcells/light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
       sha1: ce5a64c3ecef4fd3e6bd633260dfaa7de76540eb
@@ -30,9 +30,10 @@ networks:
   - name: private
     type: dynamic
     cloud_properties:
-      network_name: default
+      network_name: ${gce_microbosh_net}
       tags:
         - bosh
+        - bastion
 
   - name: public
     type: vip
