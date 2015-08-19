@@ -3,8 +3,8 @@ name: bosh
 
 releases:
 - name: bosh
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=195
-  sha1: 28bb0d540b8069e4271baba6ad75c9d4e2bf8752
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=190
+  sha1: a0260b8cbcd3fba3a2885ddaa7040b8c4cb22a49
 - name: bosh-aws-cpi
   url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=28
   sha1: c7ce03393ebedd87a860dc609758ddb9654360fa
