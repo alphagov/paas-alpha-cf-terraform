@@ -20,9 +20,7 @@ resource "google_compute_instance" "bastion" {
   }
   network_interface {
     network = "${google_compute_network.bastion.name}"
-    access_config {
-      nat_ip = "${google_compute_address.bastion.address}"
-     }
+    access_config {}
   }
   metadata {
     sshKeys = "${var.user}:${file("${var.ssh_key_path}")}"
@@ -60,12 +58,6 @@ resource "google_compute_instance" "bastion" {
       destination = "/home/ubuntu/provision.sh"
   }
 
-  provisioner "remote-exec" {
-      inline = [
-          "chmod +x /home/ubuntu/provision.sh",
-          "/home/ubuntu/provision.sh",
-      ]
-  }
 }
 
 
