@@ -54,12 +54,5 @@ resource "aws_instance" "bastion" {
       source = "${path.module}/provision.sh"
       destination = "/home/ubuntu/provision.sh"
   }
-
-  provisioner "remote-exec" {
-      inline = [
-          "chmod +x /home/ubuntu/provision.sh",
-          "/home/ubuntu/provision.sh",
-      ]
-  }
 }
 
