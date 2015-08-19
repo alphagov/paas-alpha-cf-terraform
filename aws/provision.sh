@@ -14,6 +14,6 @@ chmod 400 ~/.ssh/id_rsa.pub
 eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa
 
-wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.70-linux-amd64
+wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64
 chmod +x bosh-init-*
-./bosh-init-0.0.70-linux-amd64 deploy manifest.yml
+./bosh-init-0.0.72-linux-amd64 deploy manifest.yml

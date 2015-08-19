@@ -6,7 +6,7 @@ resource "template_file" "manifest" {
         gce_project_id   =  "${var.gce_project}"
         gce_default_zone =  "${var.gce_region_zone}"
         gce_ssh_user     =  "${var.ssh_user}"
-        gce_ssh_key_path =  "/home/ubuntu/.ssh/id_rsa"
+        gce_ssh_key_path =  ".ssh/id_rsa"
         gce_microbosh_net = "${google_compute_network.bastion.name}"
     }
 }

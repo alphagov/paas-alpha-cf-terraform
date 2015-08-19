@@ -3,8 +3,8 @@ name: bosh
 
 releases:
   - name: bosh
-    url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=168
-    sha1: 57320a93a7a15e51af4c57d9d9c22706c45c9953
+    url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=190
+    sha1: a0260b8cbcd3fba3a2885ddaa7040b8c4cb22a49
   - name: bosh-google-cpi
     url: http://storage.googleapis.com/bosh-stemcells/bosh-google-cpi-5.tgz
     sha1: c5de3053f233e6ef42c2a4228fa94179d955cc84
