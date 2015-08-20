@@ -35,7 +35,7 @@ resource "aws_instance" "bastion" {
   }
 
   provisioner "remote-exec" {
-        inline = ["cat << EOF > /home/ubuntu/manifest.yml",
+        inline = ["cat << EOF > /home/ubuntu/manifest_aws.yml",
          "${template_file.manifest.rendered}",
          "EOF"]
   }

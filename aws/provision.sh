@@ -16,4 +16,4 @@ ssh-add ~/.ssh/id_rsa
 
 wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64
 chmod +x bosh-init-*
-./bosh-init-0.0.72-linux-amd64 deploy manifest.yml
+./bosh-init-0.0.72-linux-amd64 deploy manifest_aws.yml
