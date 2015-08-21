@@ -23,7 +23,6 @@ resource "aws_instance" "bastion" {
   ami = "${lookup(var.amis, var.region)}"
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.bastion.0.id}"
-  associate_public_ip_address = true
   security_groups = ["${aws_security_group.bastion.id}"]
   key_name = "${var.key_pair_name}"
   source_dest_check = false
@@ -55,7 +54,7 @@ resource "aws_instance" "bastion" {
       source = "${path.module}/provision.sh"
       destination = "/home/ubuntu/provision.sh"
   }
-  
+
   provisioner "remote-exec" {
       inline = [
           "chmod +x /home/ubuntu/provision.sh",
