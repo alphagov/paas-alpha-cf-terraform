@@ -71,7 +71,7 @@ resource "aws_security_group" "bosh-ports" {
   }
 
   tags {
-    Name = "${var.env}-bastion"
+    Name = "${var.env}-cf-microbosh"
   }
 
 }

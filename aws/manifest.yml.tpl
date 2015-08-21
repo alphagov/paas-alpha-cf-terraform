@@ -108,9 +108,9 @@ jobs:
     aws: &aws
       access_key_id: ${aws_access_key_id} # <--- Replace with AWS Access Key ID
       secret_access_key: ${aws_secret_access_key} # <--- Replace with AWS Secret Key
-      default_key_name: bosh
       default_security_groups: [bosh]
       region: us-east-1
+      default_key_name: insecure-deployer
 
     agent: {mbus: "nats://nats:nats-password@10.0.0.6:4222"}
 
@@ -123,7 +123,7 @@ cloud_provider:
     host: ${aws_static_ip} # <--- Replace with your Elastic IP address
     port: 22
     user: vcap
-    private_key: ./bosh.pem # Path relative to this manifest file
+    private_key: .ssh/id_rsa # Path relative to this manifest file
 
   mbus: "https://mbus:mbus-password@${aws_static_ip}:6868" # <--- Replace with Elastic IP
 

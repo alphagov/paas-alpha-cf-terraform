@@ -12,14 +12,13 @@ variable "zones" {
 
 variable "vpc_cidr" {
   description = "CIDR for VPC"
-  default     = "10.128.0.0/16"
+  default     = "10.0.0.0/16"
 }
 
 variable "public_cidrs" {
   description = "CIDR for public subnet indexed by AZ"
   default     = {
-    zone0 = "10.128.10.0/24"
-    zone1 = "10.128.12.0/24"
+    zone0 = "10.0.0.0/24"
   }
 }
 
