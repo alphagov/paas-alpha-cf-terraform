@@ -27,6 +27,6 @@ tr -d '\n' < account.json > account_tmp.json
 python -c 'print open("manifest.yml").read().replace("ACCOUNT_JSON", open("account_tmp.json").read()).rstrip().rstrip("EOF")' > manifest_gce.yml 2>&1
 rm account_tmp.json
 
-wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64
-chmod +x bosh-init-*
-./bosh-init-0.0.72-linux-amd64 deploy manifest_gce.yml
+wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init
+chmod +x bosh-init
+./bosh-init deploy manifest_gce.yml
