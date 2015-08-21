@@ -16,7 +16,7 @@ resource "google_compute_firewall" "bosh-nat" {
   name = "${var.env}-cf-microbosh-nat"
   description = "SSH and Bosh ports from trusted external sources"
   network = "${google_compute_network.bastion.name}"
-  source_ranges = [ "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}" ]
+  source_ranges = [ "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}", "${split(",", var.office_cidrs)}" ]
   target_tags = [ "bosh" ]
   allow {
     protocol = "tcp"
