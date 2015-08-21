@@ -51,6 +51,16 @@ Make commands have been created for this:
 The bosh VM creation is currently flaky on GCE. It hangs waiting for ssh to start listening at step:
 
 ```
-Waiting for the agent on VM 'vm-10ced236-8fd0-4274-4f51-3b2ffdc53c7a' to be ready... 
+Waiting for the agent on VM 'vm-10ced236-8fd0-4274-4f51-3b2ffdc53c7a' to be ready...
 ```
-The workaround is to reset the VM via the GCE console, and the deployment should continue.
+
+One quick workaround is to reset the VM via the GCE console while is waiting,
+and the deployment should continue after one seconds. You can restart the VM
+with the following `gcloud` command:
+
+```
+gcloud compute instances reset --zone europe-west1-b vm-10ced236-8fd0-4274-4f51-3b2ffdc53c7a
+```
+
+Otherwise, letting it timeout and reruning the `make` command, it will rerun the `bosh-init` which
+will delete the old VM and create a new one. Repeat this step until one works :)
