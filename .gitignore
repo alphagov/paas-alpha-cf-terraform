@@ -1,0 +1,5 @@
+gce/ssh/
+aws/ssh/
+gce/account.json
+*.tfstate
+*.tfstate.backup
