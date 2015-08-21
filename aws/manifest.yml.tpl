@@ -108,9 +108,9 @@ jobs:
     aws: &aws
       access_key_id: ${aws_access_key_id} # <--- Replace with AWS Access Key ID
       secret_access_key: ${aws_secret_access_key} # <--- Replace with AWS Secret Key
-      default_security_groups: [bosh]
-      region: us-east-1
       default_key_name: insecure-deployer
+      default_security_groups: [${bosh_security_group}]
+      region: ${aws_region}
 
     agent: {mbus: "nats://nats:nats-password@10.0.0.6:4222"}
 

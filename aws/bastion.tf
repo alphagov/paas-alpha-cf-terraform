@@ -14,6 +14,8 @@ resource "template_file" "manifest" {
         aws_availability_zone = "${var.zones.zone0}"
         aws_secret_access_key = "${var.AWS_SECRET_ACCESS_KEY}"
         aws_access_key_id = "${var.AWS_ACCESS_KEY_ID}"
+        aws_region       = "${var.region}"
+        bosh_security_group = "${var.env}-cf-microbosh"
     }
 }
 
