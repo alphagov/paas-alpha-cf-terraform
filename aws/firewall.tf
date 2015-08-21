@@ -38,36 +38,42 @@ resource "aws_security_group" "bosh-ports" {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${aws_instance.bastion.public_ip}/32"]
   }
 
   ingress {
     from_port = 4222
     to_port   = 4222
     protocol  = "tcp"
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${aws_instance.bastion.public_ip}/32"]
   }
 
   ingress {
     from_port = 6868
     to_port   = 6868
     protocol  = "tcp"
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${aws_instance.bastion.public_ip}/32"]
   }
 
   ingress {
     from_port = 25250
     to_port   = 25250
     protocol  = "tcp"
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${aws_instance.bastion.public_ip}/32"]
   }
 
   ingress {
     from_port = 25555
     to_port   = 25555
     protocol  = "tcp"
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${aws_instance.bastion.public_ip}/32"]
   }
 
   ingress {
     from_port = 25777
     to_port   = 25777
     protocol  = "tcp"
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${aws_instance.bastion.public_ip}/32"]
   }
 
   tags {
