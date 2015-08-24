@@ -6,6 +6,7 @@ resource "azure_virtual_network" "default" {
   subnet {
     name = "${var.env}-cf-bastion"
     address_prefix = "${var.bastion_cidr}"
+    security_group = "${var.env}-bastion"
   }
 
 }
