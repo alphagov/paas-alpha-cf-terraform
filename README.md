@@ -27,6 +27,10 @@ gce/
 ### Azure pre-requisites
 
 * Provide a `azure/credentials.publishsettings` which can be downloaded [from here  https://manage.windowsazure.com/publishsettings]
+* Your environment name must not contain special chars, only alphanumeric in lower case. This is because a restriction in the storage service resource:
+  ```
+* azure_storage_service.cf-storage: Failed to create Azure storage service hectorjimazure-cf-storage: Error response from Azure. Code: BadRequest, Message: The name is not a valid storage account name. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+```
 
 ### AWS pre-requisites
 
