@@ -12,6 +12,7 @@ resource "azure_hosted_service" "bastion" {
 resource "azure_instance" "bastion" {
   name = "${var.env}-cf-bastion"
   hosted_service_name = "${azure_hosted_service.bastion.name}"
+  depends_on = "azure_hosted_service.bastion"
   image = "Ubuntu Server 14.04 LTS"
   size = "Basic_A0"
   storage_service_name = "${var.env}cfstorage"
