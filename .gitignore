@@ -1,5 +1,6 @@
 gce/ssh/
 aws/ssh/
 gce/account.json
+azure/credentials.publishsettings
 *.tfstate
 *.tfstate.backup
