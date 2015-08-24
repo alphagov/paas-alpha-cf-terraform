@@ -13,3 +13,8 @@ variable "bastion_cidr" {
   default = "10.0.0.0/24"
 }
 
+variable "ssh_key_thumbprint" {
+  description = "SSH key thumbprint for the server instances. Uploaded in the Azure console."
+  default = "732D95D38771AFE09DB2CDBA4C748892396BBA38"
+}
+
