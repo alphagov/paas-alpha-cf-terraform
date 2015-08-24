@@ -29,7 +29,7 @@ provision: check-env-vars
 bosh-delete-aws: set-aws bosh-delete
 bosh-delete-gce: set-gce bosh-delete
 bosh-delete:
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) './`ls bosh-init-*` delete manifest_${dir}.yml'
+	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) './bosh-init delete manifest_${dir}.yml'
 
 destroy-aws: set-aws destroy
 destroy-gce: set-gce destroy
