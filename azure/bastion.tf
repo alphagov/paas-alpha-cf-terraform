@@ -4,6 +4,9 @@ resource "azure_hosted_service" "bastion" {
     ephemeral_contents = false
     description = "Hosted service for the CF bastion host."
     label = "${var.env}-cf-bastion-hs-01"
+    provisioner "local-exec" {
+        command = "./upload-azure-certificate.sh ${var.env}"
+    }
 }
 
 resource "azure_instance" "bastion" {
@@ -17,7 +20,7 @@ resource "azure_instance" "bastion" {
   virtual_network = "${var.env}-default-network"
 
   username = "${var.ssh_user}"
-  ssh_key_thumbprint = "${var.ssh_key_thumbprint}"
+  ssh_key_thumbprint = "${file("ssh_thumbprint")}"
 
   endpoint {
     name = "SSH"

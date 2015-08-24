@@ -4,3 +4,4 @@ gce/account.json
 azure/credentials.publishsettings
 *.tfstate
 *.tfstate.backup
+azure/ssh_thumbprint

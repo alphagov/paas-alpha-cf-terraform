@@ -32,7 +32,7 @@ Credentials:
 
 Tooling:
 
- * We recommend [install azure client](https://azure.microsoft.com/en-gb/documentation/articles/xplat-cli-install/) (if you have [brew cask](http://caskroom.io/) `brew cask install azure`)
+ * You need to [install azure client](https://azure.microsoft.com/en-gb/documentation/articles/xplat-cli-install/) to be able to upload the SSH credentials (if you have [brew cask](http://caskroom.io/) `brew cask install azure`)
    * You need to [import the account credentials](https://azure.microsoft.com/en-gb/documentation/articles/xplat-cli-connect/) with `azure account import credentials.publishsettings`
 
 Restrictions:
