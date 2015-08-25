@@ -5,7 +5,7 @@ resource "azure_hosted_service" "bastion" {
     description = "Hosted service for the CF bastion host."
     label = "${var.env}-cf-bastion-hs-01"
     provisioner "local-exec" {
-        command = "./upload-azure-certificate.sh ${var.env}"
+        command = "./azure-upload-certificate.sh ${var.env}"
     }
 }
 
