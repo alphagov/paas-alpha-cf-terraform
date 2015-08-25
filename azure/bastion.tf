@@ -29,4 +29,7 @@ resource "azure_instance" "bastion" {
     public_port = 22
     private_port = 22
   }
+  provisioner "local-exec" {
+    command = "./azure-acl-rule.sh ${var.env}-cf-bastion SSH 10 permit ${var.office_cidrs}"
+  }
 }
