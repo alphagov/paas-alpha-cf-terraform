@@ -26,6 +26,12 @@ resource "aws_instance" "bastion" {
   security_groups = ["${aws_security_group.bastion.id}"]
   key_name = "${var.key_pair_name}"
   source_dest_check = false
+
+  root_block_device = {
+    volume_type = "gp2"
+    volume_size = 100
+  }
+
   tags = {
     Name = "${var.env}-bastion"
   }
