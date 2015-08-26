@@ -14,7 +14,7 @@ resource "azure_instance" "bastion" {
   hosted_service_name = "${azure_hosted_service.bastion.name}"
   depends_on = "azure_hosted_service.bastion"
   image = "Ubuntu Server 14.04 LTS"
-  size = "Basic_A0"
+  size = "Basic_A3"
   storage_service_name = "${var.env}cfstorage"
   location = "West Europe"
   subnet = "${var.env}-cf-bastion"
