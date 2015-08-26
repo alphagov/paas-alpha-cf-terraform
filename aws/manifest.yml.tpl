@@ -55,10 +55,8 @@ jobs:
 
   networks:
   - name: private
-    static_ips: [10.0.0.6]
+    static_ips: [${aws_static_ip}]
     default: [dns, gateway]
-  - name: public
-    static_ips: [${aws_static_ip}] # <--- Replace with Elastic IP
 
   properties:
     nats:
@@ -79,8 +77,8 @@ jobs:
       adapter: postgres
 
     registry:
-      address: 10.0.0.6
-      host: 10.0.0.6
+      address: ${aws_static_ip}
+      host: ${aws_static_ip}
       db: *db
       http: {user: admin, password: admin, port: 25777}
       username: admin
@@ -88,7 +86,7 @@ jobs:
       port: 25777
 
     blobstore:
-      address: 10.0.0.6
+      address: ${aws_static_ip}
       port: 25250
       provider: dav
       director: {user: director, password: director-password}
@@ -112,7 +110,7 @@ jobs:
       default_security_groups: [${bosh_security_group}]
       region: ${aws_region}
 
-    agent: {mbus: "nats://nats:nats-password@10.0.0.6:4222"}
+    agent: {mbus: "nats://nats:nats-password@${aws_static_ip}:4222"}
 
     ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
 
@@ -120,12 +118,12 @@ cloud_provider:
   template: {name: cpi, release: bosh-aws-cpi}
 
   ssh_tunnel:
-    host: ${aws_static_ip} # <--- Replace with your Elastic IP address
+    host: ${aws_static_ip}
     port: 22
     user: vcap
     private_key: .ssh/id_rsa # Path relative to this manifest file
 
-  mbus: "https://mbus:mbus-password@${aws_static_ip}:6868" # <--- Replace with Elastic IP
+  mbus: "https://mbus:mbus-password@${aws_static_ip}:6868"
 
   properties:
     aws: *aws
