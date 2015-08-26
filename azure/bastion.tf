@@ -21,7 +21,7 @@ resource "azure_instance" "bastion" {
   virtual_network = "${var.env}-default-network"
 
   username = "${var.ssh_user}"
-  ssh_key_thumbprint = "${file("ssh_thumbprint")}"
+  ssh_key_thumbprint = "${file("generated.ssh_thumbprint")}"
 
   endpoint {
     name = "SSH"

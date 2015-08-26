@@ -17,6 +17,6 @@ azure service cert create $1-cf-bastion-service /tmp/insecure-deployer.pfx
 
 azure service cert list | \
 	grep $1-cf-bastion-service | \
-	awk '{print $3}' | tr -d '\n' > ssh_thumbprint
+	awk '{print $3}' | tr -d '\n' > generated.ssh_thumbprint
 
 rm -f /tmp/insecure-deployer.{pem,pfx}
