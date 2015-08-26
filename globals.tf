@@ -8,6 +8,11 @@ variable "office_cidrs" {
 }
 
 variable "ssh_user" {
-	description = "Username used to ssh into VMs."
-	default     = "ubuntu"
+  description = "Username used to ssh into VMs."
+  default     = "ubuntu"
+}
+
+variable "microbosh_IP" {
+  description = "microbosh internal IP. Do not change. This is more of a constant than variable."
+  default     = "10.0.0.6"
 }

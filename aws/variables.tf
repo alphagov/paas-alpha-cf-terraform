@@ -22,6 +22,22 @@ variable "public_cidrs" {
   }
 }
 
+variable "cf_cidr" {
+  description = "CIDRs for cloud foundry core components"
+  default     = {
+    zone0 = "10.0.1.0/24"
+    zone1 = "10.0.2.0/24"
+  }
+}
+
+variable "apps_cidr" {
+  description = "CIDRs for components used by apps: DEAs and routers"
+  default     = {
+    zone0 = "10.0.11.0/24"
+    zone1 = "10.0.12.0/24"
+  }
+}
+
 variable "amis" {
   description = "Base AMI to launch the instances with"
   default = {
