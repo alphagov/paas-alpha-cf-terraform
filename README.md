@@ -26,21 +26,24 @@ gce/
 
 ### Azure pre-requisites
 
-Credentials:
-
-* Provide a `azure/credentials.publishsettings` which can be downloaded [from here  https://manage.windowsazure.com/publishsettings]
-
 Tooling:
 
  * You need to [install azure client](https://azure.microsoft.com/en-gb/documentation/articles/xplat-cli-install/) to be able to upload the SSH credentials (if you have [brew cask](http://caskroom.io/) `brew cask install azure`)
-   * You need to [import the account credentials](https://azure.microsoft.com/en-gb/documentation/articles/xplat-cli-connect/) with `azure account import credentials.publishsettings`
+ * You must login in azure client]: `azure login`
+
+> Note: it is recommended run `azure account clear` first to remove any previous accounts.
+
+Credentials:
+
+ * Download the azure credentials in `azure/credentials.publishsettings` manually [from here  https://manage.windowsazure.com/publishsettings] (the `azure account download` just sends you to this page).
 
 Restrictions:
 
-* Your environment name must not contain special chars, only alphanumeric in lower case. This is because a restriction in the storage service resource:
+ * Your environment name must not contain special chars, only alphanumeric in lower case. This is because a restriction in the storage service resource:
   ```
 * azure_storage_service.cf-storage: Failed to create Azure storage service hectorjimazure-cf-storage: Error response from Azure. Code: BadRequest, Message: The name is not a valid storage account name. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
 ```
+ * Do not login in azure using `azure import <credentialsfile>`. There is a bug and not all the values might be initialised.
 
 
 ### AWS pre-requisites
