@@ -14,7 +14,7 @@ resource "aws_subnet" "bastion" {
   }
 }
 
-resource "aws_route_table" "bastion" {
+resource "aws_route_table" "internet" {
   vpc_id = "${aws_vpc.default.id}"
   route {
     cidr_block = "0.0.0.0/0"
@@ -25,5 +25,5 @@ resource "aws_route_table" "bastion" {
 resource "aws_route_table_association" "bastion" {
   count = 1
   subnet_id = "${element(aws_subnet.bastion.*.id, count.index)}"
-  route_table_id = "${aws_route_table.bastion.id}"
+  route_table_id = "${aws_route_table.internet.id}"
 }
