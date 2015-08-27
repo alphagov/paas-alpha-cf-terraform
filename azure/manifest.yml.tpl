@@ -23,6 +23,9 @@ networks:
     cloud_properties:
       virtual_network_name: ${azure_vnet_name} # <--- Replace with virtual network name
       subnet_name: ${azure_subnet_name} # <--- Replace with subnet name for BOSH VM
+- name: public
+  type: vip
+  static_ips: [${bosh_public_ip}]
 
 resource_pools:
 - name: vms
@@ -121,12 +124,12 @@ cloud_provider:
   template: {name: cpi, release: bosh-azure-cpi}
 
   ssh_tunnel:
-    host: 10.0.0.5
+    host: ${bosh_public_ip}
     port: 22
     user: vcap # The user must be as same as above ssh_user
     private_key: ~/ssh/id_rsa # Path relative to this manifest file
 
-  mbus: https://mbus-user:mbus-password@10.0.0.5:6868
+  mbus: https://mbus-user:mbus-password@${bosh_public_ip}:6868
 
   properties:
     azure: *azure

@@ -30,6 +30,8 @@ resource "template_file" "manifest" {
       # Output of this command. x509 request of the SSH key.
       # Needs to be created in one line
       azure_ssh_certificate = "${join("\\\\n", split("\n", file("generated.insecure-deployer.pem")))}"
+
+      bosh_public_ip = "${var.bosh_public_ip}"
     }
 }
 
