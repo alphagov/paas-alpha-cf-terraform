@@ -6,3 +6,7 @@ output "bastion-ips" {
   value = "${join(",", azure_instance.bastion.*.ip_address)}"
 }
 
+#output "manifest" {
+#  value = "${template_file.manifest.rendered}"
+#}
+
