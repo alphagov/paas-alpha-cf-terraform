@@ -32,8 +32,8 @@ SERVICE_PASSWORD=$azure_client_secret ./azure-create-service-principal.sh $deplo
 echo "# Load the file 'source ./generated.azure_account_settings.sh' to load these variables: "
 echo "export TF_VAR_azure_subscription_id=$azure_subscription_id"
 echo "export TF_VAR_azure_tenant_id=$azure_tenant_id"
-echo "export TF_VAR_client_secret='$azure_client_secret'"
-echo "export TF_VAR_client_id=$(< generated.application_id)"
+echo "export TF_VAR_azure_client_secret='$azure_client_secret'"
+echo "export TF_VAR_azure_client_id=$(< generated.application_id)"
 ) | tee generated.azure_account_settings.sh
 
 
