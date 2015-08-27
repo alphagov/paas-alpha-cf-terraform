@@ -25,6 +25,9 @@ networks:
       subnet_name: ${azure_subnet_name} # <--- Replace with subnet name for BOSH VM
 - name: public
   type: vip
+  cloud_properties:
+    tcp_endpoints:
+    - "22:22"
   static_ips: [${bosh_public_ip}]
 
 resource_pools:
