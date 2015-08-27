@@ -13,6 +13,8 @@ openssl x509 \
 	-in /tmp/insecure-deployer.pem \
 	-out /tmp/insecure-deployer.pfx
 
+azure config mode asm
+
 azure service cert create $1-cf-bastion-service /tmp/insecure-deployer.pfx
 
 azure service cert list | \
