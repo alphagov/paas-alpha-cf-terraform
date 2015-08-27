@@ -17,8 +17,8 @@ resource "template_file" "manifest" {
       azure_resource_group_name = "${var.env}-cf-hosted-service"
 
       # created with azure network command (terraform network does not support assign group name)
-      azure_vnet_name = "${var.env}-cf-network2"
-      azure_subnet_name = "${var.env}-cf-subnet2"
+      azure_vnet_name = "${var.env}-cf-network"
+      azure_subnet_name = "${var.env}-cf-subnet"
 
       # Created with azure-create-storage-service.sh called from terraform.
       azure_storage_account_name = "${var.env}cfstgaccount"
