@@ -66,7 +66,29 @@ resource "azure_instance" "bastion" {
     public_port = 22
     private_port = 22
   }
+
   provisioner "local-exec" {
     command = "./azure-acl-rule.sh ${var.env}-cf-bastion SSH 10 permit ${var.office_cidrs}"
+  }
+
+  provisioner "remote-exec" {
+        inline = ["cat << EOF > /home/ubuntu/manifest.yml",
+         "${template_file.manifest.rendered}",
+         "EOF"]
+  }
+
+  provisioner "file" {
+          source = "${path.module}/ssh/insecure-deployer"
+          destination = "/home/ubuntu/.ssh/id_rsa"
+  }
+
+  provisioner "file" {
+          source = "${path.module}/ssh/insecure-deployer.pub"
+          destination = "/home/ubuntu/.ssh/id_rsa.pub"
+  }
+
+  provisioner "file" {
+      source = "${path.module}/provision.sh"
+      destination = "/home/ubuntu/provision.sh"
   }
 }
