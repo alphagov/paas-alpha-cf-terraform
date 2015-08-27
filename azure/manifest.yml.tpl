@@ -54,7 +54,7 @@ jobs:
   persistent_disk_pool: disks
 
   networks:
-  - {name: private, static_ips: [10.0.0.4], default: [dns, gateway]}
+  - {name: private, static_ips: [10.0.0.5], default: [dns, gateway]}
 
   properties:
     nats:
@@ -75,8 +75,8 @@ jobs:
       adapter: postgres
 
     registry:
-      address: 10.0.0.4
-      host: 10.0.0.4
+      address: 10.0.0.5
+      host: 10.0.0.5
       db: *db
       http: {user: admin, password: admin, port: 25777}
       username: admin
@@ -84,7 +84,7 @@ jobs:
       port: 25777
 
     blobstore:
-      address: 10.0.0.4
+      address: 10.0.0.5
       port: 25250
       provider: dav
       director: {user: director, password: director-password}
@@ -113,7 +113,7 @@ jobs:
       ssh_user: vcap
       ssh_certificate: "${azure_ssh_certificate}" # <--- Replace with the content of your ssh certificate
 
-    agent: {mbus: "nats://nats:nats-password@10.0.0.4:4222"}
+    agent: {mbus: "nats://nats:nats-password@10.0.0.5:4222"}
 
     ntp: &ntp [0.north-america.pool.ntp.org]
 
@@ -121,12 +121,12 @@ cloud_provider:
   template: {name: cpi, release: bosh-azure-cpi}
 
   ssh_tunnel:
-    host: 10.0.0.4
+    host: 10.0.0.5
     port: 22
     user: vcap # The user must be as same as above ssh_user
     private_key: ~/bosh # Path relative to this manifest file
 
-  mbus: https://mbus-user:mbus-password@10.0.0.4:6868
+  mbus: https://mbus-user:mbus-password@10.0.0.5:6868
 
   properties:
     azure: *azure
