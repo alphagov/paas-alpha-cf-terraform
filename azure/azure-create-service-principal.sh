@@ -27,14 +27,17 @@ azure ad app create \
 		tee generated.active_directory_app_${deploy_env}_info.txt
 
 if [ ${PIPESTATUS[0]} != 0 ]; then
+    # Skip if it already exists
+    if grep -q 'Another object with the same value for property identifierUris already exists' ~/.azure/azure.err; then
+    	echo "The app already exists, skipping"
+    else
 	echo "Failed"
 	exit 1
+    fi
 fi
 
-azure ad sp show --spn http://BOSHAzureCPI-myenv
-
-application_id=$(cat generated.active_directory_app_myenv_info.txt | sed -n 's/.*Application Id: *\(.*\)$/\1/p')
-echo $application_id > generated.application_id.txt
+application_id=$(cat generated.active_directory_app_${deploy_env}_info.txt | sed -n 's/.*Application Id: *\(.*\)$/\1/p')
+echo $application_id > generated.application_id
 echo "Created application 'http://BOSHAzureCPI-$deploy_env' with ID (this is your client_id): $application_id"
 
 echo "Creating Service principal for the created application $application_id"
