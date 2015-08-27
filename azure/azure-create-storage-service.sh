@@ -39,6 +39,7 @@ else
 	echo "Warning: $storage_account_name account already exists in  $storage_service_name. Not creating it."
 fi
 
+sleep 30
 echo "Retrieving the account key from the command line azure client"
 echo $storage_service_name | \
 	azure storage account keys list $storage_account_name --json > ${account_key_file}.json
