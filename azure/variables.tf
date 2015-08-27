@@ -13,6 +13,11 @@ variable "bastion_cidr" {
   default = "10.0.0.0/24"
 }
 
+variable "cf_cidr" {
+  description = "CIDR for cloudfoundry network"
+  default = "10.0.0.0/24"
+}
+
 variable "azure_subscription_id" {
   description = "Azure subscription id (comes from 'azure account list')"
 }
