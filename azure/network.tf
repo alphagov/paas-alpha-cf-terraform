@@ -1,10 +1,10 @@
-resource "azure_virtual_network" "default" {
-  name = "${var.env}-default-network"
+resource "azure_virtual_network" "bastion" {
+  name = "${var.env}-bastion-network"
   address_space = ["${var.virtual_network_cidr}"]
   location = "West Europe"
 
   subnet {
-    name = "${var.env}-cf-bastion"
+    name = "${var.env}-bastion-subnet"
     address_prefix = "${var.bastion_cidr}"
   }
 

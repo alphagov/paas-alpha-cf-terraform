@@ -52,8 +52,8 @@ resource "azure_instance" "bastion" {
   size = "Basic_A3"
   storage_service_name = "${var.env}cfstorage"
   location = "West Europe"
-  subnet = "${var.env}-cf-bastion"
-  virtual_network = "${var.env}-default-network"
+  virtual_network = "${var.env}-bastion-network"
+  subnet = "${var.env}-bastion-subnet"
 
   username = "${var.ssh_user}"
   ssh_key_thumbprint = "${file("generated.ssh_thumbprint")}"
