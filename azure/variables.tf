@@ -18,10 +18,6 @@ variable "cf_cidr" {
   default = "10.0.0.0/24"
 }
 
-variable "bosh_public_ip" {
-  description = "Public IP for microbosh. "
-}
-
 variable "azure_subscription_id" {
   description = "Azure subscription id (comes from 'azure account list')"
 }

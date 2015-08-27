@@ -31,7 +31,7 @@ resource "template_file" "manifest" {
       # Needs to be created in one line
       azure_ssh_certificate = "${join("\\\\n", split("\n", file("generated.insecure-deployer.pem")))}"
 
-      bosh_public_ip = "${var.bosh_public_ip}"
+      bosh_public_ip = "${replace(file("generated.bosh-public-ip"), "\n", "")}"
     }
 }
 

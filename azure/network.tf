@@ -22,3 +22,16 @@ resource "template_file" "cf-network" {
   }
 }
 
+# Fake resource to call a external command.
+# Creates a public ip for microbosh
+resource "template_file" "bosh-public-ip" {
+  filename = "/dev/null"
+  depends_on = "azure_hosted_service.cf-hosted-service"
+  provisioner {
+    local-exec {
+      # Sadly, sleep 30 to wait for the hosted service to be created in Azure
+      command = "sleep 30 && ./azure-create-public-ip.sh ${var.env}-cf-hosted-service bosh-public-ip"
+    }
+  }
+}
+
