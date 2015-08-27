@@ -1,3 +1,38 @@
+resource "template_file" "manifest" {
+    filename = "${path.module}/manifest.yml.tpl"
+
+    depends_on = "azure_hosted_service.bastion"
+
+    vars {
+      # From `azure account list`
+      azure_subscription_id = "${var.azure_subscription_id}"
+      azure_tenant_id = "${var.azure_tenant_id}"
+
+      # Created by `azure-create-service-principal.sh`
+      azure_client_id = "${var.azure_client_id}"
+      # Password passed to the script above
+      azure_client_secret = "${var.azure_client_secret}"
+
+      # Created in terraform when setting up azure_hosted_service
+      azure_resource_group_name = "${var.env}-cf-hosted-service"
+
+      # created with azure network command (terraform network does not support assign group name)
+      azure_vnet_name = "${var.env}-cf-network2"
+      azure_subnet_name = "${var.env}-cf-subnet2"
+
+      # Created with azure-create-storage-service.sh called from terraform.
+      azure_storage_account_name = "${var.env}cfstgaccount"
+
+      # Created with azure-create-storage-service.sh called from terraform
+      # Stored in generated.cf-storage-account.key
+      azure_storage_access_key = "${file("generated.cf-storage-account.key")}"
+
+      # Output of this command. x509 request of the SSH key.
+      # Needs to be created in one line
+      azure_ssh_certificate = "${join("\\\\n", split("\n", file("generated.insecure-deployer.pem")))}"
+    }
+}
+
 resource "azure_hosted_service" "bastion" {
     name = "${var.env}-cf-bastion-service"
     location = "West Europe"
