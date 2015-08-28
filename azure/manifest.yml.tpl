@@ -130,7 +130,7 @@ cloud_provider:
     host: ${bosh_public_ip}
     port: 22
     user: vcap # The user must be as same as above ssh_user
-    private_key: ~/ssh/id_rsa # Path relative to this manifest file
+    private_key: ~/.ssh/id_rsa # Path relative to this manifest file
 
   mbus: https://mbus-user:mbus-password@${bosh_public_ip}:6868
 
