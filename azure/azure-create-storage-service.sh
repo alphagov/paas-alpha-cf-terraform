@@ -3,7 +3,7 @@
 if [ $# -lt 3 ]; then
 	cat <<EOF
 Usage:
-	$0 <storage service name> <storage_account_name> <account_key_file>
+	$0 <resource group name> <storage_account_name> <account_key_file>
 
 Will create a storage service name and store the credencials on the given file
 so they can be consumed by terraform
@@ -11,7 +11,7 @@ EOF
 	exit 1
 fi
 
-storage_service_name=$1; shift
+resource_group_name=$1; shift
 storage_account_name=$1; shift
 account_key_file=$1; shift
 
@@ -20,12 +20,12 @@ set -x
 azure config mode arm # Change azure client mode, needed to run `azure resource create`
 
 echo "Check if the account already exists"
-echo $storage_service_name | azure storage account show  $storage_account_name
+echo $resource_group_name | azure storage account show  $storage_account_name
 RET=$?
 
 if [ $RET != 0 ]; then
 	echo "Creating account"
-	azure resource create $storage_service_name $storage_account_name \
+	azure resource create $resource_group_name $storage_account_name \
 		Microsoft.Storage/storageAccounts "West Europe" \
 		2015-05-01-preview \
 		-p "{\"accountType\":\"Standard_LRS\"}"
@@ -41,7 +41,7 @@ fi
 
 sleep 30
 echo "Retrieving the account key from the command line azure client"
-echo $storage_service_name | \
+echo $resource_group_name | \
 	azure storage account keys list $storage_account_name --json > ${account_key_file}.json
 
 sed -n 's/.*"key1":.*"\(.*\)".*/\1/p' <  ${account_key_file}.json > $account_key_file || exit 1

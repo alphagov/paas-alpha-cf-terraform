@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $# -lt 1 ]; then
+if [ $# -lt 5 ]; then
 	cat <<EOF
 Usage:
 	$0 <resource_group_name> <network_name> <network_cidr> <subnet_name> <subnet_cidr>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# -lt 1 ]; then
+if [ $# -lt 2 ]; then
 	cat <<EOF
 Usage:
 	$0 <deploy_env> <azure_subscription_id>
