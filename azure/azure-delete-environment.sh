@@ -11,7 +11,6 @@ EOF
 fi
 
 deploy_env=$1; shift
-
 resource_group=${deploy_env}-cf-hosted-service
 
 set -e
@@ -60,10 +59,16 @@ for vnet in $(azure resource list | grep -- ${resource_group} | grep virtualNetw
 done
 
 echo "===================================================================="
-echo "Deleting Storage Accounts"
+echo "Deleting Storage"
 
 for storage_account in $(azure resource list | grep -- ${resource_group} | grep storageAccounts | awk '{print $3}'); do
 	echo "Deleting Storage $storage_account"
+	export AZURE_STORAGE_CONNECTION_STRING=$(echo $resource_group | azure storage account connectionstring show $storage_account | awk '/connectionstring:/ {print $3}')
+	for container in $(azure storage container  list | grep data | sed 1,2d | awk '{print $2}'); do
+		echo "Deleting container $container"
+		azure storage container delete $container -q
+	done
+	echo "Deleting Storage account $storage_account"
 	azure storage account delete -g $resource_group $storage_account  -q
 done
 
