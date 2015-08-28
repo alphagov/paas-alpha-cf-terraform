@@ -4,7 +4,7 @@ To provision a microbosh instance on AWS and GCE.
 
 In order to deploy a microbosh, it is necessary to first create subnets, security groups and static IP reservations which will be used by bosh-init when deploying the microbosh. We are using terraform to create these resources, along with a bastion host which will perform the actual `bosh-init` steps to create the microbosh.
 
-##Pre-requisites
+## Pre-requisites
 * You will need to be running ssh-agent and have performed an `ssh-add <deployer_key>` to make the credentials available for ssh to be able to connect into the bastion host
 * Make available the ssh directory inside aws and gce
 
@@ -18,7 +18,36 @@ gce/
         insecure-deployer
         insecure-deployer.pub
 ```
-* Provide `account.json` inside gce
+
+### GCE pre-requisites
+
+* Provide `account.json` inside gce, which must be downloaded from your google
+  compute dashboard.
+
+### Azure pre-requisites
+
+Tooling:
+
+ * You need to [install azure client](https://azure.microsoft.com/en-gb/documentation/articles/xplat-cli-install/) to be able to upload the SSH credentials (if you have [brew cask](http://caskroom.io/) `brew cask install azure`)
+ * You must login in azure client]: `azure login`
+
+> Note: it is recommended run `azure account clear` first to remove any previous accounts.
+
+Credentials:
+
+ * Download the azure credentials in `azure/credentials.publishsettings` manually [from here  https://manage.windowsazure.com/publishsettings] (the `azure account download` just sends you to this page).
+
+Restrictions:
+
+ * Your environment name must not contain special chars, only alphanumeric in lower case. This is because a restriction in the storage service resource:
+  ```
+* azure_storage_service.cf-storage: Failed to create Azure storage service hectorjimazure-cf-storage: Error response from Azure. Code: BadRequest, Message: The name is not a valid storage account name. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+```
+ * Do not login in azure using `azure import <credentialsfile>`. There is a bug and not all the values might be initialised.
+
+
+### AWS pre-requisites
+
 * Provide AWS access keys as environment variables, plus the corresponding terraform variables. Example in profile:
 
 ```
