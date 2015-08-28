@@ -18,6 +18,11 @@ variable "cf_cidr" {
   default = "10.0.0.0/24"
 }
 
+variable "bastion_instance_size" {
+  description = "Size for the bastion host"
+  default = "Basic_A3"
+}
+
 variable "azure_subscription_id" {
   description = "Azure subscription id (comes from 'azure account list')"
 }

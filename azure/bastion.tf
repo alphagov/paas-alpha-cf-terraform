@@ -53,7 +53,7 @@ resource "azure_instance" "bastion" {
   depends_on = "azure_virtual_network.bastion"
   depends_on = "azure_storage_service.cf-storage"
   image = "Ubuntu Server 14.04 LTS"
-  size = "Basic_A3"
+  size = "${var.bastion_instance_size}"
   storage_service_name = "${var.env}cfstorage"
   location = "West Europe"
   virtual_network = "${var.env}-bastion-network"
