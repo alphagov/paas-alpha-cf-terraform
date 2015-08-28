@@ -25,7 +25,7 @@ resource "template_file" "manifest" {
 
       # Created with azure-create-storage-service.sh called from terraform
       # Stored in generated.cf-storage-account.key
-      azure_storage_access_key = "${file("generated.cf-storage-account.key")}"
+      azure_storage_access_key = "${join("\\\\n", split("\n", file("generated.cf-storage-account.key")))}"
 
       # Output of this command. x509 request of the SSH key.
       # Needs to be created in one line
