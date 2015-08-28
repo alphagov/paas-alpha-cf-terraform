@@ -28,6 +28,7 @@ networks:
   cloud_properties:
     tcp_endpoints:
     - "22:22"
+    - "6868:6868"
 
 resource_pools:
 - name: vms
