@@ -21,6 +21,8 @@ else
 	azure service cert create $1-cf-bastion-service generated.insecure-deployer.pfx
 fi
 
+sleep 15 # Wait for the object to be created
+
 azure service cert list | \
 	grep $1-cf-bastion-service | \
 	awk '{print $3}' | head -n 1 | tr -d '\n' > generated.ssh_thumbprint
