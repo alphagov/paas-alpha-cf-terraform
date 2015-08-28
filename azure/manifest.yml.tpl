@@ -28,7 +28,6 @@ networks:
   cloud_properties:
     tcp_endpoints:
     - "22:22"
-  static_ips: [${bosh_public_ip}]
 
 resource_pools:
 - name: vms
@@ -61,6 +60,7 @@ jobs:
 
   networks:
   - {name: private, static_ips: [10.0.0.5], default: [dns, gateway]}
+  - {name: public, static_ips: [${bosh_public_ip}]}
 
   properties:
     nats:
