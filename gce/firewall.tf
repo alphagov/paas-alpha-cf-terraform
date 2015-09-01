@@ -12,18 +12,46 @@ resource "google_compute_firewall" "ssh" {
   }
 }
 
+resource "google_compute_firewall" "boshbosh" {
+  name = "${var.env}-boshbosh"
+  description = "SSH from trusted external sources"
+  network = "${google_compute_network.bastion.name}"
+
+  source_tags = [ "bosh" ]
+  target_tags = [ "bosh" ]
+
+  allow {
+    protocol = "tcp"
+  }
+}
+
+resource "google_compute_firewall" "boshdns" {
+  name = "${var.env}-cf-boshdns"
+  description = "Allow anything/anywhere to hit port 53 on machines tagges as bosh"
+  network = "${google_compute_network.bastion.name}"
+  source_ranges = [ "0.0.0.0/0" ]
+  target_tags = [ "bosh" ]
+  allow {
+    protocol = "udp"
+    ports = [ 53 ]
+  }
+
+}
+
 resource "google_compute_firewall" "bosh-nat" {
   name = "${var.env}-cf-microbosh-nat"
   description = "SSH and Bosh ports from trusted external sources"
   network = "${google_compute_network.bastion.name}"
-  source_ranges = [ "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}", "${split(",", var.office_cidrs)}" ]
+  source_ranges = [ "0.0.0.0/0" ]
   target_tags = [ "bosh" ]
   allow {
     protocol = "tcp"
-    ports = [ 22, 4222, 6868, 25250, 25555, 25777 ]
+    ports = [ 22, 80, 443, 4222, 6868, 25250, 25555, 25777 ]
   }
 
 }
+
+
 
 
 
