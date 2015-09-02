@@ -31,7 +31,6 @@ resource "template_file" "cf_manifest" {
         aws_subnet_id           = "${aws_subnet.bastion.0.id}"
         aws_availability_zone   = "${var.zones.zone0}"
         default_security_group  = "${aws_security_group.bosh_vm.name}"
-        nats_security_group     = "${aws_security_group.nats.name}"
     }
 
     provisioner "local-exec" {

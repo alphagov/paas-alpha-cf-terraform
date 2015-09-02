@@ -26,9 +26,6 @@ resource_pools:
     instance_type: t2.small
     availability_zone: ${aws_availability_zone}
     ephemeral_disk: {size: 25_000, type: gp2}
-    security_groups:
-    - ${default_security_group}
-    - ${nats_security_group}
 
 compilation:
   workers: 3
