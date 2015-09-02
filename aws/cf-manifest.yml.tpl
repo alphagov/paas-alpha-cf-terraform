@@ -1,5 +1,5 @@
 ---
-name: CloudFoundry manifest
+name: CloudFoundry
 director_uuid: BOSH_UUID
 
 releases:
