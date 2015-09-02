@@ -29,7 +29,6 @@ resource "template_file" "cf_manifest" {
         default_security_group  = "${aws_security_group.bosh_vm.name}"
         nats_security_group     = "${aws_security_group.nats.name}"
     }
-    }
 }
 
 resource "aws_instance" "bastion" {
