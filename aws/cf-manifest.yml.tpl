@@ -20,8 +20,8 @@ resource_pools:
 - name: small_z1
   network: private
   stemcell:
-    name: bosh-aws-xen-ubuntu-trusty-go_agent
-    version: 3056
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: 3063
   cloud_properties:
     instance_type: t2.small
 
