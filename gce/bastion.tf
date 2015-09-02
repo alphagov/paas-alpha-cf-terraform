@@ -17,6 +17,7 @@ resource "google_compute_instance" "bastion" {
   zone = "${element(split(",", var.gce_zones), count.index)}"
   disk {
     image = "${var.os_image}"
+    size  = 100 // GB
   }
   network_interface {
     network = "${google_compute_network.bastion.name}"
