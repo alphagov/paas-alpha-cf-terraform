@@ -25,6 +25,7 @@ resource_pools:
   cloud_properties:
     instance_type: t2.small
     availability_zone: ${aws_availability_zone}
+    ephemeral_disk: {size: 25_000, type: gp2}
 
 compilation:
   workers: 3
