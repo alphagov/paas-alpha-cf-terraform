@@ -40,6 +40,6 @@ variable "os_image" {
 
 variable "bastion_cidr" {
   description = "CIDR for bastion network"
-  default = "10.10.0.0/24"
+  default = "10.0.0.0/24"
 }
 
