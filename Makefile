@@ -29,7 +29,7 @@ prepare-provision:
 provision-aws: set-aws prepare-provision provision
 provision-gce: set-gce provision
 provision: check-env-vars
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash provision.sh'
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash provision.sh'
 
 bosh-delete-aws: set-aws bosh-delete
 bosh-delete-gce: set-gce bosh-delete
