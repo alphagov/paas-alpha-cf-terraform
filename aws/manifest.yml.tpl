@@ -32,7 +32,9 @@ networks:
   - range: 10.0.0.0/24
     gateway: 10.0.0.1
     dns: [10.0.0.2]
-    cloud_properties: {subnet: ${aws_subnet_id}} # <--- Replace with Subnet ID
+    cloud_properties:
+      subnet: ${aws_subnet_id} # <--- Replace with Subnet ID
+      security_groups: [${bosh_security_group}]
 - name: public
   type: vip
 
@@ -107,7 +109,7 @@ jobs:
       access_key_id: ${aws_access_key_id} # <--- Replace with AWS Access Key ID
       secret_access_key: ${aws_secret_access_key} # <--- Replace with AWS Secret Key
       default_key_name: insecure-deployer
-      default_security_groups: [${bosh_security_group}]
+      default_security_groups: [${default_security_group}]
       region: ${aws_region}
 
     agent: {mbus: "nats://nats:nats-password@${aws_static_ip}:4222"}

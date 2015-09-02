@@ -9,13 +9,17 @@ resource "template_file" "manifest" {
     filename = "${path.module}/manifest.yml.tpl"
 
     vars {
-        aws_static_ip    =  "${var.microbosh_IP}"
-        aws_subnet_id    =  "${aws_subnet.bastion.0.id}"
-        aws_availability_zone = "${var.zones.zone0}"
-        aws_secret_access_key = "${var.AWS_SECRET_ACCESS_KEY}"
-        aws_access_key_id = "${var.AWS_ACCESS_KEY_ID}"
-        aws_region       = "${var.region}"
-        bosh_security_group = "${var.env}-cf-microbosh"
+        aws_static_ip           =  "${var.microbosh_IP}"
+        aws_subnet_id           =  "${aws_subnet.bastion.0.id}"
+        aws_availability_zone   = "${var.zones.zone0}"
+        aws_secret_access_key   = "${var.AWS_SECRET_ACCESS_KEY}"
+        aws_access_key_id       = "${var.AWS_ACCESS_KEY_ID}"
+        aws_region              = "${var.region}"
+        bosh_security_group     = "${aws_security_group.director.name}"
+        default_security_group  = "${aws_security_group.bosh_vm.name}"
+    }
+}
+
     }
 }
 

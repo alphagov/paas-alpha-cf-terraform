@@ -22,9 +22,9 @@ resource "aws_security_group" "bastion" {
   }
 }
 
-resource "aws_security_group" "bosh-ports" {
-  name = "${var.env}-cf-microbosh"
-  description = "SSH and Bosh ports from trusted external sources"
+resource "aws_security_group" "director" {
+  name = "${var.env}-director"
+  description = "Microbosh security group"
   vpc_id = "${aws_vpc.default.id}"
 
   egress {
@@ -38,46 +38,88 @@ resource "aws_security_group" "bosh-ports" {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-    cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+    ]
   }
 
   ingress {
     from_port = 4222
     to_port   = 4222
     protocol  = "tcp"
-    cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+      "${aws_security_group.bosh_vm.id}",
+    ]
   }
 
   ingress {
     from_port = 6868
     to_port   = 6868
     protocol  = "tcp"
-    cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+    ]
   }
 
   ingress {
     from_port = 25250
     to_port   = 25250
     protocol  = "tcp"
-    cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+      "${aws_security_group.bosh_vm.id}",
+    ]
   }
 
   ingress {
     from_port = 25555
     to_port   = 25555
     protocol  = "tcp"
-    cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+    ]
   }
 
   ingress {
     from_port = 25777
     to_port   = 25777
     protocol  = "tcp"
-    cidr_blocks = ["${aws_instance.bastion.private_ip}/32"]
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+      "${aws_security_group.bosh_vm.id}",
+    ]
   }
 
   tags {
-    Name = "${var.env}-cf-microbosh"
+    Name = "${var.env}-director"
+  }
+}
+
+resource "aws_security_group" "bosh_vm" {
+  name = "${var.env}-bosh-vm"
+  description = "Security group for VMs managed by Bosh"
+  vpc_id = "${aws_vpc.default.id}"
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+      "${aws_security_group.director.id}",
+    ]
+  }
+
+  tags {
+    Name = "${var.env}-bosh-vm"
   }
 
 }
