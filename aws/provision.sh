@@ -67,5 +67,8 @@ cd cf-release
 git checkout v215
 ./update
 time bosh upload release releases/cf-215.yml
-bosh deployment ../cf-manifest.yml
+# Run deployment
+cd ~
+sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
+bosh deployment cf-manifest.yml
 time bosh deploy
