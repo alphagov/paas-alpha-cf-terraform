@@ -114,7 +114,6 @@ resource "aws_security_group" "bosh_vm" {
     protocol  = "tcp"
     security_groups = [
       "${aws_security_group.bastion.id}",
-      "${aws_security_group.director.id}",
     ]
   }
 
