@@ -3,6 +3,7 @@ resource "aws_instance" "bastion" {
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.bastion.0.id}"
   private_ip = "10.0.0.4"
+  associate_public_ip_address = true
   vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
   key_name = "${var.key_pair_name}"
   source_dest_check = false
