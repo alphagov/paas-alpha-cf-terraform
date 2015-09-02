@@ -1,6 +1,6 @@
 ---
 name: CloudFoundry manifest
-director_uuid: TODO
+director_uuid: BOSH_UUID
 
 releases:
 - {name: cf, version: 210}
