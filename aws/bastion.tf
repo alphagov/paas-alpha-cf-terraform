@@ -20,6 +20,15 @@ resource "template_file" "manifest" {
     }
 }
 
+resource "template_file" "cf_manifest" {
+    filename = "${path.module}/cf-manifest.yml.tpl"
+
+    vars {
+        aws_subnet_id           = "${aws_subnet.bastion.0.id}"
+        aws_availability_zone   = "${var.zones.zone0}"
+        default_security_group  = "${aws_security_group.bosh_vm.name}"
+        nats_security_group     = "${aws_security_group.nats.name}"
+    }
     }
 }
 
@@ -51,6 +60,12 @@ resource "aws_instance" "bastion" {
          "EOF"]
   }
 
+  provisioner "remote-exec" {
+        inline = ["cat << EOF > /home/ubuntu/cf_manifest_aws.yml",
+         "${template_file.cf_manifest.rendered}",
+         "EOF"]
+  }
+
   provisioner "file" {
           source = "${path.module}/ssh/insecure-deployer"
           destination = "/home/ubuntu/.ssh/id_rsa"
@@ -66,4 +81,3 @@ resource "aws_instance" "bastion" {
       destination = "/home/ubuntu/provision.sh"
   }
 }
-

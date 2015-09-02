@@ -60,3 +60,5 @@ cd cf-release
 git checkout v215
 ./update
 time bosh upload release releases/cf-215.yml
+bosh deployment ../cf-manifest.yml
+time bosh deploy
