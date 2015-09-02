@@ -13,7 +13,7 @@ set-aws:
 set-gce:
 	$(eval dir=gce)
 
-aws: set-aws apply prepare-provision provision provision-cf-aws
+aws: set-aws apply prepare-provision provision
 gce: set-gce apply provision
 
 apply-aws: set-aws apply
@@ -23,6 +23,7 @@ apply: check-env-vars
 
 prepare-provision:
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):provision.sh
+	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):cf-manifest.yml
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):manifest_${dir}.yml
 
 provision-aws: set-aws prepare-provision provision
@@ -34,13 +35,6 @@ bosh-delete-aws: set-aws bosh-delete
 bosh-delete-gce: set-gce bosh-delete
 bosh-delete:
 	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) './bosh-init delete manifest_${dir}.yml'
-
-provision-cf-aws: set-aws provision-cf
-provision-cf:
-	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):cf-manifest.yml
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) 'sed -i "s/BOSH_UUID/$$(bosh status --uuid)/" cf-manifest.yml'
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) 'bosh deployment cf-manifest.yml'
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) 'bosh deploy'
 
 destroy-aws: set-aws destroy
 destroy-gce: set-gce destroy
