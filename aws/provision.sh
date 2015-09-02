@@ -1,5 +1,6 @@
 #!/bin/bash
 STEMCELL=bosh-stemcell-3056-aws-xen-ubuntu-trusty-go_agent.tgz
+VM_STEMCELL=light-bosh-stemcell-3063-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
 
 PACKAGES="build-essential git zlibc zlib1g-dev ruby ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3 dstat"
 if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
@@ -18,8 +19,10 @@ eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa
 
 # TODO: download bosh-init from our own bucket
-wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init
-chmod +x bosh-init
+if [ ! -x bosh-init ]; then
+	wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init
+	chmod +x bosh-init
+fi
 export BOSH_INIT_LOG_LEVEL=debug
 export BOSH_INIT_LOG_PATH=bosh_init.log
 time ./bosh-init deploy manifest_aws.yml
@@ -43,7 +46,11 @@ echo -e "admin\nadmin" | bosh target 10.0.0.6 "IamIgnored"
 if [ ! -f $STEMCELL ]; then
   time bosh download public stemcell $STEMCELL
 fi
+if [ ! -f $VM_STEMCELL ]; then
+  time bosh download public stemcell $VM_STEMCELL
+fi
 time bosh upload stemcell $STEMCELL --skip-if-exists
+time bosh upload stemcell $VM_STEMCELL --skip-if-exists
 
 # TODO: this can also happen in parallel
 if [ ! -d cf-release ]; then
