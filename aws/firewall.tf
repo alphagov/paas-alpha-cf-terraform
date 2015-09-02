@@ -121,5 +121,31 @@ resource "aws_security_group" "bosh_vm" {
   tags {
     Name = "${var.env}-bosh-vm"
   }
+}
 
+resource "aws_security_group" "nats" {
+  name = "${var.env}-nats"
+  description = "Security group for NATS"
+  vpc_id = "${aws_vpc.default.id}"
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 4222
+    to_port   = 4222
+    protocol  = "tcp"
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+      "${aws_security_group.bosh_vm.id}",
+    ]
+  }
+
+  tags {
+    Name = "${var.env}-nats"
+  }
 }
