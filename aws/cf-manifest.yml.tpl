@@ -17,7 +17,7 @@ networks:
     cloud_properties: {subnet: ${aws_subnet_id}}
 
 resource_pools:
-- name: small_z1
+- name: small_nats_z1
   network: private
   stemcell:
     name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
@@ -26,6 +26,9 @@ resource_pools:
     instance_type: t2.small
     availability_zone: ${aws_availability_zone}
     ephemeral_disk: {size: 25_000, type: gp2}
+    security_groups:
+    - ${default_security_group}
+    - ${nats_security_group}
 
 compilation:
   workers: 3
@@ -46,14 +49,12 @@ update:
 jobs:
 - name: nats_z1
   instances: 1
-  resource_pool: small_z1
+  resource_pool: small_nats_z1
   templates:
   - {name: nats, release: cf}
   networks:
   - name: private
     static_ips: [10.0.0.10]
-    cloud_properties:
-      security_groups: [${default_security_group}, ${nats_security_group}]
 
 properties:
   description: Cloud Foundry for Government PaaS
