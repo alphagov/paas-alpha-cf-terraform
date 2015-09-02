@@ -24,13 +24,16 @@ resource_pools:
     version: 3063
   cloud_properties:
     instance_type: t2.small
+    availability_zone: ${aws_availability_zone}
 
 compilation:
-  workers: 1
+  workers: 3
   network: private
   reuse_compilation_vms: true
   cloud_properties:
-    instance_type: t2.medium
+    instance_type: c3.large
+    availability_zone: ${aws_availability_zone}
+    ephemeral_disk: {size: 25_000, type: gp2}
 
 update:
   canaries: 1
@@ -61,6 +64,3 @@ properties:
     user: nats
   ssl:
     skip_cert_verify: true
-  cloud_properties:
-    availability_zone: ${aws_availability_zone}
-    ephemeral_disk: {size: 25_000, type: gp2}
