@@ -18,6 +18,10 @@ resource "template_file" "manifest" {
         bosh_security_group     = "${aws_security_group.director.name}"
         default_security_group  = "${aws_security_group.bosh_vm.name}"
     }
+
+    provisioner "local-exec" {
+      command = "echo '${template_file.manifest.rendered}' > manifest.yml"
+    }
 }
 
 resource "template_file" "cf_manifest" {
@@ -28,6 +32,10 @@ resource "template_file" "cf_manifest" {
         aws_availability_zone   = "${var.zones.zone0}"
         default_security_group  = "${aws_security_group.bosh_vm.name}"
         nats_security_group     = "${aws_security_group.nats.name}"
+    }
+
+    provisioner "local-exec" {
+      command = "echo '${template_file.cf_manifest.rendered}' > cf-manifest.yml"
     }
 }
 

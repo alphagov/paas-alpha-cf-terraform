@@ -20,18 +20,6 @@ resource "aws_instance" "bastion" {
     key_file = "ssh/insecure-deployer"
   }
 
-  provisioner "remote-exec" {
-        inline = ["cat << EOF > /home/ubuntu/manifest_aws.yml",
-         "${template_file.manifest.rendered}",
-         "EOF"]
-  }
-
-  provisioner "remote-exec" {
-        inline = ["cat << EOF > /home/ubuntu/cf_manifest_aws.yml",
-         "${template_file.cf_manifest.rendered}",
-         "EOF"]
-  }
-
   provisioner "file" {
           source = "${path.module}/ssh/insecure-deployer"
           destination = "/home/ubuntu/.ssh/id_rsa"
@@ -42,8 +30,4 @@ resource "aws_instance" "bastion" {
           destination = "/home/ubuntu/.ssh/id_rsa.pub"
   }
 
-  provisioner "file" {
-      source = "${path.module}/provision.sh"
-      destination = "/home/ubuntu/provision.sh"
-  }
 }
