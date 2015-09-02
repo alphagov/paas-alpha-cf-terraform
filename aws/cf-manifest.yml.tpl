@@ -3,7 +3,7 @@ name: CloudFoundry
 director_uuid: BOSH_UUID
 
 releases:
-- {name: cf, version: 210}
+- {name: cf, version: 215}
 
 networks:
 - name: private
