@@ -20,8 +20,8 @@ ssh-add ~/.ssh/id_rsa
 
 # Populate microbosh manifest with GCE credentials
 tr -d '\n' < account.json > account_tmp.json
-python -c 'print open("manifest.yml").read().replace("ACCOUNT_JSON", open("account_tmp.json").read()).rstrip().rstrip("EOF")' > microbosh-manifest.yml 2>&1
-rm account_tmp.json manifest.yml
+python -c 'print open("manifest_gce.yml").read().replace("ACCOUNT_JSON", open("account_tmp.json").read()).rstrip().rstrip("EOF")' > microbosh-manifest.yml 2>&1
+rm account_tmp.json manifest_gce.yml
 
 if [ ! -x bosh-init ]; then
   wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init
