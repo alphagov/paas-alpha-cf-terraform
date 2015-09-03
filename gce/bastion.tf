@@ -1,6 +1,6 @@
 resource "google_compute_instance" "bastion" {
   name = "${var.env}-cf-bastion"
-  depends_on = [ "template_file.manifest", "template_file.cf-manifest", "template_file.provision" ]
+  depends_on = [ "template_file.manifest", "template_file.cf-manifest" ]
   machine_type = "n1-standard-1"
   zone = "${element(split(",", var.gce_zones), count.index)}"
   disk {

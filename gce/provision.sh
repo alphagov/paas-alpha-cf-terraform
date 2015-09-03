@@ -1,6 +1,7 @@
 #!/bin/bash
 STEMCELL=light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
 RELEASE=210
+BOSH_IP=$1
 
 # Prepare the jumpbox to be able to install ruby and git-based bosh and cf repos
 PACKAGES="build-essential git zlibc zlib1g-dev ruby ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3 dstat"
@@ -38,7 +39,7 @@ else
 fi
 
 export PATH=$PATH:/usr/local/bin/bosh
-echo -e "admin\nadmin" | bosh target ${gce_static_ip}
+echo -e "admin\nadmin" | bosh target $BOSH_IP
 
 if [ ! -f $STEMCELL ]; then
   bosh download public stemcell $STEMCELL

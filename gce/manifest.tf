@@ -32,15 +32,3 @@ resource "template_file" "cf-manifest" {
         command = "echo '${template_file.cf-manifest.rendered}' > cf-manifest.yml"
     }
 }
-
-resource "template_file" "provision" {
-    filename = "${path.module}/provision.sh.tpl"
-
-    vars {
-        gce_static_ip   =  "${google_compute_address.bosh.address}"
-    }
-
-    provisioner "local-exec" {
-        command = "bash -c 'echo \'${template_file.provision.rendered}\' > provision.sh'"
-    }
-}
