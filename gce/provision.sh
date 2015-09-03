@@ -42,7 +42,7 @@ export PATH=$PATH:/usr/local/bin/bosh
 echo -e "admin\nadmin" | bosh target $BOSH_IP
 
 if [ ! -f $STEMCELL ]; then
-  bosh download public stemcell $STEMCELL
+  wget http://storage.googleapis.com/bosh-stemcells/$STEMCELL
 fi
 
 time bosh upload stemcell $STEMCELL --skip-if-exists
