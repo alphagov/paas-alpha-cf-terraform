@@ -17,7 +17,7 @@ networks:
     cloud_properties: {subnet: ${aws_subnet_id}}
 
 resource_pools:
-- name: small_nats_z1
+- name: small_z1
   network: private
   stemcell:
     name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
@@ -46,12 +46,32 @@ update:
 jobs:
 - name: nats_z1
   instances: 1
-  resource_pool: small_nats_z1
+  resource_pool: small_z1
   templates:
   - {name: nats, release: cf}
+  - {name: nats_stream_forwarder, release: cf}
+  - {name: metron_agent, release: cf}
   networks:
   - name: private
     static_ips: [10.0.0.10]
+
+- name: etcd_z1
+  instances: 1
+  resource_pool: small_z1
+  persistent_disk: 102400
+  templates:
+  - {name: etcd, release: cf}
+  - {name: etcd_metrics_server, release: cf}
+  - {name: metron_agent, release: cf}
+  networks:
+  - name: private
+    static_ips: [10.0.0.11]
+  properties:
+    etcd_metrics_server:
+      nats:
+        machines: [10.0.0.10]
+        password: PASSWORD
+        username: nats
 
 properties:
   description: Cloud Foundry for Government PaaS
@@ -63,3 +83,12 @@ properties:
     user: nats
   ssl:
     skip_cert_verify: true
+  metron_agent:
+    zone: z1
+    deployment: minimal-aws
+  metron_endpoint:
+    shared_secret: PASSWORD
+  etcd:
+    machines: [10.0.0.11]
+  loggregator_endpoint:
+    shared_secret: PASSWORD
