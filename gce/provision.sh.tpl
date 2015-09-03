@@ -20,14 +20,14 @@ ssh-add ~/.ssh/id_rsa
 # Populate microbosh manifest with GCE credentials
 tr -d '\n' < account.json > account_tmp.json
 python -c 'print open("manifest.yml").read().replace("ACCOUNT_JSON", open("account_tmp.json").read()).rstrip().rstrip("EOF")' > microbosh-manifest.yml 2>&1
-rm account_tmp.json
+rm account_tmp.json manifest.yml
 
 if [ ! -x bosh-init ]; then
   wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init
   chmod +x bosh-init
 fi
 export BOSH_INIT_LOG_LEVEL=debug
-export BOSH_INIT_LOG_PATH=bosh_init.log
+export BOSH_INIT_LOG_PATH=bosh-init.log
 time ./bosh-init deploy microbosh-manifest.yml
 
 if gem list | grep -q bosh_cli; then
@@ -38,6 +38,7 @@ else
 fi
 
 export PATH=$PATH:/usr/local/bin/bosh
+echo -e "admin\nadmin" | bosh target ${gce_static_ip}
 
 if [ ! -f $STEMCELL ]; then
   bosh download public stemcell $STEMCELL
