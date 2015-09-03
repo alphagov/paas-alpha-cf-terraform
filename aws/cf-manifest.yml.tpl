@@ -73,6 +73,17 @@ jobs:
         password: PASSWORD
         username: nats
 
+- name: nfs_z1
+  instances: 1
+  persistent_disk: 102400
+  resource_pool: small_z1
+  templates:
+  - {name: debian_nfs_server, release: cf}
+  - {name: metron_agent, release: cf}
+  networks:
+  - name: private
+    static_ips: [10.0.0.12]
+
 properties:
   description: Cloud Foundry for Government PaaS
   networks: {apps: private}
@@ -92,3 +103,6 @@ properties:
     machines: [10.0.0.11]
   loggregator_endpoint:
     shared_secret: PASSWORD
+  nfs_server:
+    address: 10.0.0.11
+    allow_from_entries: [10.0.0.0/24]
