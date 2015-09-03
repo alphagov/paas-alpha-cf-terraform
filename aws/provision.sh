@@ -66,4 +66,4 @@ time bosh upload release releases/cf-215.yml
 cd ~
 sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
 bosh deployment cf-manifest.yml
-time bosh deploy
+time bosh -n deploy
