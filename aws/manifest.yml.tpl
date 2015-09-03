@@ -59,6 +59,8 @@ jobs:
   - name: private
     static_ips: [${aws_static_ip}]
     default: [dns, gateway]
+  - name: public
+    static_ips: [${aws_public_ip}]
 
   properties:
     nats:
