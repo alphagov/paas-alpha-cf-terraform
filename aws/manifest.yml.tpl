@@ -16,7 +16,7 @@ resource_pools:
     url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3012
     sha1: 3380b55948abe4c437dee97f67d2d8df4eec3fc1
   cloud_properties:
-    instance_type: m3.xlarge
+    instance_type: t2.medium
     ephemeral_disk: {size: 25_000, type: gp2}
     availability_zone: ${aws_availability_zone} # <--- Replace with Availability Zone
 
@@ -32,7 +32,9 @@ networks:
   - range: 10.0.0.0/24
     gateway: 10.0.0.1
     dns: [10.0.0.2]
-    cloud_properties: {subnet: ${aws_subnet_id}} # <--- Replace with Subnet ID
+    cloud_properties:
+      subnet: ${aws_subnet_id} # <--- Replace with Subnet ID
+      security_groups: [${bosh_security_group}]
 - name: public
   type: vip
 
@@ -55,10 +57,10 @@ jobs:
 
   networks:
   - name: private
-    static_ips: [10.0.0.6]
+    static_ips: [${aws_static_ip}]
     default: [dns, gateway]
   - name: public
-    static_ips: [${aws_static_ip}] # <--- Replace with Elastic IP
+    static_ips: [${aws_public_ip}]
 
   properties:
     nats:
@@ -79,8 +81,8 @@ jobs:
       adapter: postgres
 
     registry:
-      address: 10.0.0.6
-      host: 10.0.0.6
+      address: ${aws_static_ip}
+      host: ${aws_static_ip}
       db: *db
       http: {user: admin, password: admin, port: 25777}
       username: admin
@@ -88,7 +90,7 @@ jobs:
       port: 25777
 
     blobstore:
-      address: 10.0.0.6
+      address: ${aws_static_ip}
       port: 25250
       provider: dav
       director: {user: director, password: director-password}
@@ -109,10 +111,10 @@ jobs:
       access_key_id: ${aws_access_key_id} # <--- Replace with AWS Access Key ID
       secret_access_key: ${aws_secret_access_key} # <--- Replace with AWS Secret Key
       default_key_name: insecure-deployer
-      default_security_groups: [${bosh_security_group}]
+      default_security_groups: [${default_security_group}]
       region: ${aws_region}
 
-    agent: {mbus: "nats://nats:nats-password@10.0.0.6:4222"}
+    agent: {mbus: "nats://nats:nats-password@${aws_static_ip}:4222"}
 
     ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
 
@@ -120,12 +122,12 @@ cloud_provider:
   template: {name: cpi, release: bosh-aws-cpi}
 
   ssh_tunnel:
-    host: ${aws_static_ip} # <--- Replace with your Elastic IP address
+    host: ${aws_static_ip}
     port: 22
     user: vcap
     private_key: .ssh/id_rsa # Path relative to this manifest file
 
-  mbus: "https://mbus:mbus-password@${aws_static_ip}:6868" # <--- Replace with Elastic IP
+  mbus: "https://mbus:mbus-password@${aws_static_ip}:6868"
 
   properties:
     aws: *aws
