@@ -120,7 +120,7 @@ jobs:
           password: hm
         director_account:
           user: admin
-          password: admin123
+          password: admin
         resurrector_enabled: true
 
       ntp: &ntp
