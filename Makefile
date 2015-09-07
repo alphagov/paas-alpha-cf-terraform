@@ -14,7 +14,7 @@ set-gce:
 	$(eval dir=gce)
 
 aws: set-aws apply prepare-provision provision
-gce: set-gce apply provision
+gce: set-gce apply prepare-provision provision
 
 apply-aws: set-aws apply
 apply-gce: set-gce apply
@@ -27,9 +27,9 @@ prepare-provision:
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):manifest_${dir}.yml
 
 provision-aws: set-aws prepare-provision provision
-provision-gce: set-gce provision
+provision-gce: set-gce prepare-provision provision
 provision: check-env-vars
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash provision.sh'
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash provision.sh $(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bosh_ip)'
 
 bosh-delete-aws: set-aws bosh-delete
 bosh-delete-gce: set-gce bosh-delete
