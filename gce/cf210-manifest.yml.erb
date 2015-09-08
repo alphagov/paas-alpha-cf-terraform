@@ -61,7 +61,7 @@ resource_pools:
       name: bosh-google-kvm-ubuntu-trusty-go_agent
       version: latest
     cloud_properties:
-      machine_type:  n1-highmem-8
+      machine_type:  n1-highmem-2
       root_disk_size_gb: 40
       root_disk_type: pd-standard
 
@@ -144,7 +144,7 @@ jobs:
       - name: dea_next
       - name: dea_logging_agent
       - name: metron_agent
-    instances: 3
+    instances: 2
     resource_pool: large
     networks:
       - name: default
