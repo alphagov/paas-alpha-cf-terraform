@@ -36,4 +36,9 @@ resource "google_compute_instance" "bastion" {
           destination = "/home/ubuntu/account.json"
   }
 
+  provisioner "file" {
+          source = "${path.module}/delete-route.sh"
+          destination = "/home/ubuntu/delete-route.sh"
+  }
+
 }

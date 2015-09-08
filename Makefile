@@ -32,9 +32,11 @@ provision: check-env-vars
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash provision.sh $(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bosh_ip)'
 
 bosh-delete-aws: set-aws bosh-delete
-bosh-delete-gce: set-gce bosh-delete
+bosh-delete-gce: set-gce bosh-delete delete-route-gce
 bosh-delete:
 	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) './bosh-init delete manifest_${dir}.yml'
+delete-route-gce:
+	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash ./delete-route.sh'
 
 destroy-aws: set-aws destroy
 destroy-gce: set-gce destroy
