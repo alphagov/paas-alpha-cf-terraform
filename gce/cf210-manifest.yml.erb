@@ -41,6 +41,16 @@ networks:
         - bosh
         - <%= deployment_name %>
 
+  - name: haproxy
+    type: dynamic
+    cloud_properties:
+      network_name: <%= network_name %>
+      ephemeral_external_ip: true
+      tags:
+        - haproxy
+        - bosh
+        - <%= deployment_name %>
+
   - name: static
     type: vip
 
@@ -85,7 +95,7 @@ jobs:
     instances: 1
     resource_pool: large
     networks:
-      - name: default
+      - name: haproxy
         default: [dns, gateway]
       - name: static
         static_ips:
