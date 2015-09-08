@@ -31,6 +31,7 @@ networks:
     type: dynamic
     cloud_properties:
       network_name: ${gce_microbosh_net}
+      ip_forwarding: true
       tags:
         - bosh
         - bastion
