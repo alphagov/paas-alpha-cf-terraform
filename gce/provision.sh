@@ -22,6 +22,7 @@ tr -d '\n' < account.json > account_tmp.json
 python -c 'print open("manifest_gce.yml").read().replace("ACCOUNT_JSON", open("account_tmp.json").read()).rstrip().rstrip("EOF")' > microbosh-manifest.yml 2>&1
 rm account_tmp.json manifest_gce.yml
 
+# Deploy microbosh server
 if [ ! -x bosh-init ]; then
   wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init
   chmod +x bosh-init
@@ -30,27 +31,28 @@ export BOSH_INIT_LOG_LEVEL=debug
 export BOSH_INIT_LOG_PATH=bosh-init.log
 time ./bosh-init deploy microbosh-manifest.yml
 
+# Install BOSH CLI and log in
 if gem list | grep -q bosh_cli; then
   echo "Bosh cli already installed, skipping..."
 else
   echo "Installing bosh cli..."
   time sudo gem install bosh_cli -v 1.3056.0 --no-ri --no-rdoc
 fi
-
 export PATH=$PATH:/usr/local/bin/bosh
 echo -e "admin\nadmin" | bosh target $BOSH_EXTERNAL_IP
 
+# Upload stemcell
 if [ ! -f $STEMCELL ]; then
   wget http://storage.googleapis.com/bosh-stemcells/$STEMCELL
 fi
-
 time bosh upload stemcell $STEMCELL --skip-if-exists
 
+# Git clone and upload release
 if [ ! -d cf-release ]; then
   git clone https://github.com/cloudfoundry/cf-release.git
 fi
 
-echo "Uploading v210 release to bosh..."
+echo "Uploading v$RELEASE release to bosh..."
 cd cf-release
 git checkout v$RELEASE
 # time ./update
@@ -62,3 +64,5 @@ cd ~
 sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
 bosh deployment cf-manifest.yml
 time bosh -n deploy
+
+#TODO: run CATS (CF acceptance tests) to verify deployment health
