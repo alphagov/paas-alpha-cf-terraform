@@ -11,8 +11,7 @@ if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
 fi
 
 # Set correct permissions for the ssh key we copied, as TF can't do that yet
-chmod 400 ~/.ssh/id_rsa
-chmod 400 ~/.ssh/id_rsa.pub
+chmod 400 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/account.json
 
 # start the ssh-agent and add the keys
 eval `ssh-agent`
