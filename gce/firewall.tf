@@ -1,10 +1,10 @@
 resource "google_compute_firewall" "ssh" {
-  name = "${var.env}-cf-nat"
+  name = "${var.env}-cf-ssh"
   description = "SSH from trusted external sources"
   network = "${google_compute_network.bastion.name}"
 
   source_ranges = [ "${split(",", var.office_cidrs)}" ]
-  target_tags = [ "bastion","bosh" ]
+  target_tags = [ "bastion", "bosh" ]
 
   allow {
     protocol = "tcp"
@@ -12,46 +12,39 @@ resource "google_compute_firewall" "ssh" {
   }
 }
 
-resource "google_compute_firewall" "boshbosh" {
-  name = "${var.env}-boshbosh"
-  description = "SSH from trusted external sources"
+
+
+# TODO: restrict this better, opening to ports 4222, 6868, 25250, 25555, 25777 is not enough
+resource "google_compute_firewall" "internal" {
+  name = "${var.env}-cf-internal"
+  description = "Open internal communication between instances"
   network = "${google_compute_network.bastion.name}"
 
-  source_tags = [ "bosh" ]
+  source_ranges = [ "${var.bastion_cidr}", "${google_compute_address.bosh.address}/32",
+                    "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}/32",
+                    "${google_compute_instance.bastion.network_interface.0.address}/32" ]
   target_tags = [ "bosh" ]
 
   allow {
     protocol = "tcp"
   }
-}
-
-resource "google_compute_firewall" "boshdns" {
-  name = "${var.env}-cf-boshdns"
-  description = "Allow anything/anywhere to hit port 53 on machines tagges as bosh"
-  network = "${google_compute_network.bastion.name}"
-  source_ranges = [ "0.0.0.0/0" ]
-  target_tags = [ "bosh" ]
   allow {
     protocol = "udp"
     ports = [ 53 ]
   }
-
 }
 
-resource "google_compute_firewall" "bosh-nat" {
-  name = "${var.env}-cf-microbosh-nat"
-  description = "SSH and Bosh ports from trusted external sources"
+# TODO: check if you can restrict this better
+resource "google_compute_firewall" "haproxy" {
+  name = "${var.env}-cf-haproxy"
+  description = "Make haproxy server reachable externally"
   network = "${google_compute_network.bastion.name}"
+
   source_ranges = [ "0.0.0.0/0" ]
-  target_tags = [ "bosh" ]
+  target_tags = [ "haproxy" ]
+
   allow {
     protocol = "tcp"
-    ports = [ 22, 80, 443, 4222, 6868, 25250, 25555, 25777 ]
+    ports = [ 80, 443, 4443 ]
   }
-
 }
-
-
-
-
-
