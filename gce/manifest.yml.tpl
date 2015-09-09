@@ -35,7 +35,6 @@ networks:
       tags:
         - bosh
         - bastion
-
   - name: public
     type: vip
 
@@ -44,94 +43,76 @@ jobs:
     instances: 1
 
     templates:
-      - name: nats
-        release: bosh
-      - name: redis
-        release: bosh
-      - name: postgres
-        release: bosh
-      - name: powerdns
-        release: bosh
-      - name: blobstore
-        release: bosh
-      - name: director
-        release: bosh
-      - name: health_monitor
-        release: bosh
-      - name: cpi
-        release: bosh-google-cpi
-      - name: registry
-        release: bosh-google-cpi
+      - {name: nats, release: bosh}
+      - {name: redis, release: bosh}
+      - {name: postgres, release: bosh}
+      - {name: blobstore, release: bosh}
+      - {name: director, release: bosh}
+      - {name: health_monitor, release: bosh}
+      - {name: registry, release: bosh-google-cpi}
+      - {name: cpi, release: bosh-google-cpi}
+      - {name: powerdns, release: bosh}
 
     resource_pool: vms
     persistent_disk_pool: disks
 
     networks:
       - name: private
-        default:
-          - dns
-          - gateway
+        default: [dns, gateway]
       - name: public
-        static_ips:
-          - ${gce_static_ip}
+        static_ips: ${gce_static_ip}
 
     properties:
       nats:
         address: 127.0.0.1
         user: nats
-        password: nats
+        password: nats-password
 
       redis:
         listen_address: 127.0.0.1
         address: 127.0.0.1
-        password: redis
+        password: redis-password
 
       postgres: &db
-        adapter: postgres
         host: 127.0.0.1
         user: postgres
-        password: postgres
+        password: postgres-password
         database: bosh
+        adapter: postgres
 
-      dns:
-        address: ${gce_static_ip}
-        domain_name: microbosh
-        db: *db
-        recursor: 8.8.8.8
+      registry:
+        host: ${gce_static_ip}
+        username: admin
+        password: admin
 
       blobstore:
         address: ${gce_static_ip}
         provider: dav
-        director:
-          user: director
-          password: director
-        agent:
-          user: agent
-          password: agent
+        director: {user: director, password: director-password}
+        agent: {user: agent, password: agent-password}
 
       director:
         address: 127.0.0.1
-        name: micro-google
+        name: my-bosh
         db: *db
         cpi_job: cpi
+        max_threads: 10
 
       hm:
-        http:
-          user: hm
-          password: hm
-        director_account:
-          user: admin
-          password: admin123
+        director_account: {user: admin, password: admin}
         resurrector_enabled: true
-
-      ntp: &ntp
-        - 169.254.169.254
 
       google: &google_properties
         project: ${gce_project_id}
         json_key: |
                     ACCOUNT_JSON
         default_zone: ${gce_default_zone}
+
+      dns:
+        address: ${gce_static_ip}
+        domain_name: microbosh
+        db: *db
+        recursor: 8.8.8.8
 
       agent:
         mbus: nats://nats:nats@${gce_static_ip}:4222
@@ -140,17 +121,12 @@ jobs:
            options:
              endpoint: http://${gce_static_ip}:25250
              user: agent
-             password: agent
+             password: agent-password
 
-      registry:
-        host: ${gce_static_ip}
-        username: registry
-        password: registry
+      ntp: &ntp [169.254.169.254]
 
 cloud_provider:
-  template:
-    name: cpi
-    release: bosh-google-cpi
+  template: {name: cpi, release: bosh-google-cpi}
 
   ssh_tunnel:
     host: ${gce_static_ip}
