@@ -1,6 +1,6 @@
 resource "google_compute_instance" "bastion" {
   name = "${var.env}-cf-bastion"
-  depends_on = [ "template_file.manifest", "template_file.cf-manifest" ]
+  depends_on = [ "template_file.manifest", "template_file.cf-manifest", "google_compute_firewall.ssh" ]
   machine_type = "n1-standard-1"
   zone = "${element(split(",", var.gce_zones), count.index)}"
   disk {
@@ -34,6 +34,11 @@ resource "google_compute_instance" "bastion" {
   provisioner "file" {
           source = "${path.module}/account.json"
           destination = "/home/ubuntu/account.json"
+  }
+
+  provisioner "file" {
+          source = "${path.module}/delete-route.sh"
+          destination = "/home/ubuntu/delete-route.sh"
   }
 
 }

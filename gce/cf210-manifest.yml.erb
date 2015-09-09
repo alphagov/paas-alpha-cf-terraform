@@ -41,6 +41,16 @@ networks:
         - bosh
         - <%= deployment_name %>
 
+  - name: haproxy
+    type: dynamic
+    cloud_properties:
+      network_name: <%= network_name %>
+      ephemeral_external_ip: true
+      tags:
+        - haproxy
+        - bosh
+        - <%= deployment_name %>
+
   - name: static
     type: vip
 
@@ -61,7 +71,7 @@ resource_pools:
       name: bosh-google-kvm-ubuntu-trusty-go_agent
       version: latest
     cloud_properties:
-      machine_type:  n1-highmem-8
+      machine_type:  n1-highmem-2
       root_disk_size_gb: 40
       root_disk_type: pd-standard
 
@@ -85,7 +95,7 @@ jobs:
     instances: 1
     resource_pool: large
     networks:
-      - name: default
+      - name: haproxy
         default: [dns, gateway]
       - name: static
         static_ips:
@@ -144,7 +154,7 @@ jobs:
       - name: dea_next
       - name: dea_logging_agent
       - name: metron_agent
-    instances: 3
+    instances: 2
     resource_pool: large
     networks:
       - name: default
