@@ -22,6 +22,8 @@ ssh-add ~/.ssh/id_rsa
 tr -d '\n' < account.json > account_tmp.json
 python -c 'print open("manifest_gce.yml").read().replace("ACCOUNT_JSON", open("account_tmp.json").read()).rstrip().rstrip("EOF")' > microbosh-manifest.yml 2>&1
 rm account_tmp.json manifest_gce.yml
+ln -sf microbosh-manifest.yml manifest_gce.yml
+ln -sf microbosh-manifest-state.json manifest_gce-state.json
 
 if [ ! -x bosh-init ]; then
   wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init
