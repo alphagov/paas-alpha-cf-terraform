@@ -21,7 +21,7 @@ resource "aws_subnet" "private" {
   availability_zone = "${lookup(var.zones, concat("zone", count.index))}"
   depends_on = ["aws_internet_gateway.default"]
   tags {
-    Name = "${var.env}-private-subnet-${count.index}"
+    Name = "${var.env}-cf-private-subnet-${count.index}"
   }
 }
 
@@ -39,7 +39,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
   depends_on = ["aws_internet_gateway.default"]
   tags {
-    Name = "${var.env}-tsuru-public-subnet-${count.index}"
+    Name = "${var.env}-cf-public-subnet-${count.index}"
   }
 }
 
