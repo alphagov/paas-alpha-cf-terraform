@@ -1,4 +1,5 @@
 .PHONY: all apply provision destroy ssh
+SHELL := /bin/bash
 
 all:
 	$(error Usage: make <aws|gce> DEPLOY_ENV=name)
