@@ -15,7 +15,7 @@ resource "aws_route_table" "internet" {
 }
 
 resource "aws_subnet" "private" {
-  count             = 1
+  count             = 2
   vpc_id            = "${aws_vpc.default.id}"
   cidr_block        = "${lookup(var.private_cidrs, concat("zone", count.index))}"
   availability_zone = "${lookup(var.zones, concat("zone", count.index))}"
