@@ -27,7 +27,7 @@ confirm-execution:
 
 prepare-provision:
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):provision.sh
-	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):cf-manifest.yml
+	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-stub.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):cf-stub.yml
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):manifest_${dir}.yml
 
 provision-aws: set-aws prepare-provision provision
