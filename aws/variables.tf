@@ -4,37 +4,34 @@ variable "region"     {
 }
 
 variable "zones" {
-  description = "AWS availability zone"
+  description = "AWS availability zones"
   default     = {
     zone0 = "eu-west-1a"
+    zone1 = "eu-west-1b"
+    zone2 = "eu-west-1c"
   }
 }
 
 variable "vpc_cidr" {
   description = "CIDR for VPC"
-  default     = "10.0.0.0/16"
+  default     = "10.128.0.0/16"
 }
 
 variable "public_cidrs" {
   description = "CIDR for public subnet indexed by AZ"
   default     = {
-    zone0 = "10.0.0.0/24"
+    zone0 = "10.128.10.0/24"
+    zone1 = "10.128.12.0/24"
+    zone2 = "10.128.14.0/24"
   }
 }
 
-variable "cf_cidr" {
-  description = "CIDRs for cloud foundry core components"
+variable "private_cidrs" {
+  description = "CIDR for private subnet indexed by AZ"
   default     = {
-    zone0 = "10.0.1.0/24"
-    zone1 = "10.0.2.0/24"
-  }
-}
-
-variable "apps_cidr" {
-  description = "CIDRs for components used by apps: DEAs and routers"
-  default     = {
-    zone0 = "10.0.11.0/24"
-    zone1 = "10.0.12.0/24"
+    zone0 = "10.128.11.0/24"
+    zone1 = "10.128.13.0/24"
+    zone2 = "10.128.15.0/24"
   }
 }
 
