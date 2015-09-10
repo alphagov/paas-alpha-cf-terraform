@@ -37,6 +37,12 @@ delete-deployment:
 	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
 	    'for deployment in $$(bosh deployments | cut -f 2 -d "|" | grep -v -e ^+- -e ^$$ -e "total:" -e "Name") ; do bosh -n delete deployment $$deployment --force ; done'
 
+delete-release-aws: set-aws delete-release
+delete-release-gce: set-gce delete-release
+delete-release:
+	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
+	    'for release in $$(bosh releases | grep "|" | cut -f 2 -d "|" | grep -v -e "Name") ; do bosh -n delete release $$release --force ; done'
+
 bosh-delete-aws: set-aws bosh-delete
 bosh-delete-gce: set-gce bosh-delete
 bosh-delete:
