@@ -35,6 +35,12 @@ bosh-delete-aws: set-aws bosh-delete
 bosh-delete-gce: set-gce bosh-delete delete-route-gce
 bosh-delete:
 	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) './bosh-init delete manifest_${dir}.yml'
+delete-deployment-aws: set-aws delete-deployment
+delete-deployment-gce: set-gce delete-deployment
+delete-deployment:
+	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
+	    'for deployment in $$(bosh deployments | cut -f 2 -d "|" | grep -v -e ^+- -e ^$$ -e "total:" -e "Name") ; do bosh -n delete deployment $$deployment --force ; done'
+
 delete-route-gce:
 	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash ./delete-route.sh'
 
