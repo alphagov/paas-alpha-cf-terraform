@@ -60,7 +60,7 @@ jobs:
       - name: private
         default: [dns, gateway]
       - name: public
-        static_ips: ${gce_static_ip}
+        static_ips: [ ${gce_static_ip} ]
 
     properties:
       nats:
