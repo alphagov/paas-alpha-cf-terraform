@@ -1,7 +1,7 @@
 #!/bin/bash
 STEMCELL=light-bosh-stemcell-3063-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
 
-PACKAGES="build-essential git zlibc zlib1g-dev ruby ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3 dstat"
+PACKAGES="build-essential git zlibc zlib1g-dev ruby ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3 dstat unzip"
 if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
 	# Prepare the jumpbox to be able to install ruby and git-based bosh and cf repos
   sudo apt-get update
@@ -39,7 +39,7 @@ export PATH=$PATH:/usr/local/bin/bosh
 # FIXME: make passwords properly strong
 # FIXME: bosh for some reason ignores name and sets it to "my-bosh"
 # FIXME: cmd below works, but bosh compains 'stty: standard input: Inappropriate ioctl for device'
-echo -e "admin\nadmin" | bosh target 10.0.0.6 "IamIgnored"
+echo -e "admin\nadmin" | bosh target 10.128.10.6 "IamIgnored"
 
 # TODO: download stemcell from our own bucket using multiple threads, in paralell with other tasks
 if [ ! -f $STEMCELL ]; then
@@ -62,8 +62,21 @@ cd cf-release
 git checkout v215
 ./update
 time bosh upload release releases/cf-215.yml
+
+# Download spiff
+cd ~
+if [ ! -f spiff_linux_amd64.zip ]; then
+  time wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.7/spiff_linux_amd64.zip
+  unzip spiff_linux_amd64.zip
+  chmod +x spiff
+  sudo mv spiff /usr/bin
+fi
+
+# Use spiff to generate CF deployment manifest
+sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-stub.yml
+cd cf-release && ./generate_deployment_manifest aws templates/cf-minimal-dev.yml ../cf-stub.yml > ../cf-manifest.yml
+
 # Run deployment
 cd ~
-sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
 bosh deployment cf-manifest.yml
 time bosh -n deploy
