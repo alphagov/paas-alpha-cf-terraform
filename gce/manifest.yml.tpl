@@ -105,7 +105,7 @@ jobs:
       google: &google_properties
         project: ${gce_project_id}
         json_key: |
-                    ACCOUNT_JSON
+          ${gce_account_json}
         default_zone: ${gce_default_zone}
 
       dns:
