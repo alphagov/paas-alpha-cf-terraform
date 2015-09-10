@@ -41,6 +41,12 @@ resource "aws_elb" "router" {
     lb_port = 443
     lb_protocol = "tcp"
   }
+  listener {
+    instance_port = 80
+    instance_protocol = "tcp"
+    lb_port = 4443
+    lb_protocol = "tcp"
+  }
 }
 
 resource "aws_security_group" "router" {
