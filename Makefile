@@ -31,6 +31,12 @@ provision-gce: set-gce prepare-provision provision
 provision: check-env-vars
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash provision.sh $(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bosh_ip)'
 
+delete-deployment-aws: set-aws delete-deployment
+delete-deployment-gce: set-gce delete-deployment
+delete-deployment:
+	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
+	    'for deployment in $$(bosh deployments | cut -f 2 -d "|" | grep -v -e ^+- -e ^$$ -e "total:" -e "Name") ; do bosh -n delete deployment $$deployment --force ; done'
+
 bosh-delete-aws: set-aws bosh-delete
 bosh-delete-gce: set-gce bosh-delete
 bosh-delete:
