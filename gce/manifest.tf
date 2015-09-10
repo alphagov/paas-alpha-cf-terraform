@@ -12,7 +12,7 @@ resource "template_file" "manifest" {
     }
 
     provisioner "local-exec" {
-        command = "echo '${template_file.manifest.rendered}' > manifest.yml"
+        command = "/bin/echo '${template_file.manifest.rendered}' > manifest.yml"
     }
 }
 
