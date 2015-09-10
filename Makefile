@@ -20,7 +20,7 @@ gce: set-gce apply prepare-provision provision
 apply-aws: set-aws apply
 apply-gce: set-gce apply
 apply: check-env-vars
-	@cd ${dir} && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV}
+	@cd ${dir} && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} -var gce_account_json="`tr -d '\n' < account.json`"
 
 confirm-execution:
 	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
