@@ -115,7 +115,7 @@ jobs:
         recursor: 8.8.8.8
 
       agent:
-        mbus: nats://nats:nats@${gce_static_ip}:4222
+        mbus: nats://nats:nats-password@${gce_static_ip}:4222
         ntp: *ntp
         blobstore:
            options:
