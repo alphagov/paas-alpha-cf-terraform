@@ -30,13 +30,6 @@ chmod 400 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/account.json
 eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa
 
-# Populate microbosh manifest with GCE credentials
-tr -d '\n' < account.json > account_tmp.json
-python -c 'print open("manifest_gce.yml").read().replace("ACCOUNT_JSON", open("account_tmp.json").read()).rstrip().rstrip("EOF")' > microbosh-manifest.yml 2>&1
-rm account_tmp.json manifest_gce.yml
-ln -sf microbosh-manifest.yml manifest_gce.yml
-ln -sf microbosh-manifest-state.json manifest_gce-state.json
-
 # Login to GCE
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 ACCOUNT=`json_get account.json client_email`
@@ -54,11 +47,11 @@ if [ ! -x bosh-init ]; then
 fi
 export BOSH_INIT_LOG_LEVEL=debug
 export BOSH_INIT_LOG_PATH=bosh-init.log
-time ./bosh-init deploy microbosh-manifest.yml
+time ./bosh-init deploy manifest_gce.yml
 
 # Configure internal routing for microbosh
 # 1. Get microbosh IP
-BOSH_VM=`json_get microbosh-manifest-state.json current_vm_cid`
+BOSH_VM=`json_get manifest_gce-state.json current_vm_cid`
 gcloud compute instances describe --zone $MICROBOSH_ZONE --format json $BOSH_VM > microbosh-info.json
 BOSH_INTERNAL_IP=`json_get microbosh-info.json networkInterfaces '[0]["networkIP"]'`
 
