@@ -13,6 +13,8 @@ set-aws:
 	$(eval dir=aws)
 set-gce:
 	$(eval dir=gce)
+bastion:
+	$(eval bastion=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip))
 
 aws: set-aws apply prepare-provision provision
 gce: set-gce apply prepare-provision provision
@@ -25,41 +27,41 @@ apply: check-env-vars
 confirm-execution:
 	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
 
-prepare-provision:
-	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):provision.sh
-	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):cf-manifest.yml
-	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):manifest_${dir}.yml
+prepare-provision: bastion
+	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
+	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@${bastion}:cf-manifest.yml
+	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
 
 provision-aws: set-aws prepare-provision provision
 provision-gce: set-gce prepare-provision provision
-provision: check-env-vars
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash provision.sh $(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bosh_ip)'
+provision: check-env-vars bastion
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash provision.sh $(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bosh_ip)'
 
 delete-deployment-aws: set-aws delete-deployment
 delete-deployment-gce: set-gce delete-deployment
-delete-deployment:
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
+delete-deployment: bastion
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} \
 	    'for deployment in $$(bosh deployments | cut -f 2 -d "|" | grep -v -e ^+- -e ^$$ -e "total:" -e "Name") ; do bosh -n delete deployment $$deployment --force ; done'
 
 delete-release-aws: set-aws delete-release
 delete-release-gce: set-gce delete-release
-delete-release:
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
+delete-release: bastion
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} \
 	    'for release in $$(bosh releases | grep "|" | cut -f 2 -d "|" | grep -v -e "Name") ; do bosh -n delete release $$release --force ; done'
 
 delete-stemcell-aws: set-aws delete-stemcell
 delete-stemcell-gce: set-gce delete-stemcell
-delete-stemcell:
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
+delete-stemcell: bastion
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} \
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
-delete-route-gce:
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) '/bin/bash ./delete-route.sh'
+delete-route-gce: bastion
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./delete-route.sh'
 
 bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
 bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete delete-route-gce
-bosh-delete:
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) 'yes | ./bosh-init delete manifest_${dir}.yml'
+bosh-delete: bastion
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | ./bosh-init delete manifest_${dir}.yml'
 
 destroy-aws: confirm-execution set-aws bosh-delete-aws destroy
 destroy-gce: confirm-execution set-gce bosh-delete-gce destroy
@@ -73,5 +75,5 @@ show:
 
 ssh-aws: set-aws ssh
 ssh-gce: set-gce ssh
-ssh: check-env-vars
-	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip)
+ssh: check-env-vars bastion
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion}
