@@ -27,7 +27,7 @@ networks:
   subnets:
     - range: 10.128.10.0/24
       gateway: 10.128.10.1
-      dns: [10.128.10.2]
+      dns: [10.128.0.2]
       reserved:
        - 10.128.10.2 - 10.128.10.9
       static:
