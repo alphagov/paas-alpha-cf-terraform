@@ -21,6 +21,9 @@ apply-gce: set-gce apply
 apply: check-env-vars
 	@cd ${dir} && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV}
 
+confirm-execution:
+	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
+
 prepare-provision:
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):provision.sh
 	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip):cf-manifest.yml
@@ -49,15 +52,15 @@ delete-stemcell:
 	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) \
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
-bosh-delete-aws: set-aws bosh-delete
-bosh-delete-gce: set-gce bosh-delete
+bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
+bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete
 bosh-delete:
 	@ssh -oStrictHostKeyChecking=no ubuntu@$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip) 'yes | ./bosh-init delete manifest_${dir}.yml'
 
-destroy-aws: set-aws destroy
-destroy-gce: set-gce destroy
+destroy-aws: confirm-execution set-aws bosh-delete-aws destroy
+destroy-gce: confirm-execution set-gce bosh-delete-gce destroy
 destroy:
-	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV}
+	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} -force
 
 show-aws: set-aws show
 show-gce: set-gce show
