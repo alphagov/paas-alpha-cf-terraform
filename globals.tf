@@ -16,3 +16,8 @@ variable "microbosh_IP" {
   description = "microbosh internal IP. Do not change. This is more of a constant than variable."
   default     = "10.0.0.6"
 }
+
+variable "gce_account_json" {
+  describe    = "To be replaced with actual contents of account.json at runtime. Ignored in AWS."
+  default     = "changeme"
+}
