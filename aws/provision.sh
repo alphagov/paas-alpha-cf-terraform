@@ -39,7 +39,7 @@ export PATH=$PATH:/usr/local/bin/bosh
 # FIXME: make passwords properly strong
 # FIXME: bosh for some reason ignores name and sets it to "my-bosh"
 # FIXME: cmd below works, but bosh compains 'stty: standard input: Inappropriate ioctl for device'
-echo -e "admin\nadmin" | bosh target 10.128.10.6 "IamIgnored"
+echo -e "admin\nadmin" | bosh target 10.0.0.6 "IamIgnored"
 
 # TODO: download stemcell from our own bucket using multiple threads, in paralell with other tasks
 if [ ! -f $STEMCELL ]; then
