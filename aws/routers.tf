@@ -1,26 +1,9 @@
-resource "aws_instance" "router" {
-  count = 2
-  ami = "${lookup(var.ubuntu_amis, var.region)}"
-  instance_type = "t2.medium"
-  subnet_id = "${element(aws_subnet.private.*.id, count.index)}"
-  availability_zone = "${element(aws_subnet.private.*.availability_zone, count.index)}"
-  security_groups = [
-    "${aws_security_group.default.id}",
-    "${aws_security_group.router.id}"
-  ]
-  key_name = "${var.key_pair_name}"
-  tags = {
-    Name = "${var.env}-cf-router-${count.index}"
-  }
-}
-
 resource "aws_elb" "router" {
   name = "${var.env}-cf-router-elb"
   subnets = ["${aws_subnet.public.*.id}"]
   security_groups = [
     "${aws_security_group.web.id}",
   ]
-  instances = ["${aws_instance.router.*.id}"]
 
   health_check {
     target = "TCP:443"
