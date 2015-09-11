@@ -43,3 +43,7 @@ variable "bastion_cidr" {
   default = "10.0.0.0/24"
 }
 
+variable "gce_account_json" {
+  describe    = "To be replaced with actual contents of account.json at runtime."
+  default     = "changeme"
+}
