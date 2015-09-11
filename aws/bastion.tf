@@ -2,7 +2,7 @@ resource "aws_instance" "bastion" {
   ami = "${lookup(var.ubuntu_amis, var.region)}"
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.public.0.id}"
-  private_ip = "10.128.10.4"
+  private_ip = "10.0.0.4"
   associate_public_ip_address = true
   vpc_security_group_ids = ["${aws_security_group.bastion.id}"]
   key_name = "${var.key_pair_name}"
