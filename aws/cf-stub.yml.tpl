@@ -4,11 +4,11 @@ name: CloudFoundry
 meta:
   environment: ${environment}
   zones:
-    z1: ${zone0}
-    z2: ${zone1}
+    z1: "${zone0}"
+    z2: "${zone1}"
 
   fog_config:
-    region: ${region}
+    region: "${region}"
 
 update:
   serial: false # makes every job deploy at the same time.
@@ -18,43 +18,48 @@ jobs:
     instances: 2
   - name: consul_z1
     instances: 1
+
+resource_pools:
   - name: router_z1
     cloud_properties:
-      elbs: ${router0}
+      elbs: ["${elb_name}"]
+  - name: router_z2
+    cloud_properties:
+      elbs: ["${elb_name}"]
 
 networks:
 - name: cf1
   subnets:
-    - range: 10.128.10.0/24
-      gateway: 10.128.10.1
-      dns: [10.128.0.2]
+    - range: 10.0.0.0/24
+      gateway: 10.0.0.1
+      dns: [10.0.0.2]
       reserved:
-       - 10.128.10.2 - 10.128.10.9
+       - 10.0.0.2 - 10.0.0.9
       static:
-       - 10.128.10.10 - 10.128.10.40
+       - 10.0.0.10 - 10.0.0.40
       cloud_properties:
-        subnet: ${public_subnet_id}
+        subnet: "${public_subnet_id}"
 - name: cf2
   subnets:
-    - range: 10.128.11.0/24
-      gateway: 10.128.11.1
+    - range: 10.0.10.0/24
+      gateway: 10.0.10.1
       reserved:
-       - 10.128.11.2 - 10.128.11.9
+       - 10.0.10.2 - 10.0.10.9
       static:
-      - 10.128.11.10 - 10.128.11.40
+      - 10.0.10.10 - 10.0.10.40
       cloud_properties:
-        subnet: ${private_subnet_id}
+        subnet: "${private_subnet_id}"
 
 properties:
   cc:
     droplets:
-      droplet_directory_key: ${environment}-cf-droplets
+      droplet_directory_key: "${environment}-cf-droplets"
     buildpacks:
-      buildpack_directory_key: ${environment}-cf-buildpacks
+      buildpack_directory_key: "${environment}-cf-buildpacks"
     resource_pool:
-      resource_directory_key: ${environment}-cf-resources
+      resource_directory_key: "${environment}-cf-resources"
     packages:
-      app_package_directory_key: ${environment}-cf-packages
+      app_package_directory_key: "${environment}-cf-packages"
 
     staging_upload_user: username
     staging_upload_password: password
@@ -63,20 +68,20 @@ properties:
     min_cli_version: '6.1.0'
     min_recommended_cli_version: '6.10.0'
   ccdb:
-    db_scheme: mysql
+    db_scheme: postgres
     roles:
     - tag: admin
-      name: ccdb
-      password: ccdbpassword
+      name: "${ccdb_username}"
+      password: "${ccdb_password}"
     databases:
     - tag: cc
       name: ccdb
-    address: ${ccdb_address}
-    port: 3306
+    address: "${ccdb_address}"
+    port: 5432
   dea_next:
     disk_mb: 10240
     memory_mb: 4096
-  domain: ${environment}.cf.paas.alphagov.co.uk
+  domain: "${environment}.cf.paas.alphagov.co.uk"
   nats:
     user: nats_user
     password: nats_password
@@ -136,10 +141,10 @@ properties:
       password: router_password
   template_only:
     aws:
-      access_key_id: ${aws_access_key_id}
-      secret_access_key: ${aws_secret_access_key}
-      availability_zone: ${zone0}
-      availability_zone2: ${zone1}
+      access_key_id: "${aws_access_key_id}"
+      secret_access_key: "${aws_secret_access_key}"
+      availability_zone: "${zone0}"
+      availability_zone2: "${zone1}"
   uaa:
     admin:
       client_secret: admin_secret
@@ -197,13 +202,13 @@ properties:
   loggregator_endpoint:
     shared_secret: secret
   uaadb:
-    db_scheme: mysql
+    db_scheme: postgres
     roles:
     - tag: admin
-      name: admuaadbin
-      password: uaadbpassword
+      name: "${uaadb_username}"
+      password: "${uaadb_password}"
     databases:
     - tag: uaa
       name: uaadb
-    address: ${uaadb_address}
-    port: 3306
+    address: "${uaadb_address}"
+    port: 5432
