@@ -7,11 +7,12 @@ resource "template_file" "manifest" {
         gce_default_zone  =  "${var.gce_region_zone}"
         gce_ssh_user      =  "${var.ssh_user}"
         gce_ssh_key_path  =  ".ssh/id_rsa"
-        gce_microbosh_net = "${google_compute_network.bastion.name}"
+        gce_microbosh_net =  "${google_compute_network.bastion.name}"
+        gce_account_json  =  "${var.gce_account_json}"
     }
 
     provisioner "local-exec" {
-        command = "echo '${template_file.manifest.rendered}' > manifest.yml"
+        command = "/bin/echo '${template_file.manifest.rendered}' > manifest.yml"
     }
 }
 

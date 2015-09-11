@@ -1,8 +1,3 @@
-variable "gce_account_file" {
-  description = "JSON Account Credentials file for GCE"
-  default = "account.json"
-}
-
 variable "gce_project" {
   description = "GCE Project Name to create machines inside of"
   default = "root-unison-859"
@@ -43,3 +38,7 @@ variable "bastion_cidr" {
   default = "10.0.0.0/24"
 }
 
+variable "gce_account_json" {
+  describe    = "To be replaced with actual contents of account.json at runtime."
+  default     = "changeme"
+}
