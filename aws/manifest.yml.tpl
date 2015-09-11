@@ -29,9 +29,9 @@ networks:
 - name: private
   type: manual
   subnets:
-  - range: 10.128.10.0/24
-    gateway: 10.128.10.1
-    dns: [10.128.0.2]
+  - range: 10.0.0.0/24
+    gateway: 10.0.0.1
+    dns: [10.0.0.2]
     cloud_properties:
       subnet: ${aws_subnet_id} # <--- Replace with Subnet ID
       security_groups: [${bosh_security_group}]
