@@ -38,7 +38,11 @@ resource "template_file" "cf_stub" {
         aws_secret_access_key   = "${var.AWS_SECRET_ACCESS_KEY}"
         aws_access_key_id       = "${var.AWS_ACCESS_KEY_ID}"
         ccdb_address            = "${aws_db_instance.ccdb.address}"
+        ccdb_username           = "${aws_db_instance.ccdb.username}"
+        ccdb_password           = "${aws_db_instance.ccdb.password}"
         uaadb_address           = "${aws_db_instance.uaadb.address}"
+        uaadb_username          = "${aws_db_instance.uaadb.username}"
+        uaadb_password          = "${aws_db_instance.uaadb.password}"
         elb_name                = "${aws_elb.router.name}"
     }
 
