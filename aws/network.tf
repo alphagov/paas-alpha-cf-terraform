@@ -15,10 +15,10 @@ resource "aws_route_table" "internet" {
 }
 
 resource "aws_subnet" "private" {
-  count             = 2
+  count             = 1
   vpc_id            = "${aws_vpc.default.id}"
   cidr_block        = "${lookup(var.private_cidrs, concat("zone", count.index))}"
-  availability_zone = "${lookup(var.zones, concat("zone", count.index))}"
+  availability_zone = "eu-west-1b"
   depends_on = ["aws_internet_gateway.default"]
   tags {
     Name = "${var.env}-cf-private-subnet-${count.index}"
@@ -35,7 +35,7 @@ resource "aws_subnet" "public" {
   count             = 1
   vpc_id            = "${aws_vpc.default.id}"
   cidr_block        = "${lookup(var.public_cidrs, concat("zone", count.index))}"
-  availability_zone = "${lookup(var.zones, concat("zone", count.index))}"
+  availability_zone = "eu-west-1a"
   map_public_ip_on_launch = true
   depends_on = ["aws_internet_gateway.default"]
   tags {
