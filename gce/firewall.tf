@@ -12,9 +12,9 @@ resource "google_compute_firewall" "ssh" {
   }
 }
 
-
-
-# TODO: restrict this better, opening to ports 4222, 6868, 25250, 25555, 25777 is not enough
+# TODO: restrict better, currently opening all for convenience; known ports that need to be open:
+# TCP: 4222, 6868, 25250, 25555, 25777
+# UDP: 52, 3457
 resource "google_compute_firewall" "internal" {
   name = "${var.env}-cf-internal"
   description = "Open internal communication between instances"
@@ -30,7 +30,6 @@ resource "google_compute_firewall" "internal" {
   }
   allow {
     protocol = "udp"
-    ports = [ 53 ]
   }
 }
 
