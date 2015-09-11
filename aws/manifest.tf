@@ -39,8 +39,7 @@ resource "template_file" "cf_stub" {
         aws_access_key_id       = "${var.AWS_ACCESS_KEY_ID}"
         ccdb_address            = "${aws_db_instance.ccdb.address}"
         uaadb_address           = "${aws_db_instance.uaadb.address}"
-        router0                 = "${aws_instance.router.0.id}"
-        router1                 = "${aws_instance.router.1.id}"
+        elb_name                = "${aws_elb.router.name}"
     }
 
     provisioner "local-exec" {
