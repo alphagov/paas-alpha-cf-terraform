@@ -10,26 +10,28 @@ resource "aws_db_subnet_group" "cf_rds_subnet" {
 resource "aws_db_instance" "uaadb" {
     identifier = "${var.env}-uaadb-rds"
     allocated_storage = 10
-    engine = "postgres"
-    engine_version = "9.4.1"
+    engine = "mysql"
+    engine_version = "5.6.17"
     instance_class = "db.t1.micro"
     name = "uaadb"
     username = "uaadb"
     password = "uaadbpassword"
     db_subnet_group_name = "${var.env}-cf-rds-subnet"
+    parameter_group_name = "default.mysql5.6"
     vpc_security_group_ids = ["${aws_security_group.rds.id}"]
 }
 
 resource "aws_db_instance" "ccdb" {
     identifier = "${var.env}-ccdb-rds"
     allocated_storage = 10
-    engine = "postgres"
-    engine_version = "9.4.1"
+    engine = "mysql"
+    engine_version = "5.6.17"
     instance_class = "db.t1.micro"
     name = "ccdb"
     username = "ccdb"
     password = "ccdbpassword"
     db_subnet_group_name = "${var.env}-cf-rds-subnet"
+    parameter_group_name = "default.mysql5.6"
     vpc_security_group_ids = ["${aws_security_group.rds.id}"]
 }
 

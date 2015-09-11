@@ -68,7 +68,7 @@ properties:
     min_cli_version: '6.1.0'
     min_recommended_cli_version: '6.10.0'
   ccdb:
-    db_scheme: postgres
+    db_scheme: mysql
     roles:
     - tag: admin
       name: "${ccdb_username}"
@@ -77,7 +77,7 @@ properties:
     - tag: cc
       name: ccdb
     address: "${ccdb_address}"
-    port: 5432
+    port: 3306
   dea_next:
     disk_mb: 10240
     memory_mb: 4096
@@ -202,7 +202,7 @@ properties:
   loggregator_endpoint:
     shared_secret: secret
   uaadb:
-    db_scheme: postgres
+    db_scheme: mysql
     roles:
     - tag: admin
       name: "${uaadb_username}"
@@ -211,4 +211,4 @@ properties:
     - tag: uaa
       name: uaadb
     address: "${uaadb_address}"
-    port: 5432
+    port: 3306
