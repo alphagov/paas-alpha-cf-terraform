@@ -41,4 +41,17 @@ resource "google_compute_instance" "bastion" {
           destination = "/home/ubuntu/delete-route.sh"
   }
 
+  provisioner "file" {
+        source = "${module.smoke_test.script_path}"
+        destination = "/home/ubuntu/smoke_test.sh"
+  }
+
+}
+
+module "smoke_test" {
+  source = "../smoke_test"
+
+  haproxy_ip = "${google_compute_address.haproxy.address}"
+  env = "${var.env}"
+
 }
