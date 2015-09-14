@@ -9,7 +9,7 @@ resource "template_file" "manifest" {
     filename = "${path.module}/manifest.yml.tpl"
 
     vars {
-        aws_static_ip           = "10.128.10.6"
+        aws_static_ip           = "${var.microbosh_IP}"
         aws_public_ip           = "${aws_eip.bosh.public_ip}"
         aws_subnet_id           = "${aws_subnet.public.0.id}"
         aws_availability_zone   = "${var.zones.zone0}"
