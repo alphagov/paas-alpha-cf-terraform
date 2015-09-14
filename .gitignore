@@ -7,3 +7,6 @@ gce/cf-manifest.yml
 gce/account.json
 *.tfstate
 *.tfstate.backup
+gce/.terraform
+aws/.terraform
+*smoke_test*.json
