@@ -2,8 +2,8 @@ resource "aws_db_subnet_group" "cf_rds_subnet" {
     name = "${var.env}-cf-rds-subnet"
     description = "Subnet group for RDS"
     subnet_ids = [
-      "${aws_subnet.private.id}",
-      "${aws_subnet.public.id}"
+      "${aws_subnet.private.*.id}",
+      "${aws_subnet.public.*.id}"
     ]
 }
 
