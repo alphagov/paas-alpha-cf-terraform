@@ -25,7 +25,7 @@ resource "aws_elb" "router" {
     lb_protocol = "tcp"
   }
   listener {
-    instance_port = 80
+    instance_port = 443
     instance_protocol = "tcp"
     lb_port = 4443
     lb_protocol = "tcp"
