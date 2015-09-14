@@ -16,7 +16,7 @@ resource "aws_db_instance" "uaadb" {
     name = "uaadb"
     username = "uaadb"
     password = "uaadbpassword"
-    db_subnet_group_name = "${var.env}-cf-rds-subnet"
+    db_subnet_group_name = "${aws_db_subnet_group.cf_rds_subnet.name}"
     parameter_group_name = "default.mysql5.6"
     vpc_security_group_ids = ["${aws_security_group.rds.id}"]
 }
@@ -30,7 +30,7 @@ resource "aws_db_instance" "ccdb" {
     name = "ccdb"
     username = "ccdb"
     password = "ccdbpassword"
-    db_subnet_group_name = "${var.env}-cf-rds-subnet"
+    db_subnet_group_name = "${aws_db_subnet_group.cf_rds_subnet.name}"
     parameter_group_name = "default.mysql5.6"
     vpc_security_group_ids = ["${aws_security_group.rds.id}"]
 }
