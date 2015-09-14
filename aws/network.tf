@@ -10,7 +10,7 @@ resource "aws_route_table" "internet" {
   vpc_id = "${aws_vpc.default.id}"
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.default.id}"
+    instance_id = "${aws_instance.bastion.id}"
   }
 }
 
@@ -19,14 +19,14 @@ resource "aws_subnet" "private" {
   vpc_id            = "${aws_vpc.default.id}"
   cidr_block        = "${lookup(var.private_cidrs, concat("zone", count.index))}"
   availability_zone = "${lookup(var.zones, concat("zone", count.index))}"
-  depends_on = ["aws_internet_gateway.default"]
+  depends_on = ["aws_instance.bastion"]
   tags {
     Name = "${var.env}-cf-private-subnet-${count.index}"
   }
 }
 
 resource "aws_route_table_association" "private" {
-  count = 1
+  count = 2
   subnet_id = "${element(aws_subnet.private.*.id, count.index)}"
   route_table_id = "${aws_route_table.internet.id}"
 }
