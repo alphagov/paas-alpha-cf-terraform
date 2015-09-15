@@ -87,3 +87,14 @@ properties:
       - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
   loggregator_endpoint:
     shared_secret: secret
+  uaadb:
+    db_scheme: mysql
+    roles:
+    - tag: admin
+      name: "${uaadb_username}"
+      password: "${uaadb_password}"
+    databases:
+    - tag: uaa
+      name: uaadb
+    address: "${uaadb_address}"
+    port: 3306

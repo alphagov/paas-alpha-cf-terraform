@@ -120,3 +120,22 @@ resource "aws_security_group" "bosh_vm" {
   }
 }
 
+resource "aws_security_group" "rds" {
+  name = "${var.env}-rds"
+  description = "RDS security group"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port = 3306
+    to_port   = 3306
+    protocol  = "tcp"
+    security_groups = [
+      "${aws_security_group.director.id}",
+      "${aws_security_group.bosh_vm.id}"
+    ]
+  }
+
+  tags {
+    Name = "${var.env}-rds"
+  }
+}

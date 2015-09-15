@@ -35,6 +35,9 @@ resource "template_file" "cf_stub" {
         zone1                   = "${var.zones.zone1}"
         cf1_subnet_id           = "${aws_subnet.cf.0.id}"
         cf2_subnet_id           = "${aws_subnet.cf.1.id}"
+        uaadb_address           = "${aws_db_instance.uaadb.address}"
+        uaadb_username          = "${aws_db_instance.uaadb.username}"
+        uaadb_password          = "${aws_db_instance.uaadb.password}"
     }
 
     provisioner "local-exec" {
