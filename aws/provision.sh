@@ -1,5 +1,5 @@
 #!/bin/bash
-STEMCELL=light-bosh-stemcell-3063-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
+STEMCELL=light-bosh-stemcell-3069-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
 
 PACKAGES="build-essential git zlibc zlib1g-dev ruby ruby-dev openssl libxslt-dev libxml2-dev libssl-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev sqlite3 dstat unzip"
 if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
