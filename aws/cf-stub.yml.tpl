@@ -59,6 +59,9 @@ properties:
       name: ccdb
     address: "${ccdb_address}"
     port: 3306
+  dea_next:
+    disk_mb: 10240
+    memory_mb: 4096
   uaa:
     admin:
       client_secret: admin_secret
