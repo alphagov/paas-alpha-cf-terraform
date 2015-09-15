@@ -29,10 +29,12 @@ resource "template_file" "cf_stub" {
     filename = "${path.module}/cf-stub.yml.tpl"
 
     vars {
-        aws_availability_zone   = "${var.zones.zone0}"
         default_security_group  = "${aws_security_group.bosh_vm.name}"
-        cf1_subnet_id    = "${aws_subnet.private.0.id}"
-        cf2_subnet_id    = "${aws_subnet.private.1.id}"
+        environment             = "${var.env}"
+        zone0                   = "${var.zones.zone0}"
+        zone1                   = "${var.zones.zone1}"
+        cf1_subnet_id           = "${aws_subnet.cf.0.id}"
+        cf2_subnet_id           = "${aws_subnet.cf.1.id}"
     }
 
     provisioner "local-exec" {
