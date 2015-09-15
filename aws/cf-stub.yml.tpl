@@ -42,6 +42,12 @@ properties:
       resource_directory_key: "${environment}-cf-resources"
     packages:
       app_package_directory_key: "${environment}-cf-packages"
+    staging_upload_user: username
+    staging_upload_password: password
+    bulk_api_password: password
+    db_encryption_key: the_key
+    min_cli_version: '6.1.0'
+    min_recommended_cli_version: '6.10.0'
   ccdb:
     db_scheme: mysql
     roles:
