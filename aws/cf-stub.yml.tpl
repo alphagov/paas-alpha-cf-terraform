@@ -70,6 +70,7 @@ properties:
   dea_next:
     disk_mb: 10240
     memory_mb: 4096
+  domain: "${environment}.cf.paas.alphagov.co.uk"
   nats:
     user: nats_user
     password: nats_password

@@ -68,3 +68,13 @@ variable "health_check_unhealthy" {
   description = "Threshold to consider load balancer unhealthy"
   default     = 2
 }
+
+variable "dns_zone_id" {
+  description = "Amazon Route53 DNS zone identifier"
+  default = "Z3SI0PSH6KKVH4"
+}
+
+variable "dns_zone_name" {
+  description = "Amazon Route53 DNS zone name"
+  default     = "cf.paas.alphagov.co.uk."
+}
