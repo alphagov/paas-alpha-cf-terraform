@@ -28,10 +28,15 @@ apply: check-env-vars
 confirm-execution:
 	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
 
-prepare-provision: bastion
+prepare-provision-aws: bastion
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
-	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@${bastion}:cf-manifest.yml
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
+	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-stub.yml ubuntu@${bastion}:cf-stub.yml
+
+prepare-provision-gce: bastion
+	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
+	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
+	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@${bastion}:cf-manifest.yml
 
 test-aws: set-aws test
 test-gce: set-gce test
@@ -39,8 +44,8 @@ test: bastion
 	@cd ${dir} && scp -oStrictHostKeyChecking=no smoke_test_${DEPLOY_ENV}.json ubuntu@${bastion}:smoke_test.json
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash smoke_test.sh'
 
-provision-aws: set-aws prepare-provision provision
-provision-gce: set-gce prepare-provision provision
+provision-aws: set-aws prepare-provision-aws provision
+provision-gce: set-gce prepare-provision-gce provision
 provision: check-env-vars bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash provision.sh $(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bosh_ip)'
 

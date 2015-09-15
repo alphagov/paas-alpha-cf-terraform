@@ -25,8 +25,8 @@ resource "template_file" "manifest" {
     }
 }
 
-resource "template_file" "cf_manifest" {
-    filename = "${path.module}/cf-manifest.yml.tpl"
+resource "template_file" "cf_stub" {
+    filename = "${path.module}/cf-stub.yml.tpl"
 
     vars {
         aws_subnet_id           = "${aws_subnet.bastion.0.id}"
@@ -35,8 +35,6 @@ resource "template_file" "cf_manifest" {
     }
 
     provisioner "local-exec" {
-      command = "echo '${template_file.cf_manifest.rendered}' > cf-manifest.yml"
+      command = "echo '${template_file.cf_stub.rendered}' > cf-stub.yml"
     }
 }
-
-
