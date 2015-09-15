@@ -1,5 +1,5 @@
 resource "aws_instance" "bastion" {
-  ami = "${lookup(var.amis, var.region)}"
+  ami = "${lookup(var.ubuntu_amis, var.region)}"
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.infra.0.id}"
   private_ip = "10.0.0.4"

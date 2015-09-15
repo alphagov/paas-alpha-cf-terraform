@@ -29,7 +29,6 @@ resource "template_file" "cf_stub" {
     filename = "${path.module}/cf-stub.yml.tpl"
 
     vars {
-        default_security_group  = "${aws_security_group.bosh_vm.name}"
         environment             = "${var.env}"
         zone0                   = "${var.zones.zone0}"
         zone1                   = "${var.zones.zone1}"

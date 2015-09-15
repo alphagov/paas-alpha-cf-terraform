@@ -35,8 +35,7 @@ variable "cf_cidrs" {
   }
 }
 
-
-variable "amis" {
+variable "ubuntu_amis" {
   description = "Base AMI to launch the instances with"
   default = {
     eu-west-1 = "ami-234ecc54"
