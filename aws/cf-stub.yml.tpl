@@ -62,6 +62,9 @@ properties:
   dea_next:
     disk_mb: 10240
     memory_mb: 4096
+  nats:
+    user: nats_user
+    password: nats_password
   uaa:
     admin:
       client_secret: admin_secret
