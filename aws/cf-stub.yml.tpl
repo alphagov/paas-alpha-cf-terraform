@@ -9,6 +9,9 @@ meta:
   fog_config:
     region: "${region}"
 
+update:
+  serial: false # makes every job deploy at the same time.
+
 jobs:
   - name: consul_z1
     instances: 1
