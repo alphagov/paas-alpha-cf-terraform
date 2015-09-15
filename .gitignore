@@ -1,5 +1,7 @@
-aws/ssh/
-gce/ssh/
+aws/ssh
+gce/ssh
+ssh
+cf-stub.yml
 aws/manifest.yml
 gce/manifest.yml
 aws/cf-manifest.yml
