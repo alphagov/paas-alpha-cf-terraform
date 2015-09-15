@@ -9,6 +9,14 @@ meta:
   fog_config:
     region: "${region}"
 
+resource_pools:
+  - name: router_z1
+    cloud_properties:
+      elbs: ["${elb_name}"]
+  - name: router_z2
+    cloud_properties:
+      elbs: ["${elb_name}"]
+
 networks:
 - name: cf1
   subnets:
@@ -119,6 +127,12 @@ properties:
     status:
       user: router_user
       password: router_password
+  template_only:
+    aws:
+      access_key_id: "${aws_access_key_id}"
+      secret_access_key: "${aws_secret_access_key}"
+      availability_zone: "${zone0}"
+      availability_zone2: "${zone1}"
   uaa:
     admin:
       client_secret: admin_secret

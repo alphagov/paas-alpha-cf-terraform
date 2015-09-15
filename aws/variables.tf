@@ -48,3 +48,23 @@ variable "key_pair_name" {
   description = "SSH Key Pair name to be used to launch EC2 instances"
   default     = "deployer-tsuru-example"
 }
+
+variable "health_check_interval" {
+  description = "Interval between requests for load balancer health checks"
+  default     = 5
+}
+
+variable "health_check_timeout" {
+  description = "Timeout of requests for load balancer health checks"
+  default     = 2
+}
+
+variable "health_check_healthy" {
+  description = "Threshold to consider load balancer healthy"
+  default     = 2
+}
+
+variable "health_check_unhealthy" {
+  description = "Threshold to consider load balancer unhealthy"
+  default     = 2
+}
