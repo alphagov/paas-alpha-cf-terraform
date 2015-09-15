@@ -33,6 +33,7 @@ resource "template_file" "cf_stub" {
         environment             = "${var.env}"
         zone0                   = "${var.zones.zone0}"
         zone1                   = "${var.zones.zone1}"
+        region                  = "${var.region}"
         cf1_subnet_id           = "${aws_subnet.cf.0.id}"
         cf2_subnet_id           = "${aws_subnet.cf.1.id}"
         ccdb_address            = "${aws_db_instance.ccdb.address}"

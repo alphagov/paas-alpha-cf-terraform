@@ -6,6 +6,8 @@ meta:
   zones:
     z1: "${zone0}"
     z2: "${zone1}"
+  fog_config:
+    region: "${region}"
 
 networks:
 - name: cf1
@@ -31,6 +33,15 @@ networks:
         subnet: "${cf2_subnet_id}"
 
 properties:
+  cc:
+    droplets:
+      droplet_directory_key: "${environment}-cf-droplets"
+    buildpacks:
+      buildpack_directory_key: "${environment}-cf-buildpacks"
+    resource_pool:
+      resource_directory_key: "${environment}-cf-resources"
+    packages:
+      app_package_directory_key: "${environment}-cf-packages"
   ccdb:
     db_scheme: mysql
     roles:
