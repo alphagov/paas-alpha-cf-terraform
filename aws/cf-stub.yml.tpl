@@ -31,6 +31,17 @@ networks:
         subnet: "${cf2_subnet_id}"
 
 properties:
+  ccdb:
+    db_scheme: mysql
+    roles:
+    - tag: admin
+      name: "${ccdb_username}"
+      password: "${ccdb_password}"
+    databases:
+    - tag: cc
+      name: ccdb
+    address: "${ccdb_address}"
+    port: 3306
   uaa:
     admin:
       client_secret: admin_secret

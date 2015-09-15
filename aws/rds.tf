@@ -20,3 +20,16 @@ resource "aws_db_instance" "uaadb" {
     vpc_security_group_ids = ["${aws_security_group.rds.id}"]
 }
 
+resource "aws_db_instance" "ccdb" {
+    identifier = "${var.env}-ccdb-rds"
+    allocated_storage = 10
+    engine = "mysql"
+    engine_version = "5.6.23"
+    instance_class = "db.t1.micro"
+    name = "ccdb"
+    username = "ccdb"
+    password = "ccdbpassword"
+    db_subnet_group_name = "${aws_db_subnet_group.cf_rds_subnet.name}"
+    parameter_group_name = "default.mysql5.6"
+    vpc_security_group_ids = ["${aws_security_group.rds.id}"]
+}
