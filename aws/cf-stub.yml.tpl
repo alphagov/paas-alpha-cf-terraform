@@ -9,6 +9,10 @@ meta:
   fog_config:
     region: "${region}"
 
+jobs:
+  - name: consul_z1
+    instances: 1
+
 resource_pools:
   - name: router_z1
     cloud_properties:
