@@ -141,4 +141,7 @@ sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
 bosh deployment cf-manifest.yml
 time bosh -n deploy
 
+# Deploy and register PSQL broker
+time bash deploy_psql_broker.sh
+
 #TODO: run CATS (CF acceptance tests) to verify deployment health
