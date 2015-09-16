@@ -23,7 +23,7 @@ gce: set-gce apply prepare-provision provision
 apply-aws: set-aws apply
 apply-gce: set-gce apply
 apply: check-env-vars
-	@cd ${dir} && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix}
+	@cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix}
 
 confirm-execution:
 	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
@@ -32,6 +32,12 @@ prepare-provision: bastion
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
 	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@${bastion}:cf-manifest.yml
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
+
+test-aws: set-aws test
+test-gce: set-gce test
+test: bastion
+	@cd ${dir} && scp -oStrictHostKeyChecking=no smoke_test_${DEPLOY_ENV}.json ubuntu@${bastion}:smoke_test.json
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash smoke_test.sh'
 
 provision-aws: set-aws prepare-provision provision
 provision-gce: set-gce prepare-provision provision
