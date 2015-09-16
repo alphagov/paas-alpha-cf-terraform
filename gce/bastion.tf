@@ -41,6 +41,11 @@ resource "google_compute_instance" "bastion" {
           destination = "/home/ubuntu/delete-route.sh"
   }
 
+   provisioner "file" {
+          source = "${path.module}/../deploy_psql_broker.sh"
+          destination = "/home/ubuntu/deploy_psql_broker.sh"
+  }
+
   provisioner "file" {
         source = "${module.smoke_test.script_path}"
         destination = "/home/ubuntu/smoke_test.sh"

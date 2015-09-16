@@ -1,6 +1,6 @@
 #!/bin/bash
 STEMCELL=light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
-RELEASE=210
+RELEASE=211
 BOSH_EXTERNAL_IP=$1
 MICROBOSH_ZONE=europe-west1-b
 DEPLOYMENT_NAME=`python -c 'import yaml; print yaml.load(file("cf-manifest.yml"))["name"]'`
@@ -140,5 +140,8 @@ cd ~
 sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
 bosh deployment cf-manifest.yml
 time bosh -n deploy
+
+# Deploy and register PSQL broker
+time bash deploy_psql_broker.sh
 
 #TODO: run CATS (CF acceptance tests) to verify deployment health

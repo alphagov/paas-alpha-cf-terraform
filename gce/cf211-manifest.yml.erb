@@ -4,7 +4,7 @@ static_ip = "#{tf_static_ip}"
 deployment_name = "#{tf_deployment_name}"
 network_name = "#{tf_network_name}"
 root_domain = "#{static_ip}.xip.io"
-cf_release = "210"
+cf_release = "211"
 protocol = "http"
 common_password = "c1oudc0w"
 %>
@@ -86,6 +86,11 @@ disk_pools:
     cloud_properties:
       type: pd-ssd
 
+  - name: postgres
+    disk_size: 40_000
+    cloud_properties:
+      type: pd-standard
+
 jobs:
   - name: haproxy
     templates:
@@ -161,6 +166,37 @@ jobs:
         default: [dns, gateway]
     update:
       max_in_flight: 1
+
+  - name: postgres
+    templates:
+      - name: postgres
+      - name: metron_agent
+    instances: 1
+    resource_pool: common
+    persistent_disk_pool: postgres
+    networks:
+      - name: default
+        default: [dns, gateway]
+    properties:
+      databases:
+        db_scheme: postgres
+        port: 5432
+        address: 0.postgres.default.<%= deployment_name %>.microbosh
+        max_connections: 500
+        log_line_prefix: "psql %m:"
+        roles:
+          - tag: admin
+            name: admin
+            password: administrator
+            permissions:
+              - SUPERUSER
+              - INHERIT
+              - CREATEROLE
+              - CREATEDB
+              - LOGIN
+        databases:
+          - tag: psqlbroker
+            name: psqlbroker
 
 properties:
   networks:
@@ -463,10 +499,10 @@ properties:
     external_protocol: <%= protocol %>
 
   dea: &dea
-    disk_mb: 102400
+    disk_mb: 40000
     disk_overcommit_factor: 2
-    memory_mb: 51200
-    memory_overcommit_factor: 3
+    memory_mb: 10000
+    memory_overcommit_factor: 2
     staging_disk_inode_limit: 200000
     instance_disk_inode_limit: 200000
     kernel_network_tuning_enabled: true
