@@ -210,3 +210,10 @@ properties:
       name: uaadb
     address: "${uaadb_address}"
     port: 3306
+  login:
+    links:
+      network: https://network.gopivotal.com/login
+      signup-network: https://network.gopivotal.com/registrations/new
+    smtp:
+      host: localhost
+      port: 2525
