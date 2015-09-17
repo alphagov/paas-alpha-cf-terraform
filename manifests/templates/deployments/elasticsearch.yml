@@ -1,0 +1,99 @@
+jobs:
+- <<: (( merge ))
+- name: elasticsearch_master_z1
+  instances: 2
+  default_networks:
+  - name: cf1
+    static_ips: ~
+  networks: (( merge || default_networks ))
+  persistent_disk: (( merge || 0 ))
+  properties:
+    elasticsearch:
+      cluster: (( merge || "elasticsearch_cluster" ))
+      node_master: true
+      node_data: (( merge || false ))
+      gateway_expected_nodes: (( merge || 1 ))
+      gateway_recover_after_nodes: (( merge || 1 ))
+      number_of_replicas: (( merge || 1 ))
+      number_of_shards: (( merge || 1 ))
+      ping_hosts: (( merge || nil ))
+      discovery_minimum_master: (( merge || 2 ))
+      discovery_ping_timeout: (( merge || 3 ))
+  resource_pool: (( merge || "small_z1" ))
+  templates:
+  - name: elasticsearch
+    release: elasticsearch
+
+- name: elasticsearch_master_z2
+  instances: 1
+  default_networks:
+  - name: cf2
+    static_ips: ~
+  networks: (( merge || default_networks ))
+  persistent_disk: (( merge || 0 ))
+  properties:
+    elasticsearch:
+      cluster: (( merge || "elasticsearch_cluster" ))
+      node_master: true
+      node_data: (( merge || false ))
+      gateway_expected_nodes: (( merge || 1 ))
+      gateway_recover_after_nodes: (( merge || 1 ))
+      number_of_replicas: (( merge || 1 ))
+      number_of_shards: (( merge || 1 ))
+      ping_hosts: (( merge || nil ))
+      discovery_minimum_master: (( merge || 2 ))
+      discovery_ping_timeout: (( merge || 3 ))
+  resource_pool: (( merge || "small_z2" ))
+  templates:
+  - name: elasticsearch
+    release: elasticsearch
+
+- name: elasticsearch_data_z1
+  instances: 2
+  default_networks:
+  - name: cf1
+    static_ips: ~
+  networks: (( merge || default_networks ))
+  persistent_disk: (( merge || 1024 ))
+  properties:
+    elasticsearch:
+      cluster: (( merge || "elasticsearch_cluster" ))
+      node_master: (( merge || "false" ))
+      node_data: true
+      gateway_expected_nodes: (( merge || 1 ))
+      gateway_recover_after_nodes: (( merge || 1 ))
+      number_of_replicas: (( merge || 1 ))
+      number_of_shards: (( merge || 1 ))
+      ping_hosts: (( merge || nil ))
+      discovery_minimum_master: (( merge || 2 ))
+      discovery_ping_timeout: (( merge || 3 ))
+  resource_pool: (( merge || "medium_z1" ))
+  templates:
+  - name: elasticsearch
+    release: elasticsearch
+
+- name: elasticsearch_data_z2
+  instances: 2
+  default_networks:
+  - name: cf2
+    static_ips: ~
+  networks: (( merge || default_networks ))
+  persistent_disk: (( merge || 1024 ))
+  properties:
+    elasticsearch:
+      cluster: (( merge || "elasticsearch_cluster" ))
+      node_master: (( merge || "false" ))
+      node_data: true
+      gateway_expected_nodes: (( merge || 1 ))
+      gateway_recover_after_nodes: (( merge || 1 ))
+      number_of_replicas: (( merge || 1 ))
+      number_of_shards: (( merge || 1 ))
+      ping_hosts: (( merge || nil ))
+      discovery_minimum_master: (( merge || 2 ))
+      discovery_ping_timeout: (( merge || 3 ))
+  resource_pool: (( merge || "medium_z1" ))
+  templates:
+  - name: elasticsearch
+    release: elasticsearch
+
+

@@ -1,0 +1,20 @@
+jobs:
+  - name: elasticsearch_master_z1
+    instances: 1
+    networks:
+    - name: cf1
+      static_ips: [ 10.0.10.30 ]
+    persistent_disk: 1024
+    properties:
+      elasticsearch:
+        node_data: true
+        discovery_minimum_master: 1
+        number_of_replicas: 0
+        ping_hosts: [ 10.0.10.30 ]
+  - name: elasticsearch_master_z2
+    instances: 0
+  - name: elasticsearch_data_z1
+    instances: 0
+  - name: elasticsearch_data_z2
+    instances: 0
+

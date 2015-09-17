@@ -1,13 +1,14 @@
 ---
+terraform_outputs: ((merge))
 director_uuid: BOSH_UUID
 name: CloudFoundry
 meta:
-  environment: ${environment}
+  environment: (( terraform_outputs.environment ))
   zones:
-    z1: "${zone0}"
-    z2: "${zone1}"
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
   fog_config:
-    region: "${region}"
+    region: (( terraform_outputs.region ))
 
 update:
   serial: false # makes every job deploy at the same time.
@@ -21,10 +22,12 @@ jobs:
 resource_pools:
   - name: router_z1
     cloud_properties:
-      elbs: ["${elb_name}"]
+      elbs:
+      - (( terraform_outputs.elb_name ))
   - name: router_z2
     cloud_properties:
-      elbs: ["${elb_name}"]
+      elbs:
+      - (( terraform_outputs.elb_name ))
 
 networks:
 - name: cf1
@@ -37,7 +40,7 @@ networks:
       static:
       - 10.0.10.10 - 10.0.10.40
       cloud_properties:
-        subnet: "${cf1_subnet_id}"
+        subnet: (( terraform_outputs.cf1_subnet_id ))
 - name: cf2
   subnets:
     - range: 10.0.11.0/24
@@ -47,18 +50,18 @@ networks:
       static:
       - 10.0.11.10 - 10.0.11.40
       cloud_properties:
-        subnet: "${cf2_subnet_id}"
+        subnet: (( terraform_outputs.cf2_subnet_id ))
 
 properties:
   cc:
     droplets:
-      droplet_directory_key: "${environment}-cf-droplets"
+      droplet_directory_key: (( terraform_outputs.environment "-cf-droplets" ))
     buildpacks:
-      buildpack_directory_key: "${environment}-cf-buildpacks"
+      buildpack_directory_key: (( terraform_outputs.environment "-cf-buildpacks" ))
     resource_pool:
-      resource_directory_key: "${environment}-cf-resources"
+      resource_directory_key: (( terraform_outputs.environment "-cf-resources" ))
     packages:
-      app_package_directory_key: "${environment}-cf-packages"
+      app_package_directory_key: (( terraform_outputs.environment "-cf-packages" ))
     staging_upload_user: username
     staging_upload_password: password
     bulk_api_password: password
@@ -69,17 +72,17 @@ properties:
     db_scheme: mysql
     roles:
     - tag: admin
-      name: "${ccdb_username}"
-      password: "${ccdb_password}"
+      name: (( terraform_outputs.ccdb_username ))
+      password: (( terraform_outputs.ccdb_password ))
     databases:
     - tag: cc
       name: ccdb
-    address: "${ccdb_address}"
+    address: (( terraform_outputs.ccdb_address ))
     port: 3306
   dea_next:
     disk_mb: 10240
     memory_mb: 4096
-  domain: "${environment}.cf.paas.alphagov.co.uk"
+  domain: (( terraform_outputs.environment ".cf.paas.alphagov.co.uk" ))
   nats:
     user: nats_user
     password: nats_password
@@ -139,10 +142,10 @@ properties:
       password: router_password
   template_only:
     aws:
-      access_key_id: "${aws_access_key_id}"
-      secret_access_key: "${aws_secret_access_key}"
-      availability_zone: "${zone0}"
-      availability_zone2: "${zone1}"
+      access_key_id: (( terraform_outputs.aws_access_key_id ))
+      secret_access_key: (( terraform_outputs.aws_secret_access_key ))
+      availability_zone: (( terraform_outputs.zone0 ))
+      availability_zone2: (( terraform_outputs.zone1 ))
   uaa:
     admin:
       client_secret: admin_secret
@@ -203,12 +206,12 @@ properties:
     db_scheme: mysql
     roles:
     - tag: admin
-      name: "${uaadb_username}"
-      password: "${uaadb_password}"
+      name: (( terraform_outputs.uaadb_username ))
+      password: (( terraform_outputs.uaadb_password ))
     databases:
     - tag: uaa
       name: uaadb
-    address: "${uaadb_address}"
+    address: (( terraform_outputs.uaadb_address ))
     port: 3306
   login:
     links:
