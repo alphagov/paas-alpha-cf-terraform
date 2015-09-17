@@ -24,8 +24,9 @@ fi
 
 echo "*** Logging in to CF and creating admin space..."
 cf api --skip-ssl-validation https://api.${DOMAIN}
-cf login -u ${CF_ADMIN} -p ${CF_PASS}
-cf create-space admin
+echo -e "\n" | cf login -u ${CF_ADMIN} -p ${CF_PASS}
+echo -e "\n" | cf create-org admin
+cf create-space admin -o admin
 cf target -o admin -s admin
 
 if [ ! -d postgresql-cf-service-broker ]; then
