@@ -1,0 +1,6 @@
+releases:
+- name: cf
+  version: 215
+- name: elasticsearch
+  version: 0.1.0
+
