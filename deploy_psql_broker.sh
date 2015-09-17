@@ -41,6 +41,12 @@ mvn package -DskipTests
 cf push postgresql-cf-service-broker -p target/postgresql-cf-service-broker-2.3.0-SNAPSHOT.jar --no-start
 cd ..
 
+# Cofigure security
+echo '[{"protocol":"tcp","destination":"10.0.0.0/8","ports":"5432"}]' >internal-psql.json
+cf create-security-group internal-postgresql internal-psql.json
+cf bind-staging-security-group internal-postgresql
+cf bind-running-security-group internal-postgresql
+
 cf set-env postgresql-cf-service-broker JAVA_OPTS "-Dsecurity.user.password=${ADMIN_PASS}"
 cf set-env postgresql-cf-service-broker MASTER_JDBC_URL "jdbc:postgresql://${PSQL_SERVER}:5432/psqlbroker?user=${ADMIN_USER}&password=${ADMIN_PASS}"
 cf start postgresql-cf-service-broker
