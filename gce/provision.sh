@@ -135,6 +135,9 @@ git checkout v$RELEASE
 
 time bosh upload release releases/cf-$RELEASE.yml
 
+# Upload elasticsearch release
+bosh upload release https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
+
 # Deploy CF
 cd ~
 sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml

@@ -5,6 +5,7 @@ deployment_name = "#{tf_deployment_name}"
 network_name = "#{tf_network_name}"
 root_domain = "#{static_ip}.xip.io"
 cf_release = "211"
+elasticsearch_release = "0.1.0"
 protocol = "http"
 common_password = "c1oudc0w"
 %>
@@ -15,6 +16,8 @@ director_uuid: <%= director_uuid %>
 releases:
  - name: cf
    version: <%= cf_release %>
+ - name: elasticsearch
+   version: <%= elasticsearch_release %>
 
 compilation:
   workers: 4
@@ -95,8 +98,11 @@ jobs:
   - name: haproxy
     templates:
       - name: haproxy
+        release: cf
       - name: consul_agent
+        release: cf
       - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: large
     networks:
@@ -109,8 +115,11 @@ jobs:
   - name: data
     templates:
       - name: debian_nfs_server
+        release: cf
       - name: postgres
+        release: cf
       - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: common
     persistent_disk_pool: data
@@ -121,13 +130,21 @@ jobs:
   - name: core
     templates:
       - name: nats
+        release: cf
       - name: nats_stream_forwarder
+        release: cf
       - name: etcd
+        release: cf
       - name: etcd_metrics_server
+        release: cf
       - name: hm9000
+        release: cf
       - name: uaa
+        release: cf
       - name: login
+        release: cf
       - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: common
     persistent_disk_pool: core
@@ -138,16 +155,27 @@ jobs:
   - name: api
     templates:
       - name: gorouter
+        release: cf
       - name: routing-api
+        release: cf
       - name: cloud_controller_ng
+        release: cf
       - name: cloud_controller_clock
+        release: cf
       - name: cloud_controller_worker
+        release: cf
       - name: consul_agent
+        release: cf
       - name: doppler
+        release: cf
       - name: loggregator_trafficcontroller
+        release: cf
       - name: syslog_drain_binder
+        release: cf
       - name: metron_agent
+        release: cf
       - name: nfs_mounter
+        release: cf
     instances: 1
     resource_pool: common
     networks:
@@ -157,8 +185,11 @@ jobs:
   - name: runner
     templates:
       - name: dea_next
+        release: cf
       - name: dea_logging_agent
+        release: cf
       - name: metron_agent
+        release: cf
     instances: 2
     resource_pool: large
     networks:
@@ -170,7 +201,9 @@ jobs:
   - name: postgres
     templates:
       - name: postgres
+        release: cf
       - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: common
     persistent_disk_pool: postgres
@@ -198,6 +231,31 @@ jobs:
           - tag: psqlbroker
             name: psqlbroker
 
+  - name: elasticsearch
+    instances: 1
+    networks:
+      - name: default
+        default: [dns, gateway]
+    persistent_disk_pool: data
+    properties:
+      elasticsearch:
+        cluster: "elasticsearch_cluster"
+        node_master: true
+        node_data: true
+        gateway_expected_nodes: 1
+        gateway_recover_after_nodes: 1
+        number_of_replicas: 0
+        number_of_shards: 1
+        ping_hosts: []
+        discovery_minimum_master: 1
+        discovery_ping_timeout: 3
+    resource_pool: common
+    templates:
+    - name: elasticsearch
+      release: elasticsearch
+    - name: metron_agent
+      release: cf
+ 
 properties:
   networks:
     apps: default
