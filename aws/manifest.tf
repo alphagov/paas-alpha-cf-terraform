@@ -25,28 +25,3 @@ resource "template_file" "manifest" {
     }
 }
 
-resource "template_file" "cf_stub" {
-    filename = "${path.module}/cf-stub.yml.tpl"
-
-    vars {
-        environment             = "${var.env}"
-        zone0                   = "${var.zones.zone0}"
-        zone1                   = "${var.zones.zone1}"
-        region                  = "${var.region}"
-        cf1_subnet_id           = "${aws_subnet.cf.0.id}"
-        cf2_subnet_id           = "${aws_subnet.cf.1.id}"
-        aws_secret_access_key   = "${var.AWS_SECRET_ACCESS_KEY}"
-        aws_access_key_id       = "${var.AWS_ACCESS_KEY_ID}"
-        ccdb_address            = "${aws_db_instance.ccdb.address}"
-        ccdb_username           = "${aws_db_instance.ccdb.username}"
-        ccdb_password           = "${aws_db_instance.ccdb.password}"
-        uaadb_address           = "${aws_db_instance.uaadb.address}"
-        uaadb_username          = "${aws_db_instance.uaadb.username}"
-        uaadb_password          = "${aws_db_instance.uaadb.password}"
-        elb_name                = "${aws_elb.router.name}"
-    }
-
-    provisioner "local-exec" {
-      command = "echo '${template_file.cf_stub.rendered}' > cf-stub.yml"
-    }
-}

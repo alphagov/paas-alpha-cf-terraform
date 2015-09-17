@@ -31,7 +31,6 @@ manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
 prepare-provision-aws: bastion manifests/templates/outputs/terraform-outputs-aws.yml
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
-	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-stub.yml ubuntu@${bastion}:cf-stub.yml
 	@cd manifests && scp -oStrictHostKeyChecking=no generate_deployment_manifest.sh ubuntu@${bastion}:
 	@cd manifests && scp -r -oStrictHostKeyChecking=no templates ubuntu@${bastion}:
 

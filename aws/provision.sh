@@ -63,6 +63,9 @@ git checkout v215
 ./update
 time bosh upload release releases/cf-215.yml
 
+# Upload elasticsearch release
+bosh upload release https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
+
 # Download spiff
 cd ~
 if [ ! -f spiff_linux_amd64.zip ]; then
@@ -73,8 +76,8 @@ if [ ! -f spiff_linux_amd64.zip ]; then
 fi
 
 # Use spiff to generate CF deployment manifest
-sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-stub.yml
-cd cf-release && ./generate_deployment_manifest aws templates/cf-minimal-dev.yml ../cf-stub.yml > ../cf-manifest.yml
+echo -e "---\ndirector_uuid: $(bosh status --uuid)" > templates/stubs/director-uuid.yml
+CF_RELEASE_PATH=~/cf-release/ ./generate_deployment_manifest.sh aws > cf-manifest.yml
 
 # Run deployment
 cd ~
