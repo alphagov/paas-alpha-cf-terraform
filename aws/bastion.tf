@@ -31,4 +31,9 @@ resource "aws_instance" "bastion" {
           destination = "/home/ubuntu/.ssh/id_rsa.pub"
   }
 
+  provisioner "file" {
+          source = "${path.module}/../scripts/deploy_psql_broker.sh"
+          destination = "/home/ubuntu/deploy_psql_broker.sh"
+  }
+
 }
