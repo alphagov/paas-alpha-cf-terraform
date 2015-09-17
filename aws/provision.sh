@@ -83,3 +83,6 @@ CF_RELEASE_PATH=~/cf-release/ ./generate_deployment_manifest.sh aws > cf-manifes
 cd ~
 bosh deployment cf-manifest.yml
 time bosh -n deploy
+
+# Deploy and register PSQL broker
+time bash deploy_psql_broker.sh admin fakepassword

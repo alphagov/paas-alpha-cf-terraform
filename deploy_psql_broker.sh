@@ -5,7 +5,8 @@ ADMIN_PASS="administrator"
 ADMIN_USER="admin"
 PSQL_SERVER=`bosh vms | grep postgres/0 | grep -o '10\.[0-9]\+\.[0-9]\+\.[0-9]\+'`
 DOMAIN=`python -c 'import yaml; print yaml.load(file("cf-manifest.yml"))["properties"]["domain"]'`
-CF_PASS="c1oudc0w"
+CF_ADMIN="$1"
+CF_PASS="$2"
 
 cf_version=6.12.3
 if ! cf_version_orig=`dpkg-query -W cf-cli` || [[ "${cf_version_orig}" != *"${cf_version}"* ]]; then
@@ -19,11 +20,11 @@ if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
   sudo apt-get update
   sudo apt-get install -y $PACKAGES
 fi
-# The two above should be part of provision sh
+# The two above should be part of provision.sh
 
 echo "*** Logging in to CF and creating admin space..."
 cf api --skip-ssl-validation https://api.${DOMAIN}
-cf login -u ${ADMIN_USER} -p ${CF_PASS}
+cf login -u ${CF_ADMIN} -p ${CF_PASS}
 cf create-space admin
 cf target -o admin -s admin
 
