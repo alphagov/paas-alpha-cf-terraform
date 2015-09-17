@@ -9,6 +9,7 @@ jobs:
       elasticsearch:
         node_data: true
         discovery_minimum_master: 1
+        number_of_replicas: 0
         ping_hosts: [ 10.0.10.30 ]
   - name: elasticsearch_master_z2
     instances: 0
