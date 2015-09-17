@@ -42,7 +42,7 @@ resource "google_compute_instance" "bastion" {
   }
 
    provisioner "file" {
-          source = "${path.module}/../deploy_psql_broker.sh"
+          source = "${path.module}/../scripts/deploy_psql_broker.sh"
           destination = "/home/ubuntu/deploy_psql_broker.sh"
   }
 
