@@ -55,7 +55,7 @@ fi
 echo "Uploading v215 release to bosh..."
 cd cf-release
 git checkout v215
-#./update
+./update
 time bosh upload release releases/cf-215.yml
 
 # Upload elasticsearch release
