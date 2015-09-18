@@ -1,3 +1,7 @@
+meta:
+  release:
+    name: cf
+
 jobs:
 - <<: (( merge ))
 - name: elasticsearch_master_z1
@@ -8,6 +12,8 @@ jobs:
   networks: (( merge || default_networks ))
   persistent_disk: (( merge || 0 ))
   properties:
+    metron_agent:
+      zone: z1
     elasticsearch:
       cluster: (( merge || "elasticsearch_cluster" ))
       node_master: true
@@ -23,6 +29,8 @@ jobs:
   templates:
   - name: elasticsearch
     release: elasticsearch
+  - name: metron_agent
+    release: (( meta.release.name ))
 
 - name: elasticsearch_master_z2
   instances: 1
@@ -32,6 +40,8 @@ jobs:
   networks: (( merge || default_networks ))
   persistent_disk: (( merge || 0 ))
   properties:
+    metron_agent:
+      zone: z2
     elasticsearch:
       cluster: (( merge || "elasticsearch_cluster" ))
       node_master: true
@@ -47,6 +57,8 @@ jobs:
   templates:
   - name: elasticsearch
     release: elasticsearch
+  - name: metron_agent
+    release: (( meta.release.name ))
 
 - name: elasticsearch_data_z1
   instances: 2
@@ -56,6 +68,8 @@ jobs:
   networks: (( merge || default_networks ))
   persistent_disk: (( merge || 1024 ))
   properties:
+    metron_agent:
+      zone: z1
     elasticsearch:
       cluster: (( merge || "elasticsearch_cluster" ))
       node_master: (( merge || "false" ))
@@ -71,6 +85,8 @@ jobs:
   templates:
   - name: elasticsearch
     release: elasticsearch
+  - name: metron_agent
+    release: (( meta.release.name ))
 
 - name: elasticsearch_data_z2
   instances: 2
@@ -80,6 +96,8 @@ jobs:
   networks: (( merge || default_networks ))
   persistent_disk: (( merge || 1024 ))
   properties:
+    metron_agent:
+      zone: z2
     elasticsearch:
       cluster: (( merge || "elasticsearch_cluster" ))
       node_master: (( merge || "false" ))
@@ -95,5 +113,7 @@ jobs:
   templates:
   - name: elasticsearch
     release: elasticsearch
+  - name: metron_agent
+    release: (( meta.release.name ))
 
 
