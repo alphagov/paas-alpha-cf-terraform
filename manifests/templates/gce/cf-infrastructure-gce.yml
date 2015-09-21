@@ -1,0 +1,30 @@
+name: ((merge))
+meta:
+  zones:
+    z1: (( properties.template_only.gce.availability_zone ))
+    z2: (( properties.template_only.gce.availability_zone2 ))
+
+  stemcell:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    version: latest
+properties:
+  <<: (( merge ))
+
+  logger_endpoint:
+    port: 443
+
+  loggregator:
+    blacklisted_syslog_ranges:
+    - start: 10.10.0.0
+      end: 10.10.255.255
+
+  uaa:
+    catalina_opts: -Xmx768m -XX:MaxPermSize=256m
+
+networks: (( merge ))
+
+compilation:
+  cloud_properties:
+    machine_type: n1-highcpu-8
+    availability_zone: (( meta.zones.z1 ))
+
