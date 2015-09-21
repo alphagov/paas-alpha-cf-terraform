@@ -1,9 +1,11 @@
 #!/bin/bash
 STEMCELL=light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
-RELEASE=211
 BOSH_EXTERNAL_IP=$1
 MICROBOSH_ZONE=europe-west1-b
-DEPLOYMENT_NAME=`python -c 'import yaml; print yaml.load(file("cf-manifest.yml"))["name"]'`
+DEPLOYMENT_NAME=`python -c 'import yaml; print yaml.load(file("templates/outputs/terraform-outputs-gce.yml"))["terraform_outputs"]["environment"]'`
+RELEASE=215
+CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
+CF_RELEASE_REVISION=cf_jobs_without_static_ips_dependencies_v215
 
 # Returns the $2 field from $1 file, with $3 extra syntax
 json_get(){
@@ -125,13 +127,15 @@ time bosh upload stemcell $STEMCELL --skip-if-exists
 
 # Git clone and upload release
 if [ ! -d cf-release ]; then
-  git clone https://github.com/cloudfoundry/cf-release.git
+  git clone $CF_RELEASE_GIT_URL
 fi
 
 echo "Uploading v$RELEASE release to bosh..."
 cd cf-release
-git checkout v$RELEASE
-# time ./update
+git fetch
+git checkout $CF_RELEASE_REVISION
+
+time ./update
 
 time bosh upload release releases/cf-$RELEASE.yml
 

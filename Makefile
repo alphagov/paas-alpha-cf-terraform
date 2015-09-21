@@ -30,16 +30,12 @@ manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
 manifests/templates/outputs/terraform-outputs-gce.yml: gce/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < gce/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-gce.yml
 
-prepare-provision-aws: bastion manifests/templates/outputs/terraform-outputs-aws.yml
+prepare-provision-aws: set-aws prepare-provision
+prepare-provision-gce: set-gce prepare-provision
+prepare-provision: bastion manifests/templates/outputs/terraform-outputs-aws.yml
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
-	@cd manifests && scp -oStrictHostKeyChecking=no generate_deployment_manifest.sh ubuntu@${bastion}:
-	@cd manifests && scp -r -oStrictHostKeyChecking=no templates ubuntu@${bastion}:
-
-prepare-provision-gce: bastion
-	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
-	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
-	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@${bastion}:cf-manifest.yml
+	@scp -r -oStrictHostKeyChecking=no manifests/* ubuntu@${bastion}:
 
 test-aws: set-aws test
 test-gce: set-gce test
