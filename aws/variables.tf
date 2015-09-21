@@ -75,5 +75,5 @@ variable "dns_zone_id" {
 
 variable "dns_zone_name" {
   description = "Amazon Route53 DNS zone name"
-  default     = "cf.paas.alphagov.co.uk."
+  default     = "cf.paas.alphagov.co.uk"
 }
