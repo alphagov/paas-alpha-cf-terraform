@@ -6,7 +6,3 @@ resource "google_compute_network" "bastion" {
 resource "google_compute_address" "bosh" {
     name = "${var.env}-bosh"
 }
-
-resource "google_compute_address" "haproxy" {
-    name = "${var.env}-haproxy"
-}

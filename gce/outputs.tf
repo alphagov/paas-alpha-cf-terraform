@@ -6,10 +6,6 @@ output "bosh_ip" {
 	value = "${google_compute_address.bosh.address}"
 }
 
-output "haproxy_ip" {
-        value = "${google_compute_address.haproxy.address}"
-}
-
 output "environment" {
 	value = "${var.env}"
 }
