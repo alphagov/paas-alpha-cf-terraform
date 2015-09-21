@@ -108,6 +108,122 @@ resource_pools:
       root_disk_type: pd-standard
       zone: (( meta.zones.z1 ))
 
+jobs:
+  - name: api_z1
+    networks:
+      - name: cf1
+    persistent_disk: 10240
+
+  - name: api_z2
+    networks:
+      - name: cf2
+    persistent_disk: 10240
+
+  - name: api_worker_z1
+    networks:
+      - name: cf1
+    persistent_disk: 10240
+
+  - name: api_worker_z2
+    networks:
+      - name: cf2
+    persistent_disk: 10240
+
+  - name: postgres_z1
+    instances: 1
+    networks:
+      - name: cf1
+
+  - name: nfs_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: nats_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: nats_z2
+    instances: 1
+    networks:
+      - name: cf2
+        static_ips: null
+
+  - name: router_z1
+    instances: 1
+    networks: (( merge ))
+
+  - name: router_z2
+    instances: 1
+    networks: (( merge ))
+
+  - name: loggregator_z1
+    instances: 0
+    networks:
+      - name: cf1
+
+  - name: loggregator_z2
+    instances: 0
+    networks:
+      - name: cf2
+
+  - name: doppler_z1
+    instances: 1
+    networks:
+      - name: cf1
+
+  - name: doppler_z2
+    instances: 1
+    networks:
+      - name: cf2
+
+  - name: loggregator_trafficcontroller_z1
+    instances: 1
+    networks:
+      - name: cf1
+
+  - name: loggregator_trafficcontroller_z2
+    instances: 1
+    networks:
+      - name: cf2
+
+  - name: consul_z1
+    instances: 0
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: consul_z2
+    instances: 0
+    networks:
+      - name: cf2
+        static_ips: null
+
+  - name: etcd_z1
+    instances: 2
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: etcd_z2
+    instances: 1
+    networks:
+      - name: cf2
+        static_ips: null
+
+  - name: smoke_tests
+    instances: 1
+
+  - name: ha_proxy_z1
+    properties:
+      router:
+        servers:
+          z1: null
+          z2: null
+
 compilation:
   cloud_properties:
     machine_type: n1-highcpu-8
