@@ -56,7 +56,7 @@ resource "google_compute_instance" "bastion" {
 module "smoke_test" {
   source = "../smoke_test"
 
-  haproxy_ip = "${google_compute_address.haproxy.address}"
+  domain = "${var.dns_zone_name}"
   env = "${var.env}"
 
 }

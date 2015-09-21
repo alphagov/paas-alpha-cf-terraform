@@ -1,4 +1,4 @@
-variable "haproxy_ip" {}
+variable "domain" {}
 variable "env" {}
 
 resource "template_file" "smoke_test_json" {
@@ -9,7 +9,7 @@ resource "template_file" "smoke_test_json" {
     }
 
     provisioner "local-exec" {
-        command = "(echo '<% haproxy_ip=\"${var.haproxy_ip}\" %>' && cat ${path.module}/smoke_test.json.erb) | erb > smoke_test_${var.env}.json"
+        command = "(echo '<% domain=\"${var.domain}\" %>' && cat ${path.module}/smoke_test.json.erb) | erb > smoke_test_${var.env}.json"
     }
 }
 

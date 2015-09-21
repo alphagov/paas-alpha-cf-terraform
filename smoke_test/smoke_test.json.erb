@@ -1,9 +1,9 @@
 {
   "suite_name"         : "CF_SMOKE_TESTS",
-  "api"                : "api.<%= haproxy_ip %>.xip.io",
-  "apps_domain"        : "<%= haproxy_ip %>.xip.io",
+  "api"                : "api.<%= env %>.<%= domain %>",
+  "apps_domain"        : "<%= env %>.<%= domain %>",
   "user"               : "admin",
-  "password"           : "c1oudc0w",
+  "password"           : "fakepassword",
   "org"                : "CF-SMOKE-ORG",
   "space"              : "CF-SMOKE-SPACE",
   "cleanup"            : true,
