@@ -46,3 +46,13 @@ variable "gce_account_json" {
   describe    = "To be replaced with actual contents of account.json at runtime."
   default     = "changeme"
 }
+
+variable "dns_zone_id" {
+  description = "Google DNS zone identifier"
+  default     = "cf2"
+}
+
+variable "dns_zone_name" {
+  description = "Google DNS zone name"
+  default     = "cf2.paas.alphagov.co.uk."
+}
