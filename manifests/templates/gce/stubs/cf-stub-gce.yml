@@ -33,6 +33,28 @@ networks:
         - (( terraform_outputs.environment ))
         - (( name ))
 
+  - name: router1
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf1_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+      target_pool: (( terraform_outputs.router_pool_name ))
+
+  - name: router2
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf2_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+      target_pool: (( terraform_outputs.router_pool_name ))
+
 properties:
   domain: (( terraform_outputs.environment ".cf2.paas.alphagov.co.uk" ))
   template_only:
@@ -40,3 +62,19 @@ properties:
       availability_zone: (( terraform_outputs.zone0 ))
       availability_zone2: (( terraform_outputs.zone1 ))
 
+jobs:
+  - name: router_z1
+    networks:
+      - name: router1
+        static_ips: null
+
+  - name: router_z2
+    networks:
+      - name: router2
+        static_ips: null
+
+resource_pools:
+  - name: router_z1
+    network: router1
+  - name: router_z2
+    network: router2
