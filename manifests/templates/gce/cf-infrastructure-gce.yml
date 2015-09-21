@@ -50,6 +50,50 @@ properties:
   uaa:
     catalina_opts: -Xmx768m -XX:MaxPermSize=256m
 
+  ccdb:
+    db_scheme: postgres
+    address: (( properties.databases.address ))
+    port: (( properties.databases.port ))
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+
+  uaadb:
+    db_scheme: postgresql
+    address: (( properties.databases.address ))
+    port: (( properties.databases.port ))
+    roles:
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: uaa
+        name: uaadb
+        citext: true
+
+  databases:
+    db_scheme: postgres
+    address: (( "0.postgres-z1.cf1." .name ".microbosh" ))
+    port: 5524
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+      - tag: uaa
+        name: uaadb
+        citext: true
 
   nats:
     address: (( "0.nats-z1.cf1." .name ".microbosh" ))
