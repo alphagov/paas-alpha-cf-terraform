@@ -33,3 +33,7 @@ output "cf1_network_name" {
 output "cf2_network_name" {
 	value = "${google_compute_network.bastion.name}"
 }
+
+output "router_pool_name" {
+	value = "${google_compute_target_pool.router.name}"
+}
