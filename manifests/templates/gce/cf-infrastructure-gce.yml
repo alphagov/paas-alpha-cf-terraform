@@ -4,6 +4,10 @@ meta:
     z1: (( properties.template_only.gce.availability_zone ))
     z2: (( properties.template_only.gce.availability_zone2 ))
 
+  fog_config:
+    provider: Local
+    local_root: /var/vcap/store
+
   stemcell:
     name: bosh-google-kvm-ubuntu-trusty-go_agent
     version: latest
@@ -14,8 +18,16 @@ meta:
 
   consul_servers: (( merge || default_consul_servers ))
 
+  nfs_server:
+    address: (( "0.nfs-z1.cf1." .name ".microbosh" ))
+    allow_from_entries:
+      - (( "*.cf1." .name ".microbosh" ))
+      - (( "*.cf2." .name ".microbosh" ))
+    share: ~
+
 properties:
   <<: (( merge ))
+  template_only: (( merge ))
 
   logger_endpoint:
     port: 443
@@ -24,6 +36,16 @@ properties:
     blacklisted_syslog_ranges:
     - start: 10.10.0.0
       end: 10.10.255.255
+
+  cc:
+    resource_pool:
+      fog_connection: (( meta.fog_config ))
+    packages:
+      fog_connection: (( meta.fog_config ))
+    droplets:
+      fog_connection: (( meta.fog_config ))
+    buildpacks:
+      fog_connection: (( meta.fog_config ))
 
   uaa:
     catalina_opts: -Xmx768m -XX:MaxPermSize=256m

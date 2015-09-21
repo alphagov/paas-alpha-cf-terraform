@@ -35,3 +35,8 @@ networks:
 
 properties:
   domain: (( terraform_outputs.environment ".cf2.paas.alphagov.co.uk" ))
+  template_only:
+    gce:
+      availability_zone: (( terraform_outputs.zone0 ))
+      availability_zone2: (( terraform_outputs.zone1 ))
+
