@@ -8,6 +8,10 @@ meta:
     z2: (( terraform_outputs.zone1 ))
   fog_config:
     region: (( terraform_outputs.region ))
+
+  consul_servers:
+     - (( "0.consul-z1.cf1." .name ".microbosh" ))
+
 networks:
   - name: cf1
     type: dynamic

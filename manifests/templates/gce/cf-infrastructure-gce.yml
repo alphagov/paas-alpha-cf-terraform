@@ -7,6 +7,13 @@ meta:
   stemcell:
     name: bosh-google-kvm-ubuntu-trusty-go_agent
     version: latest
+
+  default_consul_servers:
+     - (( "0.consul-z1.cf1." .name ".microbosh" ))
+     - (( "0.consul-z2.cf2." .name ".microbosh" ))
+
+  consul_servers: (( merge || default_consul_servers ))
+
 properties:
   <<: (( merge ))
 
@@ -20,6 +27,18 @@ properties:
 
   uaa:
     catalina_opts: -Xmx768m -XX:MaxPermSize=256m
+
+
+  nats:
+    address: (( "0.nats-z1.cf1." .name ".microbosh" ))
+    machines:
+    - (( "0.nats-z1.cf1." .name ".microbosh" ))
+    - (( "0.nats-z2.cf2." .name ".microbosh" ))
+
+  etcd:
+    machines:
+    - (( "0.etcd-z1.cf1." .name ".microbosh" ))
+    - (( "0.etcd-z2.cf2." .name ".microbosh" ))
 
 networks: (( merge ))
 
