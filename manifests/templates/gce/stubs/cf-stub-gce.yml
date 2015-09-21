@@ -1,0 +1,33 @@
+---
+terraform_outputs: ((merge))
+name: (( merge ))
+meta:
+  <<: (( merge ))
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+  fog_config:
+    region: (( terraform_outputs.region ))
+networks:
+  - name: cf1
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf1_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+
+  - name: cf2
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf2_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+
+properties:
+  domain: (( terraform_outputs.environment ".cf2.paas.alphagov.co.uk" ))
