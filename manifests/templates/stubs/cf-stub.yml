@@ -1,7 +1,7 @@
 ---
 terraform_outputs: ((merge))
 director_uuid: BOSH_UUID
-name: CloudFoundry
+name: (( "cloudfoundry-" meta.environment ))
 meta:
   environment: (( terraform_outputs.environment ))
   zones:
