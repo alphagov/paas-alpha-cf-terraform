@@ -3,7 +3,7 @@ variable "gce_project" {
   default = "root-unison-859"
 }
 
-variable "gce_region" {
+variable "region" {
   description = "GCE Region to use"
   default = "europe-west1"
 }
@@ -13,9 +13,13 @@ variable "gce_region_zone" {
   default = "europe-west1-b"
 }
 
-variable "gce_zones" {
-  description = "GCE Zones to choose from"
-  default = "europe-west1-b,europe-west1-c,europe-west1-d"
+variable "zones" {
+  description = "GCE availability zones"
+  default     = {
+    zone0 = "europe-west1-b"
+    zone1 = "europe-west1-c"
+    zone2 = "europe-west1-d"
+  }
 }
 
 variable "ssh_key_path" {

@@ -9,3 +9,27 @@ output "bosh_ip" {
 output "haproxy_ip" {
         value = "${google_compute_address.haproxy.address}"
 }
+
+output "environment" {
+	value = "${var.env}"
+}
+
+output "zone0" {
+	value = "${var.zones.zone0}"
+}
+
+output "zone1" {
+	value = "${var.zones.zone1}"
+}
+
+output "region" {
+	value = "${var.region}"
+}
+
+output "cf1_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
+
+output "cf2_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
