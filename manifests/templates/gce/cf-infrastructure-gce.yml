@@ -18,6 +18,17 @@ meta:
 
   consul_servers: (( merge || default_consul_servers ))
 
+  nats:
+    address: (( "0.nats-z1.cf1." .name ".microbosh" ))
+    machines:
+    - (( "0.nats-z1.cf1." .name ".microbosh" ))
+    - (( "0.nats-z2.cf2." .name ".microbosh" ))
+
+  etcd:
+    machines:
+    - (( "0.etcd-z1.cf1." .name ".microbosh" ))
+    - (( "0.etcd-z2.cf2." .name ".microbosh" ))
+
   nfs_client_ranges:
       - (( "*.cf1." .name ".microbosh" ))
       - (( "*.cf2." .name ".microbosh" ))
@@ -97,15 +108,11 @@ properties:
         citext: true
 
   nats:
-    address: (( "0.nats-z1.cf1." .name ".microbosh" ))
-    machines:
-    - (( "0.nats-z1.cf1." .name ".microbosh" ))
-    - (( "0.nats-z2.cf2." .name ".microbosh" ))
+    address: (( merge || meta.nats.address ))
+    machines: (( merge || meta.nats.machines ))
 
   etcd:
-    machines:
-    - (( "0.etcd-z1.cf1." .name ".microbosh" ))
-    - (( "0.etcd-z2.cf2." .name ".microbosh" ))
+    machines: (( merge || meta.etcd.machines ))
 
 networks: (( merge ))
 
