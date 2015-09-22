@@ -22,12 +22,19 @@ resource "aws_instance" "bastion" {
   }
 
   provisioner "file" {
-          source = "${path.module}/ssh/insecure-deployer"
-          destination = "/home/ubuntu/.ssh/id_rsa"
+    source = "${path.module}/ssh/insecure-deployer"
+    destination = "/home/ubuntu/.ssh/id_rsa"
   }
 
   provisioner "file" {
-          source = "${path.module}/ssh/insecure-deployer.pub"
-          destination = "/home/ubuntu/.ssh/id_rsa.pub"
+    source = "${path.module}/ssh/insecure-deployer.pub"
+    destination = "/home/ubuntu/.ssh/id_rsa.pub"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa",
+      "chmod 400 /home/ubuntu/.ssh/id_rsa"
+    ]
   }
 }

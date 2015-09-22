@@ -8,15 +8,6 @@ if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
   sudo apt-get install -y $PACKAGES
 fi
 
-# Set correct permissions for the ssh key we copied
-# TF feature request: https://github.com/hashicorp/terraform/issues/3071
-chmod 400 ~/.ssh/id_rsa
-chmod 400 ~/.ssh/id_rsa.pub
-
-# start the ssh-agent and add the keys
-eval `ssh-agent`
-ssh-add ~/.ssh/id_rsa
-
 # TODO: download bosh-init from our own bucket
 if [ ! -x bosh-init ]; then
   wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O bosh-init

@@ -22,22 +22,19 @@ resource "google_compute_instance" "bastion" {
   tags = [ "bastion" ]
 
   provisioner "file" {
-          source = "${path.module}/ssh/insecure-deployer"
-          destination = "/home/ubuntu/.ssh/id_rsa"
+    source = "${path.module}/ssh/insecure-deployer"
+    destination = "/home/ubuntu/.ssh/id_rsa"
   }
 
   provisioner "file" {
-          source = "${path.module}/ssh/insecure-deployer.pub"
-          destination = "/home/ubuntu/.ssh/id_rsa.pub"
+    source = "${path.module}/ssh/insecure-deployer.pub"
+    destination = "/home/ubuntu/.ssh/id_rsa.pub"
   }
 
-  provisioner "file" {
-          source = "${path.module}/account.json"
-          destination = "/home/ubuntu/account.json"
-  }
-
-  provisioner "file" {
-          source = "${path.module}/delete-route.sh"
-          destination = "/home/ubuntu/delete-route.sh"
+  provisioner "remote-exec" {
+    inline = [
+      "chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa",
+      "chmod 400 /home/ubuntu/.ssh/id_rsa"
+    ]
   }
 }

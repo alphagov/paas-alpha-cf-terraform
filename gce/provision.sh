@@ -28,13 +28,6 @@ if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
   sudo apt-get install -y $PACKAGES
 fi
 
-# Set correct permissions for the ssh key we copied, as TF can't do that yet
-chmod 400 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/account.json
-
-# start the ssh-agent and add the keys
-eval `ssh-agent`
-ssh-add ~/.ssh/id_rsa
-
 # Login to GCE
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 ACCOUNT=`json_get account.json client_email`
