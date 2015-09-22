@@ -1,9 +1,14 @@
 #!/bin/bash
 STEMCELL=light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
-RELEASE=211
 BOSH_EXTERNAL_IP=$1
 MICROBOSH_ZONE=europe-west1-b
-DEPLOYMENT_NAME=`python -c 'import yaml; print yaml.load(file("cf-manifest.yml"))["name"]'`
+DEPLOYMENT_NAME=`python -c 'import yaml; print yaml.load(file("templates/outputs/terraform-outputs-gce.yml"))["terraform_outputs"]["environment"]'`
+RELEASE=215
+CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
+CF_RELEASE_REVISION=cf_jobs_without_static_ips_dependencies_v215
+
+# Avoid Perl warnings
+export LC_ALL=en_US.UTF-8
 
 # Returns the $2 field from $1 file, with $3 extra syntax
 json_get(){
@@ -125,26 +130,38 @@ time bosh upload stemcell $STEMCELL --skip-if-exists
 
 # Git clone and upload release
 if [ ! -d cf-release ]; then
-  git clone https://github.com/cloudfoundry/cf-release.git
+  git clone $CF_RELEASE_GIT_URL
 fi
 
 echo "Uploading v$RELEASE release to bosh..."
 cd cf-release
-git checkout v$RELEASE
-# time ./update
+git fetch
+git checkout $CF_RELEASE_REVISION
+
+time ./update
 
 time bosh upload release releases/cf-$RELEASE.yml
 
 # Upload elasticsearch release
 bosh upload release https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
 
-# Deploy CF
+# Download spiff
 cd ~
-sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
+if [ ! -f spiff_linux_amd64.zip ]; then
+  time wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.7/spiff_linux_amd64.zip
+  unzip spiff_linux_amd64.zip
+  chmod +x spiff
+  sudo mv spiff /usr/bin
+fi
+
+# Use spiff to generate CF deployment manifest
+echo -e "---\ndirector_uuid: $(bosh status --uuid)" > templates/stubs/director-uuid.yml
+CF_RELEASE_PATH=~/cf-release /bin/bash generate_deployment_manifest.sh gce > cf-manifest.yml
+
 bosh deployment cf-manifest.yml
 time bosh -n deploy
 
 # Deploy and register PSQL broker
-time bash deploy_psql_broker.sh admin c1oudc0w
+time bash deploy_psql_broker.sh admin fakepassword
 
 #TODO: run CATS (CF acceptance tests) to verify deployment health

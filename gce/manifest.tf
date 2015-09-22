@@ -16,14 +16,3 @@ resource "template_file" "manifest" {
     }
 }
 
-resource "template_file" "cf-manifest" {
-    filename = "${path.module}/cf211-manifest.yml.erb"
-
-    vars {
-        noop = "do nothing, we render with erb in local provisioner"
-    }
-
-    provisioner "local-exec" {
-        command = "(echo '<% tf_static_ip=\"${google_compute_address.haproxy.address}\" ; tf_deployment_name=\"${var.env}\" ; tf_network_name=\"${google_compute_network.bastion.name}\" %>' && cat ${path.module}/cf211-manifest.yml.erb) | erb > cf-manifest.yml"
-    }
-}

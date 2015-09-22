@@ -1,0 +1,125 @@
+---
+terraform_outputs: ((merge))
+name: (( merge ))
+meta:
+  <<: (( merge ))
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+  fog_config:
+    region: (( terraform_outputs.region ))
+
+  consul_servers:
+     - (( "0.consul-z1.cf1." .name ".microbosh" ))
+
+networks:
+  - name: cf1
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf1_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+
+  - name: cf2
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf2_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+
+  - name: router1
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf1_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+      target_pool: (( terraform_outputs.router_pool_name ))
+
+  - name: router2
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf2_network_name ))
+      ephemeral_external_ip: true
+      tags:
+        - bosh
+        - (( terraform_outputs.environment ))
+        - (( name ))
+      target_pool: (( terraform_outputs.router_pool_name ))
+
+properties:
+  domain: (( terraform_outputs.environment ".cf2.paas.alphagov.co.uk" ))
+  template_only:
+    gce:
+      availability_zone: (( terraform_outputs.zone0 ))
+      availability_zone2: (( terraform_outputs.zone1 ))
+
+  ccdb:
+    db_scheme: postgres
+    address: (( properties.databases.address ))
+    port: (( properties.databases.port ))
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+
+  uaadb:
+    db_scheme: postgresql
+    address: (( properties.databases.address ))
+    port: (( properties.databases.port ))
+    roles:
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: uaa
+        name: uaadb
+        citext: true
+
+  databases:
+    db_scheme: postgres
+    address: (( "0.postgres-z1.cf1." .name ".microbosh" ))
+    port: 5524
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+      - tag: uaa
+        name: uaadb
+        citext: true
+
+jobs:
+  - name: router_z1
+    networks:
+      - name: router1
+        static_ips: null
+
+  - name: router_z2
+    networks:
+      - name: router2
+        static_ips: null
+
+resource_pools:
+  - name: router_z1
+    network: router1
+  - name: router_z2
+    network: router2

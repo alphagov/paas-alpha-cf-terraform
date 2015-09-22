@@ -1,8 +1,8 @@
 resource "google_compute_instance" "bastion" {
   name = "${var.env}-cf-bastion"
-  depends_on = [ "template_file.manifest", "template_file.cf-manifest", "google_compute_firewall.ssh" ]
+  depends_on = [ "template_file.manifest", "google_compute_firewall.ssh" ]
   machine_type = "n1-standard-1"
-  zone = "${element(split(",", var.gce_zones), count.index)}"
+  zone = "${lookup(var.zones, concat("zone", count.index))}"
   disk {
     image = "${var.os_image}"
     size  = 100 // GB
@@ -40,23 +40,4 @@ resource "google_compute_instance" "bastion" {
           source = "${path.module}/delete-route.sh"
           destination = "/home/ubuntu/delete-route.sh"
   }
-
-   provisioner "file" {
-          source = "${path.module}/../scripts/deploy_psql_broker.sh"
-          destination = "/home/ubuntu/deploy_psql_broker.sh"
-  }
-
-  provisioner "file" {
-        source = "${module.smoke_test.script_path}"
-        destination = "/home/ubuntu/smoke_test.sh"
-  }
-
-}
-
-module "smoke_test" {
-  source = "../smoke_test"
-
-  haproxy_ip = "${google_compute_address.haproxy.address}"
-  env = "${var.env}"
-
 }

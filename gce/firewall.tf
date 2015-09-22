@@ -33,17 +33,16 @@ resource "google_compute_firewall" "internal" {
   }
 }
 
-# TODO: check if you can restrict this better
-resource "google_compute_firewall" "haproxy" {
-  name = "${var.env}-cf-haproxy"
-  description = "Make haproxy server reachable externally"
+resource "google_compute_firewall" "web" {
+  name = "${var.env}-cf-web"
+  description = "Security group for web that allows web traffic from internet"
   network = "${google_compute_network.bastion.name}"
 
   source_ranges = [ "0.0.0.0/0" ]
-  target_tags = [ "haproxy" ]
+  target_tags = [ "router1", "router2" ]
 
   allow {
     protocol = "tcp"
-    ports = [ 80, 443, 4443 ]
+    ports = [ 80, 443 ]
   }
 }

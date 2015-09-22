@@ -27,23 +27,29 @@ apply: check-env-vars
 
 manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
+manifests/templates/outputs/terraform-outputs-gce.yml: gce/${DEPLOY_ENV}.tfstate
+	./scripts/extract_terraform_outputs_to_yml.rb < gce/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-gce.yml
 
-prepare-provision-aws: bastion manifests/templates/outputs/terraform-outputs-aws.yml
+prepare-provision-aws: set-aws prepare-provision manifests/templates/outputs/terraform-outputs-aws.yml
+prepare-provision-gce: set-gce prepare-provision manifests/templates/outputs/terraform-outputs-gce.yml
+prepare-provision: bastion
+	@scp -r -oStrictHostKeyChecking=no manifests/templates manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
+	@scp -r -oStrictHostKeyChecking=no scripts/deploy_psql_broker.sh ubuntu@${bastion}:
 	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
-	@cd manifests && scp -oStrictHostKeyChecking=no generate_deployment_manifest.sh ubuntu@${bastion}:
-	@cd manifests && scp -r -oStrictHostKeyChecking=no templates ubuntu@${bastion}:
-
-prepare-provision-gce: bastion
-	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
-	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
-	@cd ${dir} && scp -oStrictHostKeyChecking=no cf-manifest.yml ubuntu@${bastion}:cf-manifest.yml
 
 test-aws: set-aws test
 test-gce: set-gce test
 test: bastion
-	@cd ${dir} && scp -oStrictHostKeyChecking=no smoke_test_${DEPLOY_ENV}.json ubuntu@${bastion}:smoke_test.json
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash smoke_test.sh'
+	$(eval domain=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate dns_zone_name))
+	smoke_test/smoke_test.json.sh \
+	    ${DEPLOY_ENV} ${domain} > \
+		smoke_test/smoke_test.json
+	@scp -oStrictHostKeyChecking=no \
+	    smoke_test/smoke_test.sh smoke_test/smoke_test.json \
+	    ubuntu@${bastion}:
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	    '/bin/bash smoke_test.sh'
 
 provision-aws: set-aws prepare-provision-aws provision
 provision-gce: set-gce prepare-provision-gce provision

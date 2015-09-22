@@ -1,0 +1,279 @@
+name: ((merge))
+meta:
+  zones:
+    z1: (( properties.template_only.gce.availability_zone ))
+    z2: (( properties.template_only.gce.availability_zone2 ))
+
+  fog_config:
+    provider: Local
+    local_root: /var/vcap/store
+
+  stemcell:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    version: latest
+
+  default_consul_servers:
+     - (( "0.consul-z1.cf1." .name ".microbosh" ))
+     - (( "0.consul-z2.cf2." .name ".microbosh" ))
+
+  consul_servers: (( merge || default_consul_servers ))
+
+  nats:
+    address: (( "0.nats-z1.cf1." .name ".microbosh" ))
+    machines:
+    - (( "0.nats-z1.cf1." .name ".microbosh" ))
+    - (( "0.nats-z2.cf2." .name ".microbosh" ))
+
+  etcd:
+    machines:
+    - (( "0.etcd-z1.cf1." .name ".microbosh" ))
+    - (( "0.etcd-z2.cf2." .name ".microbosh" ))
+
+  nfs_client_ranges:
+      - (( "*.cf1." .name ".microbosh" ))
+      - (( "*.cf2." .name ".microbosh" ))
+
+  nfs_server:
+    address: (( merge || "0.nfs-z1.cf1." .name ".microbosh" ))
+    allow_from_entries: (( merge || meta.nfs_client_ranges ))
+
+properties:
+  <<: (( merge ))
+  template_only: (( merge ))
+
+  logger_endpoint:
+    port: 443
+
+  loggregator:
+    blacklisted_syslog_ranges:
+    - start: 10.10.0.0
+      end: 10.10.255.255
+
+  cc:
+    resource_pool:
+      fog_connection: (( meta.fog_config ))
+    packages:
+      fog_connection: (( meta.fog_config ))
+    droplets:
+      fog_connection: (( meta.fog_config ))
+    buildpacks:
+      fog_connection: (( meta.fog_config ))
+
+  uaa:
+    catalina_opts: -Xmx768m -XX:MaxPermSize=256m
+
+  nats:
+    address: (( merge || meta.nats.address ))
+    machines: (( merge || meta.nats.machines ))
+
+  etcd:
+    machines: (( merge || meta.etcd.machines ))
+
+networks: (( merge ))
+
+resource_pools:
+  - name: small_z1
+    cloud_properties:
+      machine_type: n1-standard-4
+      root_disk_size_gb: 10
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
+  - name: small_z2
+    cloud_properties:
+      machine_type: n1-standard-4
+      root_disk_size_gb: 10
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z2 ))
+
+  - name: medium_z1
+    cloud_properties:
+      machine_type: n1-standard-4
+      root_disk_size_gb: 10
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
+  - name: medium_z2
+    cloud_properties:
+      machine_type: n1-standard-4
+      root_disk_size_gb: 10
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z2 ))
+
+  - name: large_z1
+    cloud_properties:
+      machine_type: n1-standard-8
+      root_disk_size_gb: 65
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
+  - name: large_z2
+    cloud_properties:
+      machine_type: n1-standard-8
+      root_disk_size_gb: 65
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z2 ))
+
+  - name: runner_z1
+    cloud_properties:
+      machine_type: n1-standard-8
+      root_disk_size_gb: 100
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
+  - name: runner_z2
+    cloud_properties:
+      machine_type: n1-standard-8
+      root_disk_size_gb: 100
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z2 ))
+
+  - name: router_z1
+    cloud_properties:
+      machine_type: n1-standard-4
+      root_disk_size_gb: 10
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
+  - name: router_z2
+    cloud_properties:
+      machine_type: n1-standard-4
+      root_disk_size_gb: 10
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z2 ))
+
+  - name: small_errand
+    cloud_properties:
+      machine_type: n1-standard-4
+      root_disk_size_gb: 10
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
+  - name: xlarge_errand
+    cloud_properties:
+      machine_type: n1-highcpu-8
+      root_disk_size_gb: 65
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
+jobs:
+  - name: api_z1
+    networks:
+      - name: cf1
+    persistent_disk: 10240
+
+  - name: api_z2
+    networks:
+      - name: cf2
+    persistent_disk: 10240
+
+  - name: api_worker_z1
+    networks:
+      - name: cf1
+    persistent_disk: 10240
+
+  - name: api_worker_z2
+    networks:
+      - name: cf2
+    persistent_disk: 10240
+
+  - name: postgres_z1
+    instances: 1
+    networks:
+      - name: cf1
+
+  - name: nfs_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: nats_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: nats_z2
+    instances: 1
+    networks:
+      - name: cf2
+        static_ips: null
+
+  - name: router_z1
+    instances: 1
+    networks: (( merge ))
+
+  - name: router_z2
+    instances: 1
+    networks: (( merge ))
+
+  - name: loggregator_z1
+    instances: 0
+    networks:
+      - name: cf1
+
+  - name: loggregator_z2
+    instances: 0
+    networks:
+      - name: cf2
+
+  - name: doppler_z1
+    instances: 1
+    networks:
+      - name: cf1
+
+  - name: doppler_z2
+    instances: 1
+    networks:
+      - name: cf2
+
+  - name: loggregator_trafficcontroller_z1
+    instances: 1
+    networks:
+      - name: cf1
+
+  - name: loggregator_trafficcontroller_z2
+    instances: 1
+    networks:
+      - name: cf2
+
+  - name: consul_z1
+    instances: 0
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: consul_z2
+    instances: 0
+    networks:
+      - name: cf2
+        static_ips: null
+
+  - name: etcd_z1
+    instances: 2
+    networks:
+      - name: cf1
+        static_ips: null
+
+  - name: etcd_z2
+    instances: 1
+    networks:
+      - name: cf2
+        static_ips: null
+
+  - name: smoke_tests
+    instances: 1
+
+  - name: ha_proxy_z1
+    properties:
+      router:
+        servers:
+          z1: null
+          z2: null
+
+compilation:
+  cloud_properties:
+    machine_type: n1-highcpu-8
+    availability_zone: (( meta.zones.z1 ))
+

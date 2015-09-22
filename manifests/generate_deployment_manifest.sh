@@ -7,15 +7,20 @@ fi
 
 infrastructure=$1; shift
 
-if [ "$infrastructure" != "aws" ] && \
-    [ "$infrastructure" != "openstack" ] && \
-    [ "$infrastructure" != "warden" ] && \
-    [ "$infrastructure" != "vsphere" ] ; then
-  echo "usage: ./generate_deployment_manifest <aws|openstack|warden|vsphere> [stubs...]"
-  exit 1
-fi
-
 templates=$(dirname $0)/templates
+
+case $infrastructure in
+  aws|warden)
+    infrastructure_template=$CF_RELEASE_PATH/templates/cf-infrastructure-${infrastructure}.yml
+    ;;
+  gce)
+    infrastructure_template=$templates/${infrastructure}/cf-infrastructure-${infrastructure}.yml
+    ;;
+  *)
+    echo "usage: ./generate_deployment_manifest <aws|warden|gce> [stubs...]"
+    exit 1
+    ;;
+esac
 
 spiff merge \
   $CF_RELEASE_PATH/templates/cf-deployment.yml \
@@ -24,10 +29,9 @@ spiff merge \
   $CF_RELEASE_PATH/templates/cf-jobs.yml \
   $CF_RELEASE_PATH/templates/cf-properties.yml \
   $CF_RELEASE_PATH/templates/cf-lamb.yml \
-  $CF_RELEASE_PATH/templates/cf-infrastructure-${infrastructure}.yml \
+  $infrastructure_template \
   $CF_RELEASE_PATH/templates/cf-minimal-dev.yml \
-  $templates/stubs-${infrastructure}/*.yml \
+  $templates/${infrastructure}/stubs/*.yml \
   $templates/stubs/*.yml \
   $templates/outputs/terraform-outputs-${infrastructure}.yml \
   "$@"
-

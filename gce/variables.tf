@@ -3,7 +3,7 @@ variable "gce_project" {
   default = "root-unison-859"
 }
 
-variable "gce_region" {
+variable "region" {
   description = "GCE Region to use"
   default = "europe-west1"
 }
@@ -13,9 +13,13 @@ variable "gce_region_zone" {
   default = "europe-west1-b"
 }
 
-variable "gce_zones" {
-  description = "GCE Zones to choose from"
-  default = "europe-west1-b,europe-west1-c,europe-west1-d"
+variable "zones" {
+  description = "GCE availability zones"
+  default     = {
+    zone0 = "europe-west1-b"
+    zone1 = "europe-west1-c"
+    zone2 = "europe-west1-d"
+  }
 }
 
 variable "ssh_key_path" {
@@ -41,4 +45,14 @@ variable "bastion_cidr" {
 variable "gce_account_json" {
   describe    = "To be replaced with actual contents of account.json at runtime."
   default     = "changeme"
+}
+
+variable "dns_zone_id" {
+  description = "Google DNS zone identifier"
+  default     = "cf2"
+}
+
+variable "dns_zone_name" {
+  description = "Google DNS zone name"
+  default     = "cf2.paas.alphagov.co.uk"
 }
