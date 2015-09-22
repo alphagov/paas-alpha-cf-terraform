@@ -145,9 +145,17 @@ time bosh upload release releases/cf-$RELEASE.yml
 # Upload elasticsearch release
 bosh upload release https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
 
-# Deploy CF
+# Download spiff
 cd ~
-sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
+if [ ! -f spiff_linux_amd64.zip ]; then
+  time wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.7/spiff_linux_amd64.zip
+  unzip spiff_linux_amd64.zip
+  chmod +x spiff
+  sudo mv spiff /usr/bin
+fi
+
+# Use spiff to generate CF deployment manifest
+echo -e "---\ndirector_uuid: $(bosh status --uuid)" > templates/stubs/director-uuid.yml
 CF_RELEASE_PATH=~/cf-release /bin/bash generate_deployment_manifest.sh gce > cf-manifest.yml
 
 bosh deployment cf-manifest.yml
