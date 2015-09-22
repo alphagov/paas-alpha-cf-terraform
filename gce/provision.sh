@@ -154,6 +154,6 @@ bosh deployment cf-manifest.yml
 time bosh -n deploy
 
 # Deploy and register PSQL broker
-time bash deploy_psql_broker.sh admin c1oudc0w
+time bash deploy_psql_broker.sh admin fakepassword
 
 #TODO: run CATS (CF acceptance tests) to verify deployment health
