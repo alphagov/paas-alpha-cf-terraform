@@ -9,7 +9,7 @@ resource "template_file" "smoke_test_json" {
     }
 
     provisioner "local-exec" {
-        command = "(echo '<% domain=\"${var.domain}\" %>' && cat ${path.module}/smoke_test.json.erb) | erb > smoke_test_${var.env}.json"
+        command = "(echo '<% env=\"${var.env}\"; domain=\"${var.domain}\" %>' && cat ${path.module}/smoke_test.json.erb) | erb > smoke_test_${var.env}.json"
     }
 }
 
