@@ -41,8 +41,15 @@ prepare-provision: bastion
 test-aws: set-aws test
 test-gce: set-gce test
 test: bastion
-	@cd ${dir} && scp -oStrictHostKeyChecking=no smoke_test_${DEPLOY_ENV}.json ubuntu@${bastion}:smoke_test.json
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash smoke_test.sh'
+	$(eval domain=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate dns_zone_name))
+	smoke_test/smoke_test.json.sh \
+	    ${DEPLOY_ENV} ${domain} > \
+		smoke_test/smoke_test.json
+	@scp -oStrictHostKeyChecking=no \
+	    smoke_test/smoke_test.sh smoke_test/smoke_test.json \
+	    ubuntu@${bastion}:
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	    '/bin/bash smoke_test.sh'
 
 provision-aws: set-aws prepare-provision-aws provision
 provision-gce: set-gce prepare-provision-gce provision

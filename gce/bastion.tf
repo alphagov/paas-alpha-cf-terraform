@@ -40,18 +40,4 @@ resource "google_compute_instance" "bastion" {
           source = "${path.module}/delete-route.sh"
           destination = "/home/ubuntu/delete-route.sh"
   }
-
-  provisioner "file" {
-        source = "${module.smoke_test.script_path}"
-        destination = "/home/ubuntu/smoke_test.sh"
-  }
-
-}
-
-module "smoke_test" {
-  source = "../smoke_test"
-
-  domain = "${var.dns_zone_name}"
-  env = "${var.env}"
-
 }

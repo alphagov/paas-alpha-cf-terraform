@@ -33,3 +33,7 @@ output "cf2_network_name" {
 output "router_pool_name" {
 	value = "${google_compute_target_pool.router.name}"
 }
+
+output "dns_zone_name" {
+	value = "${var.dns_zone_name}"
+}

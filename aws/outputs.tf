@@ -66,3 +66,6 @@ output "elb_name" {
 	value = "${aws_elb.router.name}"
 }
 
+output "cf_root_domain" {
+	value = "${var.env}.${var.dns_zone_name}"
+}
