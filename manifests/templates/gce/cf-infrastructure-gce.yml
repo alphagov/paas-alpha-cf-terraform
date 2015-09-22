@@ -18,12 +18,13 @@ meta:
 
   consul_servers: (( merge || default_consul_servers ))
 
-  nfs_server:
-    address: (( "0.nfs-z1.cf1." .name ".microbosh" ))
-    allow_from_entries:
+  nfs_client_ranges:
       - (( "*.cf1." .name ".microbosh" ))
       - (( "*.cf2." .name ".microbosh" ))
-    share: ~
+
+  nfs_server:
+    address: (( merge || "0.nfs-z1.cf1." .name ".microbosh" ))
+    allow_from_entries: (( merge || meta.nfs_client_ranges ))
 
 properties:
   <<: (( merge ))
