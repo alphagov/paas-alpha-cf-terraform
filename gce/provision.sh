@@ -7,6 +7,9 @@ RELEASE=215
 CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
 CF_RELEASE_REVISION=cf_jobs_without_static_ips_dependencies_v215
 
+# Avoid Perl warnings
+export LC_ALL=en_US.UTF-8
+
 # Returns the $2 field from $1 file, with $3 extra syntax
 json_get(){
   value=`python -c "import json; print json.load(file(\"$1\"))[\"$2\"]$3"`
@@ -145,6 +148,8 @@ bosh upload release https://github.com/hybris/elasticsearch-boshrelease/releases
 # Deploy CF
 cd ~
 sed -i "s/BOSH_UUID/$(bosh status --uuid)/" cf-manifest.yml
+CF_RELEASE_PATH=~/cf-release /bin/bash generate_deployment_manifest.sh gce > cf-manifest.yml
+
 bosh deployment cf-manifest.yml
 time bosh -n deploy
 
