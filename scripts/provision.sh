@@ -1,6 +1,30 @@
 #!/bin/bash
 
 set -e # fail on error
+
+# Platform
+TARGET_PLATFORM=$1
+case $TARGET_PLATFORM in
+  aws)
+    STEMCELL=light-bosh-stemcell-3069-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
+    ;;
+  gce)
+    STEMCELL=light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
+    STEMCELL_URL=http://storage.googleapis.com/bosh-stemcells/$STEMCELL
+    BOSH_IP=104.155.37.66
+    ;;
+  *)
+    echo "Must specify the target platform: gce|aws"
+    exit 1
+    ;;
+esac
+
+
+# Variables
+BOSH_ADMIN_USER=${BOSH_ADMIN_USER:-admin}
+BOSH_ADMIN_PASS=${BOSH_ADMIN_USER:-admin}
+BOSH_IP=${BOSH_IP:-10.0.0.6}
+BOSH_PORT=${BOSH_PORT:-25555}
 # Other config
 export PATH=$PATH:/usr/local/bin/bosh
 
@@ -56,5 +80,36 @@ function install_dependencies {
     sudo chmod +x /usr/local/bin/spiff
   fi
 
+}
+
+# Bosh
+bosh_login() {
+  echo "Login to bosh $BOSH_IP:$BOSH_PORT"
+  echo -e "${BOSH_ADMIN_USER}\n${BOSH_ADMIN_PASS}" | \
+    bosh target $BOSH_IP:$BOSH_PORT
+}
+
+bosh_check_and_login() {
+  # Try to connect to the TCP port with 1s timeout
+  nc -z -w 1 $BOSH_IP $BOSH_PORT || return 1
+
+  if [ ! -s ~/.bosh_config ]; then
+    bosh_login || return 1
+  fi
+
+  # do a bosh status to check health
+  bosh status > /dev/null || return 1
+}
+
+deploy_and_login_bosh() {
+
+  if bosh_check_and_login; then
+    echo "MicroBOSH up and running, not updating. Run 'bosh-init deploy $BOSH_MANIFEST' to rerun deploy manually."
+  else
+    echo "MicroBOSH node in $BOSH_IP:$BOSH_PORT is not configured or responding. Deploying it with bosh-init."
+    export BOSH_INIT_LOG_LEVEL=debug
+    export BOSH_INIT_LOG_PATH=bosh_init.log
+    time bosh-init deploy $BOSH_MANIFEST
+  fi
 }
 install_dependencies
