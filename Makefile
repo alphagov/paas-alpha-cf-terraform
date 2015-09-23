@@ -83,7 +83,7 @@ delete-route-gce: bastion
 bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
 bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete delete-route-gce
 bosh-delete: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | ./bosh-init delete manifest_${dir}.yml'
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
 
 destroy-aws: confirm-execution set-aws bosh-delete-aws destroy
 destroy-gce: confirm-execution set-gce bosh-delete-gce destroy
