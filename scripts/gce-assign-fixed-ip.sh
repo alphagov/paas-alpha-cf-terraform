@@ -42,7 +42,7 @@ gce_set_fix_routing() {
   # Configure internal routing for microbosh
   # 1. Get the real microbosh IP from the VM description
   gcloud compute instances describe --zone $MICROBOSH_ZONE --format json $BOSH_VM > /tmp/microbosh-info.json
-  BOSH_INTERNAL_IP=`json_get microbosh-info.json networkInterfaces '[0]["networkIP"]'`
+  BOSH_INTERNAL_IP=`json_get /tmp/microbosh-info.json networkInterfaces '[0]["networkIP"]'`
 
   # 2. Configure iptables on microbosh server
   echo "Configuring IPtables on the microbosh..."
@@ -98,7 +98,9 @@ EOF
       --next-hop-instance-zone $MICROBOSH_ZONE \
       --priority 1 \
       --description Route_packets_for_bosh_external_IP_directly_to_the_microbosh_instance_via_internal_network
-    [[ $? != 0 ]] && echo "Failed creating route, aborting" && exit 103
+    if [[ $? != 0 ]]; then
+      echo "Failed creating route, aborting" && exit 103
+    fi
   fi
 }
 
