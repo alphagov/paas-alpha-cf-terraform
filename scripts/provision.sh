@@ -245,13 +245,10 @@ cf_post_deploy() {
   time bash $SCRIPT_DIR/deploy_psql_broker.sh admin fakepassword
 }
 
-
-
-
-#install_dependencies
+install_dependencies
 deploy_and_login_bosh
-#cf_prepare_deployment
-#cf_compile_manifest
-#cf_deploy
-#cf_post_deploy
+cf_prepare_deployment
+cf_compile_manifest
+cf_deploy
+cf_post_deploy
 
