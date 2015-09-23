@@ -78,7 +78,7 @@ delete-stemcell: bastion
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
 delete-route-gce: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./delete-route.sh'
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
 
 bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
 bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete delete-route-gce
