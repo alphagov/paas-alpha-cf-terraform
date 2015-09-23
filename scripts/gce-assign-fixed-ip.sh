@@ -59,11 +59,9 @@ EOF
   # 3. Re-route BOSH_EXTERNAL_IP internally. Check if route exists and is correct first.
   CREATE=false
   UPDATE=false
-  gcloud compute routes describe \
-    $DEPLOYMENT_NAME-internalbosh --format json >/tmp/internalbosh-route.json 2>/tmp/route.errors || RET=$?
-  if [[ $RET != 0 ]] ; then
-    grep -q "The resource 'projects/.\+/routes/${DEPLOYMENT_NAME}-internalbosh' was not found" /tmp/route.errors
-    if [[ $? == 0 ]] ; then
+  if ! gcloud compute routes describe \
+    $DEPLOYMENT_NAME-internalbosh --format json >/tmp/internalbosh-route.json 2>/tmp/route.errors; then
+    if grep -q "The resource 'projects/.\+/routes/${DEPLOYMENT_NAME}-internalbosh' was not found" /tmp/route.errors; then
       CREATE=true
     else
       echo "Failed retrieving ${DEPLOYMENT_NAME}-internalbosh route information, aborting. Errors:"
