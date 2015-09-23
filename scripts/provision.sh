@@ -194,7 +194,9 @@ upload_stemcell() {
   stemcell_version=$(cat /tmp/{$STEMCELL}.d/stemcell.MF | awk '/^version:/ { print $2 }' | tr -d "'")
 
   # Upload stemcell if it is not uploaded
-  if ! $SCRIPT_DIR/bosh_list_stemcells.rb | grep -q -e "$stemcell_name/$stemcell_version"; then
+  if $SCRIPT_DIR/bosh_list_stemcells.rb | grep -q -e "$stemcell_name/$stemcell_version"; then
+    echo "Stemcell $stemcell_name/$stemcell_version already uploaded, skipping"
+  else
     time bosh upload stemcell $STEMCELL --skip-if-exists
   fi
 }
@@ -204,7 +206,7 @@ upload_releases() {
     local name=$(echo $r | cut -f 1 -d ,)
     local version=$(echo $r | cut -f 2 -d ,)
     local url=$(echo $r | cut -f 3 -d ,)
-    if $SCRIPT_DIR/bosh_list_releases.rb | grep -q " $name/$version "; then
+    if $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
       echo "Release $name version $version already uploaded, skipping"
       continue
     else
