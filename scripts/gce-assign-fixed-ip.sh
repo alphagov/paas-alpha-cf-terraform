@@ -16,15 +16,15 @@ json_get(){
 gcloud_login() {
   # Login to GCE
   export CLOUDSDK_PYTHON_SITEPACKAGES=1
-  ACCOUNT=`json_get account.json client_email`
-  json_get account.json private_key > gce.key && chmod 600 gce.key
-  gcloud auth activate-service-account $ACCOUNT --key-file gce.key
+  ACCOUNT=`json_get ~/account.json client_email`
+  json_get ~/account.json private_key > ~/gce.key && chmod 600 ~/gce.key
+  gcloud auth activate-service-account $ACCOUNT --key-file ~/gce.key
 }
 
 gce_delete_fix_routing() {
   DEPLOYMENT_NAME=$1; shift
   echo "Attempting to delete $DEPLOYMENT_NAME-internalbosh route..."
-  gcloud compute routes delete -q $DEPLOYMENT_NAME-internalbosh
+  gcloud compute routes delete -q $DEPLOYMENT_NAME-internalbosh || true
 }
 
 # Get the VM CID from the bosh-init status file
@@ -60,8 +60,8 @@ EOF
   CREATE=false
   UPDATE=false
   gcloud compute routes describe \
-    $DEPLOYMENT_NAME-internalbosh --format json >/tmp/internalbosh-route.json 2>/tmp/route.errors
-  if [[ $? != 0 ]] ; then
+    $DEPLOYMENT_NAME-internalbosh --format json >/tmp/internalbosh-route.json 2>/tmp/route.errors || RET=$?
+  if [[ $RET != 0 ]] ; then
     grep -q "The resource 'projects/.\+/routes/${DEPLOYMENT_NAME}-internalbosh' was not found" /tmp/route.errors
     if [[ $? == 0 ]] ; then
       CREATE=true

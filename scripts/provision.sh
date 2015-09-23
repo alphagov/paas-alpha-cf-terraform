@@ -2,8 +2,10 @@
 
 set -e # fail on error
 
+SCRIPT_DIR=$(dirname $0)
+
 # Include functions to setup GCE BOSH networking
-. ./gce-assign-fixed-ip.sh
+. $SCRIPT_DIR/gce-assign-fixed-ip.sh
 
 # Read the platform configuration
 TARGET_PLATFORM=$1
@@ -116,8 +118,8 @@ bosh_login() {
 }
 
 bosh_check_and_login() {
-  # Try to connect to the TCP port with 1s timeout
-  nc -z -w 1 $BOSH_IP $BOSH_PORT || return 1
+  # Try to connect to the TCP port with 5s timeout
+  nc -z -w 5 $BOSH_IP $BOSH_PORT || return 1
 
   if [ ! -s ~/.bosh_config ]; then
     bosh_login || return 1
@@ -138,7 +140,7 @@ deploy_and_login_bosh() {
     fi
 
     export BOSH_INIT_LOG_LEVEL=debug
-    export BOSH_INIT_LOG_PATH=bosh_init.log
+    export BOSH_INIT_LOG_PATH=/tmp/bosh_init.log
     time bosh-init deploy $BOSH_MANIFEST
 
     if [ "$TARGET_PLATFORM" == "gce" ]; then
@@ -238,7 +240,7 @@ cf_deploy() {
 
 cf_post_deploy() {
   # Deploy psql broker
-  time bash ~/deploy_psql_broker.sh admin fakepassword
+  time bash $SCRIPT_DIR/deploy_psql_broker.sh admin fakepassword
 }
 
 
