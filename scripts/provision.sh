@@ -36,6 +36,10 @@ BOSH_RELEASES="
 cf,215,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
 elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
 "
+
+# Constants
+BOSH_MANIFEST=~/bosh-manifest.yml
+
 # Other config
 export PATH=$PATH:/usr/local/bin/bosh
 
@@ -198,10 +202,32 @@ cf_prepare_deployment() {
   upload_stemcell
   upload_releases
 }
+
+cf_compile_manifest() {
+  # Use spiff to generate CF deployment manifest
+  cd ~
+
+  # Output the director uuid to be populated by spiff
+  echo -e "---\ndirector_uuid: $(bosh status --uuid)" > templates/stubs/director-uuid.yml
+
+  # Generate the manifest
+  CF_RELEASE_PATH=~/cf-release/ ./generate_deployment_manifest.sh $TARGET_PLATFORM > ~/cf-manifest.yml
 }
 
+cf_deploy() {
+  bosh deployment ~/cf-manifest.yml
+  time bosh -n deploy
 }
+
+cf_post_deploy() {
+  # Deploy psql broker
+  time bash ~/deploy_psql_broker.sh admin fakepassword
 }
+
 install_dependencies
 deploy_and_login_bosh
 cf_prepare_deployment
+cf_compile_manifest
+cf_deploy
+cf_post_deploy
+
