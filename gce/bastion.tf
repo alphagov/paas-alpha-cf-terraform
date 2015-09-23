@@ -31,6 +31,11 @@ resource "google_compute_instance" "bastion" {
     destination = "/home/ubuntu/.ssh/id_rsa.pub"
   }
 
+  provisioner "file" {
+    source = "${path.module}/account.json"
+    destination = "/home/ubuntu/account.json"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa",
