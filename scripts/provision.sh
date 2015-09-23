@@ -25,6 +25,11 @@ BOSH_ADMIN_USER=${BOSH_ADMIN_USER:-admin}
 BOSH_ADMIN_PASS=${BOSH_ADMIN_USER:-admin}
 BOSH_IP=${BOSH_IP:-10.0.0.6}
 BOSH_PORT=${BOSH_PORT:-25555}
+
+# Git cf-release to clone
+CF_RELEASE=215
+CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
+CF_RELEASE_REVISION=cf_jobs_without_static_ips_dependencies_v215
 # Other config
 export PATH=$PATH:/usr/local/bin/bosh
 
@@ -112,4 +117,35 @@ deploy_and_login_bosh() {
     time bosh-init deploy $BOSH_MANIFEST
   fi
 }
+
+clone_and_update_cf_release(){
+  # Git clone and upload release
+  echo "Updating ~/cf-release from $CF_RELEASE_GIT_URL:$CF_RELEASE_REVISION"
+
+  if [ ! -d ~/cf-release/.git ]; then
+    rm -rf ~/cf-release
+    git clone -q $CF_RELEASE_GIT_URL ~/cf-release
+  else
+    cd ~/cf-release
+    git remote set-url origin $CF_RELEASE_GIT_URL
+    git fetch -q
+  fi
+
+  cd ~/cf-release
+  git checkout -q $CF_RELEASE_REVISION
+
+  ./update  >> update.log 2>&1
+  if [ $? != 0 ]; then
+    echo "Update failed, check ~/cf-release/update.log for details: "
+    tail update.log
+  fi
+}
+cf_prepare_deployment() {
+  clone_and_update_cf_release
+}
+
+}
+}
 install_dependencies
+deploy_and_login_bosh
+cf_prepare_deployment
