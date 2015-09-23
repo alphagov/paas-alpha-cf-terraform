@@ -3,6 +3,7 @@
 set -e # fail on error
 
 # Platform
+# Read the platform configuration
 TARGET_PLATFORM=$1
 case $TARGET_PLATFORM in
   aws)
@@ -19,11 +20,20 @@ case $TARGET_PLATFORM in
     ;;
 esac
 
+# Convert the yaml outputs file to a list of environment variables:
+#
+#   terraform_output_bastion_ip=104.155.62.123
+#   terraform_output_bosh_ip=104.155.37.66
+#
+# etc...
+eval $(
+  cat templates/outputs/terraform-outputs-${TARGET_PLATFORM}.yml | \
+    sed -n 's/ *\(.*\): *\(..*\)$/terraform_output_\1=\2/p'
+)
 
-# Variables
 BOSH_ADMIN_USER=${BOSH_ADMIN_USER:-admin}
 BOSH_ADMIN_PASS=${BOSH_ADMIN_USER:-admin}
-BOSH_IP=${BOSH_IP:-10.0.0.6}
+BOSH_IP=${BOSH_IP:-$terraform_output_bosh_ip}
 BOSH_PORT=${BOSH_PORT:-25555}
 
 # Git cf-release to clone
