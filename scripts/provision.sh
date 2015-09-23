@@ -142,14 +142,22 @@ deploy_and_login_bosh() {
     export BOSH_INIT_LOG_LEVEL=debug
     export BOSH_INIT_LOG_PATH=/tmp/bosh_init.log
     time bosh-init deploy $BOSH_MANIFEST
+  fi
 
-    if [ "$TARGET_PLATFORM" == "gce" ]; then
-      gcloud_login
+  if [ "$TARGET_PLATFORM" == "gce" ]; then
+    gcloud_login
+    if ! gce_check_fix_routing $terraform_output_environment; then
+      echo "Adding route for $terraform_output_bosh_network_name  $terraform_output_bosh_ip"
+
       gce_set_fix_routing $terraform_output_environment \
-      	$terraform_output_bosh_network_name \
-      	$terraform_output_bosh_ip
+	$terraform_output_bosh_network_name \
+	$terraform_output_bosh_ip
     fi
   fi
+  if ! bosh_check_and_login; then
+    echo "Failed to contact BOSH node $BOSH_IP:$BOSH_PORT after provisioning"
+  fi
+
 }
 
 clone_and_update_cf_release(){

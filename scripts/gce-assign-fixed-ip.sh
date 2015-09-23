@@ -32,6 +32,22 @@ gce_get_bosh_vm_cid() {
   json_get bosh-manifest-state.json current_vm_cid
 }
 
+gce_check_fix_routing(){
+  DEPLOYMENT_NAME=$1; shift
+  if ! gcloud compute routes describe \
+    $DEPLOYMENT_NAME-internalbosh --format json >/tmp/internalbosh-route.json 2>/tmp/route.errors; then
+    if grep -q "The resource 'projects/.\+/routes/${DEPLOYMENT_NAME}-internalbosh' was not found" /tmp/route.errors; then
+      return 1
+    else
+      echo "Failed retrieving ${DEPLOYMENT_NAME}-internalbosh route information, aborting. Errors:"
+      cat /tmp/route.errors
+      exit 255
+    fi
+  else
+    return 0
+  fi
+}
+
 gce_set_fix_routing() {
   DEPLOYMENT_NAME=$1; shift
   BOSH_NETWORK_NAME=$1; shift
