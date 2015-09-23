@@ -30,6 +30,12 @@ BOSH_PORT=${BOSH_PORT:-25555}
 CF_RELEASE=215
 CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
 CF_RELEASE_REVISION=cf_jobs_without_static_ips_dependencies_v215
+
+# Releases to upload
+BOSH_RELEASES="
+cf,215,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
+elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
+"
 # Other config
 export PATH=$PATH:/usr/local/bin/bosh
 
@@ -140,8 +146,58 @@ clone_and_update_cf_release(){
     tail update.log
   fi
 }
+
+upload_stemcell() {
+  # Download the stemcell if it is not locally
+  cd ~
+  if [ ! -f $STEMCELL ]; then
+    echo "Downloading stemcell $STEMCELL"
+    if [ "$STEMCELL_URL" ]; then
+      wget $STEMCELL_URL
+    else
+      time bosh download public stemcell $STEMCELL
+    fi
+  fi
+
+  # Extract stemcell version and name info
+  mkdir -p /tmp/{$STEMCELL}.d
+  tar -xzf $STEMCELL -C /tmp/{$STEMCELL}.d stemcell.MF
+  stemcell_name=$(cat /tmp/{$STEMCELL}.d/stemcell.MF | awk '/^name:/ { print $2 }')
+  stemcell_version=$(cat /tmp/{$STEMCELL}.d/stemcell.MF | awk '/^version:/ { print $2 }' | tr -d "'")
+
+  # Upload stemcell if it is not uploaded
+  if ! bosh stemcells 2>/dev/null | grep -q -e "$stemcell_name .* $stemcell_version"; then
+    time bosh upload stemcell $STEMCELL --skip-if-exists
+  fi
+}
+
+upload_releases() {
+  for r in $BOSH_RELEASES; do
+    local name=$(echo $r | cut -f 1 -d ,)
+    local version=$(echo $r | cut -f 2 -d ,)
+    local url=$(echo $r | cut -f 3 -d ,)
+    # TODO, Detect if the release is already uploaded
+    #
+    # if bosh releases 2>/dev/null | grep -q " $name .* $version "; then
+    #  echo "Release $name version $version already uploaded, skipping"
+    #  continue
+    #else
+    #  bosh upload release $url
+    #fi
+    bosh upload release $url 2>&1 | tee /tmp/upload_release.log
+    if [ $PIPESTATUS != 0 ]; then
+      if ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
+      	return 1
+      fi
+    fi
+  done
+}
+
 cf_prepare_deployment() {
   clone_and_update_cf_release
+  upload_stemcell
+  upload_releases
+}
 }
 
 }
