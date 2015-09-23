@@ -192,7 +192,7 @@ upload_stemcell() {
   stemcell_version=$(cat /tmp/{$STEMCELL}.d/stemcell.MF | awk '/^version:/ { print $2 }' | tr -d "'")
 
   # Upload stemcell if it is not uploaded
-  if ! bosh stemcells 2>/dev/null | grep -q -e "$stemcell_name .* $stemcell_version"; then
+  if ! $SCRIPT_DIR/bosh_list_stemcells.rb | grep -q -e "$stemcell_name/$stemcell_version"; then
     time bosh upload stemcell $STEMCELL --skip-if-exists
   fi
 }
@@ -202,18 +202,13 @@ upload_releases() {
     local name=$(echo $r | cut -f 1 -d ,)
     local version=$(echo $r | cut -f 2 -d ,)
     local url=$(echo $r | cut -f 3 -d ,)
-    # TODO, Detect if the release is already uploaded
-    #
-    # if bosh releases 2>/dev/null | grep -q " $name .* $version "; then
-    #  echo "Release $name version $version already uploaded, skipping"
-    #  continue
-    #else
-    #  bosh upload release $url
-    #fi
-    bosh upload release $url 2>&1 | tee /tmp/upload_release.log
-    if [ $PIPESTATUS != 0 ]; then
-      if ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
-      	return 1
+    if $SCRIPT_DIR/bosh_list_releases.rb | grep -q " $name/$version "; then
+      echo "Release $name version $version already uploaded, skipping"
+      continue
+    else
+      bosh upload release $url 2>&1 | tee /tmp/upload_release.log
+      if [ $PIPESTATUS != 0 ] && ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
+        return 1
       fi
     fi
   done
