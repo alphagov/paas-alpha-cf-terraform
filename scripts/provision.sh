@@ -2,7 +2,9 @@
 
 set -e # fail on error
 
-# Platform
+# Include functions to setup GCE BOSH networking
+. ./gce-assign-fixed-ip.sh
+
 # Read the platform configuration
 TARGET_PLATFORM=$1
 case $TARGET_PLATFORM in
@@ -12,7 +14,6 @@ case $TARGET_PLATFORM in
   gce)
     STEMCELL=light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
     STEMCELL_URL=http://storage.googleapis.com/bosh-stemcells/$STEMCELL
-    BOSH_IP=104.155.37.66
     ;;
   *)
     echo "Must specify the target platform: gce|aws"
@@ -127,14 +128,25 @@ bosh_check_and_login() {
 }
 
 deploy_and_login_bosh() {
-
   if bosh_check_and_login; then
     echo "MicroBOSH up and running, not updating. Run 'bosh-init deploy $BOSH_MANIFEST' to rerun deploy manually."
   else
     echo "MicroBOSH node in $BOSH_IP:$BOSH_PORT is not configured or responding. Deploying it with bosh-init."
+    if [ "$TARGET_PLATFORM" == "gce" ]; then
+      gcloud_login
+      gce_delete_fix_routing $terraform_output_environment
+    fi
+
     export BOSH_INIT_LOG_LEVEL=debug
     export BOSH_INIT_LOG_PATH=bosh_init.log
     time bosh-init deploy $BOSH_MANIFEST
+
+    if [ "$TARGET_PLATFORM" == "gce" ]; then
+      gcloud_login
+      gce_set_fix_routing $terraform_output_environment \
+      	$terraform_output_bosh_network_name \
+      	$terraform_output_bosh_ip
+    fi
   fi
 }
 
@@ -234,10 +246,13 @@ cf_post_deploy() {
   time bash ~/deploy_psql_broker.sh admin fakepassword
 }
 
-install_dependencies
+
+
+
+#install_dependencies
 deploy_and_login_bosh
-cf_prepare_deployment
-cf_compile_manifest
-cf_deploy
-cf_post_deploy
+#cf_prepare_deployment
+#cf_compile_manifest
+#cf_deploy
+#cf_post_deploy
 

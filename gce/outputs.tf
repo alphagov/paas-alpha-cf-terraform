@@ -22,6 +22,10 @@ output "region" {
 	value = "${var.region}"
 }
 
+output "bosh_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
+
 output "cf1_network_name" {
 	value = "${google_compute_network.bastion.name}"
 }
