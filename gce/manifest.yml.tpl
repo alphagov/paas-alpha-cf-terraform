@@ -100,7 +100,7 @@ jobs:
 
       hm:
         director_account: {user: admin, password: admin}
-        resurrector_enabled: true
+        resurrector_enabled: false
 
       google: &google_properties
         project: ${gce_project_id}
