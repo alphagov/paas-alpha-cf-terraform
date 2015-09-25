@@ -121,9 +121,8 @@ bosh_check_and_login() {
   # Try to connect to the TCP port with 5s timeout
   nc -z -w 5 $BOSH_IP $BOSH_PORT || return 1
 
-  if [ ! -s ~/.bosh_config ]; then
-    bosh_login || return 1
-  fi
+  # login to bosh director
+  bosh_login || return 1
 
   # do a bosh status to check health
   bosh status > /dev/null || return 1
@@ -259,4 +258,3 @@ cf_prepare_deployment
 cf_compile_manifest
 cf_deploy
 cf_post_deploy
-
