@@ -35,8 +35,8 @@ prepare-provision-gce: set-gce prepare-provision manifests/templates/outputs/ter
 prepare-provision: bastion
 	@scp -r -oStrictHostKeyChecking=no manifests/templates manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
-	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
-	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
+	@scp -oStrictHostKeyChecking=no scripts/provision.sh ubuntu@${bastion}:scripts/provision.sh
+	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:bosh-manifest.yml
 
 test-aws: set-aws test
 test-gce: set-gce test
