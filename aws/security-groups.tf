@@ -82,6 +82,13 @@ resource "aws_security_group" "director" {
   }
 
   ingress {
+    from_port = 25555
+    to_port   = 25555
+    protocol  = "tcp"
+    cidr_blocks = ["${aws_instance.bastion.public_ip}/32"]
+  }
+
+  ingress {
     from_port = 25777
     to_port   = 25777
     protocol  = "tcp"
