@@ -132,8 +132,8 @@ cloud_provider:
   ssh_tunnel:
     host: ${gce_static_ip}
     port: 22
-    user: ${gce_ssh_user}
-    private_key: ${gce_ssh_key_path}
+    user: vcap
+    private_key: .ssh/id_rsa
 
   mbus: https://mbus:mbus@${gce_static_ip}:6868
 
