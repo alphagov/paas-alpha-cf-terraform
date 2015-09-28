@@ -69,3 +69,7 @@ output "elb_name" {
 output "cf_root_domain" {
 	value = "${var.env}.${var.dns_zone_name}"
 }
+
+output "dns_zone_name" {
+        value = "${var.dns_zone_name}"
+}
