@@ -13,4 +13,5 @@ gce/.terraform
 aws/.terraform
 *smoke_test*.json
 manifests/templates/outputs/terraform-outputs-*.yml
+scripts/terraform-outputs-*.sh
 

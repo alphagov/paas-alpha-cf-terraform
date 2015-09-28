@@ -4,9 +4,6 @@ set -e # fail on error
 
 SCRIPT_DIR=$(dirname $0)
 
-# Include functions to setup GCE BOSH networking
-. $SCRIPT_DIR/gce-assign-fixed-ip.sh
-
 # Read the platform configuration
 TARGET_PLATFORM=$1
 case $TARGET_PLATFORM in
@@ -23,16 +20,11 @@ case $TARGET_PLATFORM in
     ;;
 esac
 
-# Convert the yaml outputs file to a list of environment variables:
-#
-#   terraform_output_bastion_ip=104.155.62.123
-#   terraform_output_bosh_ip=104.155.37.66
-#
-# etc...
-eval $(
-  cat templates/outputs/terraform-outputs-${TARGET_PLATFORM}.yml | \
-    sed -n 's/ *\(.*\): *\(..*\)$/terraform_output_\1=\2/p'
-)
+# Include functions to setup GCE BOSH networking
+. $SCRIPT_DIR/gce-assign-fixed-ip.sh
+
+# Include the terraform output variables
+. $SCRIPT_DIR/terraform-outputs-${TARGET_PLATFORM}.sh
 
 BOSH_ADMIN_USER=${BOSH_ADMIN_USER:-admin}
 BOSH_ADMIN_PASS=${BOSH_ADMIN_USER:-admin}

@@ -29,13 +29,16 @@ manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
 manifests/templates/outputs/terraform-outputs-gce.yml: gce/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < gce/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-gce.yml
+scripts/terraform-outputs-aws.sh: aws/${DEPLOY_ENV}.tfstate
+	./scripts/extract_terraform_outputs_to_sh.rb < aws/${DEPLOY_ENV}.tfstate > scripts/terraform-outputs-aws.sh
+scripts/terraform-outputs-gce.sh: gce/${DEPLOY_ENV}.tfstate
+	./scripts/extract_terraform_outputs_to_sh.rb < gce/${DEPLOY_ENV}.tfstate > scripts/terraform-outputs-gce.sh
 
-prepare-provision-aws: set-aws prepare-provision manifests/templates/outputs/terraform-outputs-aws.yml
-prepare-provision-gce: set-gce prepare-provision manifests/templates/outputs/terraform-outputs-gce.yml
+prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws.yml scripts/terraform-outputs-aws.sh prepare-provision
+prepare-provision-gce: set-gce manifests/templates/outputs/terraform-outputs-gce.yml scripts/terraform-outputs-gce.sh prepare-provision
 prepare-provision: bastion
 	@scp -r -oStrictHostKeyChecking=no manifests/templates manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
-	@scp -oStrictHostKeyChecking=no scripts/provision.sh ubuntu@${bastion}:scripts/provision.sh
 	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:bosh-manifest.yml
 
 test-aws: set-aws test
