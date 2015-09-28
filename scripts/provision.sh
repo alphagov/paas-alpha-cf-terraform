@@ -140,6 +140,7 @@ deploy_and_login_bosh() {
       gce_delete_fix_routing $terraform_output_environment
     fi
 
+    cd ~ && ./generate_bosh_manifest.sh $TARGET_PLATFORM > $BOSH_MANIFEST
     export BOSH_INIT_LOG_LEVEL=debug
     export BOSH_INIT_LOG_PATH=/tmp/bosh_init.log
     time bosh-init deploy $BOSH_MANIFEST
