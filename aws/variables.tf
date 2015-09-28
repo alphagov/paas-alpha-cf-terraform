@@ -45,7 +45,7 @@ variable "ubuntu_amis" {
 
 variable "key_pair_name" {
   description = "SSH Key Pair name to be used to launch EC2 instances"
-  default     = "deployer-tsuru-example"
+  default     = "insecure-deployer"
 }
 
 variable "health_check_interval" {
