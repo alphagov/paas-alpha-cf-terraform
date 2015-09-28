@@ -73,3 +73,23 @@ output "cf_root_domain" {
 output "dns_zone_name" {
         value = "${var.dns_zone_name}"
 }
+
+output "bosh_security_group" {
+	value = "${aws_security_group.director.name}"
+}
+
+output "default_security_group" {
+	value = "${aws_security_group.bosh_vm.name}"
+}
+
+output "microbosh_static_private_ip" {
+	value = "${var.microbosh_IP}"
+}
+
+output "microbosh_static_public_ip" {
+	value = "${aws_eip.bosh.public_ip}"
+}
+
+output "key_pair_name" {
+	value = "${var.key_pair_name}"
+}
