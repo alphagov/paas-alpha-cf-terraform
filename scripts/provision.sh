@@ -162,6 +162,7 @@ deploy_and_login_bosh() {
   fi
   if ! bosh_check_and_login; then
     echo "Failed to contact BOSH node $BOSH_IP:$BOSH_PORT after provisioning"
+    return 1
   fi
 
 }
