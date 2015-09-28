@@ -3,8 +3,8 @@ name: bosh
 
 releases:
 - name: bosh
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=190
-  sha1: a0260b8cbcd3fba3a2885ddaa7040b8c4cb22a49
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=207
+  sha1: 5f835bad5fc46230cd2fa823c0a52a94829ee044
 - name: bosh-aws-cpi
   url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=28
   sha1: c7ce03393ebedd87a860dc609758ddb9654360fa
@@ -13,8 +13,8 @@ resource_pools:
 - name: vms
   network: private
   stemcell:
-    url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3012
-    sha1: 3380b55948abe4c437dee97f67d2d8df4eec3fc1
+    url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3074
+    sha1: 1a29c43d4e8abf7476ed6bb83168df1bdb742022
   cloud_properties:
     instance_type: t2.medium
     ephemeral_disk: {size: 25_000, type: gp2}
@@ -102,6 +102,7 @@ jobs:
       db: *db
       cpi_job: cpi
       max_threads: 10
+      ignore_missing_gateway: "false"
 
     hm:
       director_account: {user: admin, password: admin}

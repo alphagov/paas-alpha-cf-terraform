@@ -3,8 +3,8 @@ name: bosh
 
 releases:
   - name: bosh
-    url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=190
-    sha1: a0260b8cbcd3fba3a2885ddaa7040b8c4cb22a49
+    url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=207
+    sha1: 5f835bad5fc46230cd2fa823c0a52a94829ee044
   - name: bosh-google-cpi
     url: http://storage.googleapis.com/bosh-stemcells/bosh-google-cpi-5.tgz
     sha1: c5de3053f233e6ef42c2a4228fa94179d955cc84
@@ -13,8 +13,8 @@ resource_pools:
   - name: vms
     network: public
     stemcell:
-      url: http://storage.googleapis.com/bosh-stemcells/light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
-      sha1: ce5a64c3ecef4fd3e6bd633260dfaa7de76540eb
+      url: https://storage.googleapis.com/gce-bosh-stemcells/light-bosh-stemcell-3074-google-kvm-ubuntu-trusty-go_agent.tgz
+      sha1: 6e264b7fc3a8175466eeb934a4651c23189f6fc5
     cloud_properties:
       machine_type: n1-standard-2
       root_disk_size_gb: 40
@@ -60,7 +60,7 @@ jobs:
       - name: private
         default: [dns, gateway]
       - name: public
-        static_ips: [ ${gce_static_ip} ]
+        static_ips: [${gce_static_ip}]
 
     properties:
       nats:
@@ -97,6 +97,7 @@ jobs:
         db: *db
         cpi_job: cpi
         max_threads: 10
+        ignore_missing_gateway: "false"
 
       hm:
         director_account: {user: admin, password: admin}
