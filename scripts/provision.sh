@@ -50,6 +50,12 @@ cf,215,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
 elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
 "
 
+# Dependencies versions
+BOSH_INIT_VERSION=0.0.72
+BOSH_INIT_URL=https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${BOSH_INIT_VERSION}-linux-amd64
+SPIFF_VERSION=v1.0.7
+SPIFF_URL=https://github.com/cloudfoundry-incubator/spiff/releases/download/${SPIFF_VERSION}/spiff_linux_amd64.zip
+
 # Constants
 BOSH_MANIFEST=~/bosh-manifest.yml
 
@@ -98,14 +104,15 @@ function install_dependencies {
 
   echo "Installing binaries: bosh-init, spiff..."
   if [ ! -x /usr/local/bin/bosh-init ]; then
-    sudo wget -q https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.72-linux-amd64 -O /usr/local/bin/bosh-init
+    sudo wget -q $BOSH_INIT_URL -O /usr/local/bin/bosh-init
     sudo chmod +x /usr/local/bin/bosh-init
   fi
 
   if [ ! -x /usr/local/bin/spiff ]; then
-    wget -q https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.7/spiff_linux_amd64.zip
+    wget -q $SPIFF_URL -O spiff_linux_amd64.zip
     sudo unzip -qo spiff_linux_amd64.zip -d /usr/local/bin
     sudo chmod +x /usr/local/bin/spiff
+    rm spiff_linux_amd64.zip
   fi
 
 }
