@@ -1,0 +1,17 @@
+---
+name: (( merge ))
+
+releases: (( merge ))
+
+resource_pools: (( merge ))
+
+disk_pools: (( merge ))
+
+networks: (( merge ))
+
+jobs: (( merge ))
+
+properties: (( merge || nil ))
+
+cloud_provider: (( merge ))
+
