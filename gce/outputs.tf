@@ -34,6 +34,10 @@ output "cf2_network_name" {
 	value = "${google_compute_network.bastion.name}"
 }
 
+output "bosh_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
+
 output "router_pool_name" {
 	value = "${google_compute_target_pool.router.name}"
 }
@@ -41,3 +45,13 @@ output "router_pool_name" {
 output "dns_zone_name" {
 	value = "${var.dns_zone_name}"
 }
+
+output "gce_project_id" {
+	value = "${var.gce_project}"
+}
+
+output "gce_account_json" {
+	value = "${file("account.json")}"
+#	value = "${replace(file("account.json"), "\n", "")}"
+}
+
