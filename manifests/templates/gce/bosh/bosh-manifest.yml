@@ -37,10 +37,9 @@ resource_pools:
       root_disk_type: pd-standard
 
 disk_pools:
-  - name: disks
-    disk_size: 32_768
-    cloud_properties:
-      type: pd-standard
+- name: disks
+  cloud_properties:
+    type: pd-standard
 
 networks:
   - name: private

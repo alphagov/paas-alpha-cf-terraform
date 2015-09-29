@@ -19,7 +19,10 @@ releases:
 
 resource_pools: (( merge ))
 
-disk_pools: (( merge ))
+disk_pools:
+- name: disks
+  disk_size: 32_768
+  cloud_properties: (( merge ))
 
 networks: (( merge ))
 
