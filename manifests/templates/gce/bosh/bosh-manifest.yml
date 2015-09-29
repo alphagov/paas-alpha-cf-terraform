@@ -56,24 +56,6 @@ networks:
 jobs:
 - name: bosh
 
-    properties:
-      nats:
-        address: 127.0.0.1
-        user: nats
-        password: nats-password
-
-      redis:
-        listen_address: 127.0.0.1
-        address: 127.0.0.1
-        password: redis-password
-
-      postgres: &db
-        host: 127.0.0.1
-        user: postgres
-        password: postgres-password
-        database: bosh
-        adapter: postgres
-
       registry:
         host: (( meta.bosh_public_ip ))
         username: admin
@@ -84,26 +66,6 @@ jobs:
         provider: dav
         director: {user: director, password: director-password}
         agent: {user: agent, password: agent-password}
-
-      director:
-        address: 127.0.0.1
-        name: my-bosh
-        db: *db
-        cpi_job: cpi
-        max_threads: 10
-        ignore_missing_gateway: "false"
-
-      hm:
-        director_account: {user: admin, password: admin}
-        resurrector_enabled: false
-
-      google: (( meta.google_properties ))
-
-      dns:
-        address: (( meta.bosh_public_ip ))
-        domain_name: microbosh
-        db: *db
-        recursor: 8.8.8.8
 
       agent:
         mbus: (( "nats://nats:nats-password@" meta.bosh_public_ip ":4222" ))
@@ -117,7 +79,8 @@ jobs:
   - name: private
     static_ips: null
 
-      ntp: (( meta.ntp ))
+  properties:
+    google: (( meta.google_properties ))
 
     hm:
       resurrector_enabled: false

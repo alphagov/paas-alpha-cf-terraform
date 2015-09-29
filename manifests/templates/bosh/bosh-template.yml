@@ -25,6 +25,19 @@ meta:
 
   specific_bosh_job_templates: (( merge ))
 
+  postgres:
+    host: 127.0.0.1
+    user: postgres
+    password: postgres-password
+    database: bosh
+    adapter: postgres
+
+  default_dns:
+    address: (( meta.bosh_public_ip ))
+    domain_name: microbosh
+    db: (( meta.postgres ))
+    recursor: 8.8.8.8
+
 name: (( merge ))
 
 releases:
@@ -58,6 +71,37 @@ jobs:
     default: [dns, gateway]
   - name: public
     static_ips: (( merge || meta.default_bosh_public_static_ips ))
+
+  properties:
+    nats:
+      address: 127.0.0.1
+      user: nats
+      password: nats-password
+
+    redis:
+      listen_address: 127.0.0.1
+      address: 127.0.0.1
+      password: redis-password
+
+    postgres: (( meta.postgres ))
+
+    director:
+      address: 127.0.0.1
+      name: my-bosh
+      db: (( meta.postgres ))
+      cpi_job: cpi
+      max_threads: 10
+      ignore_missing_gateway: "false"
+
+    hm:
+      director_account: {user: admin, password: admin}
+      resurrector_enabled: (( merge || "true" ))
+
+    ntp: (( meta.ntp ))
+
+    dns: (( merge || meta.default_dns ))
+
+    <<: (( merge ))
 
 
 properties: (( merge || nil ))
