@@ -2,7 +2,7 @@
 
 set -e # fail on error
 
-SCRIPT_DIR=$(dirname $0)
+SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
 # Read the platform configuration
 TARGET_PLATFORM=$1
@@ -53,8 +53,11 @@ CF_CLI_VERSION=6.12.3
 # Constants
 BOSH_MANIFEST=~/bosh-manifest.yml
 
+export BUNDLE_GEMFILE=$SCRIPT_DIR/Gemfile
+BOSH_CLI="bundle exec bosh"
+
 # Other config
-export PATH=$PATH:/usr/local/bin/bosh
+export PATH=$PATH:/usr/local/bin
 
 # Preinstallation of packages
 function install_dependencies {
@@ -85,7 +88,7 @@ function install_dependencies {
   fi
 
   echo "Installing gem packages..."
-  bundle install --gemfile=$SCRIPT_DIR/Gemfile --quiet
+  bundle install --quiet
 
   echo "Installing binaries: bosh-init, spiff, cf..."
   if [ ! -x /usr/local/bin/bosh-init ]; then
@@ -113,7 +116,7 @@ function install_dependencies {
 bosh_login() {
   echo "Login to bosh $BOSH_IP:$BOSH_PORT"
   echo -e "${BOSH_ADMIN_USER}\n${BOSH_ADMIN_PASS}" | \
-    bosh target $BOSH_IP:$BOSH_PORT
+    $BOSH_CLI target $BOSH_IP:$BOSH_PORT
 }
 
 bosh_check_and_login() {
@@ -124,7 +127,7 @@ bosh_check_and_login() {
   bosh_login || return 1
 
   # do a bosh status to check health
-  bosh status > /dev/null || return 1
+  $BOSH_CLI status > /dev/null || return 1
 }
 
 deploy_and_login_bosh() {
@@ -190,7 +193,7 @@ upload_stemcell() {
     if [ "$STEMCELL_URL" ]; then
       wget $STEMCELL_URL
     else
-      time bosh download public stemcell $STEMCELL
+      time $BOSH_CLI download public stemcell $STEMCELL
     fi
   fi
 
@@ -201,10 +204,10 @@ upload_stemcell() {
   stemcell_version=$(cat /tmp/{$STEMCELL}.d/stemcell.MF | awk '/^version:/ { print $2 }' | tr -d "'")
 
   # Upload stemcell if it is not uploaded
-  if $SCRIPT_DIR/bosh_list_stemcells.rb | grep -q -e "$stemcell_name/$stemcell_version"; then
+  if bundle exec $SCRIPT_DIR/bosh_list_stemcells.rb | grep -q -e "$stemcell_name/$stemcell_version"; then
     echo "Stemcell $stemcell_name/$stemcell_version already uploaded, skipping"
   else
-    time bosh upload stemcell $STEMCELL --skip-if-exists
+    time $BOSH_CLI upload stemcell $STEMCELL --skip-if-exists
   fi
 }
 
@@ -213,11 +216,11 @@ upload_releases() {
     local name=$(echo $r | cut -f 1 -d ,)
     local version=$(echo $r | cut -f 2 -d ,)
     local url=$(echo $r | cut -f 3 -d ,)
-    if $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
+    if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
       echo "Release $name version $version already uploaded, skipping"
       continue
     else
-      bosh upload release $url 2>&1 | tee /tmp/upload_release.log
+      $BOSH_CLI upload release $url 2>&1 | tee /tmp/upload_release.log
       if [ $PIPESTATUS != 0 ] && ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
         return 1
       fi
@@ -236,15 +239,15 @@ cf_compile_manifest() {
   cd ~
 
   # Output the director uuid to be populated by spiff
-  echo -e "---\ndirector_uuid: $(bosh status --uuid)" > templates/stubs/director-uuid.yml
+  echo -e "---\ndirector_uuid: $($BOSH_CLI status --uuid)" > templates/stubs/director-uuid.yml
 
   # Generate the manifest
   CF_RELEASE_PATH=~/cf-release/ ./generate_deployment_manifest.sh $TARGET_PLATFORM > ~/cf-manifest.yml
 }
 
 cf_deploy() {
-  bosh deployment ~/cf-manifest.yml
-  time bosh -n deploy
+  $BOSH_CLI deployment ~/cf-manifest.yml
+  time $BOSH_CLI -n deploy
 }
 
 cf_post_deploy() {
