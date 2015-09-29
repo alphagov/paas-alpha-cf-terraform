@@ -14,19 +14,17 @@ meta:
     - (( terraform_outputs.default_security_group ))
     region: (( terraform_outputs.region ))
 
+  cpi-release:
+    name: bosh-aws-cpi
+    url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=28
+    sha1: c7ce03393ebedd87a860dc609758ddb9654360fa
+
   ntp:
   - 0.pool.ntp.org
   - 1.pool.ntp.org
 
-name: bosh
 
-releases:
-- name: bosh
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=207
-  sha1: 5f835bad5fc46230cd2fa823c0a52a94829ee044
-- name: bosh-aws-cpi
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=28
-  sha1: c7ce03393ebedd87a860dc609758ddb9654360fa
+name: bosh
 
 resource_pools:
 - name: vms
