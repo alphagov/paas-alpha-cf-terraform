@@ -11,7 +11,7 @@ resource "aws_db_instance" "uaadb" {
     allocated_storage = 10
     engine = "mysql"
     engine_version = "5.6.23"
-    instance_class = "db.t1.micro"
+    instance_class = "db.t2.micro"
     name = "uaadb"
     username = "uaadb"
     password = "uaadbpassword"
@@ -25,7 +25,7 @@ resource "aws_db_instance" "ccdb" {
     allocated_storage = 10
     engine = "mysql"
     engine_version = "5.6.23"
-    instance_class = "db.t1.micro"
+    instance_class = "db.t2.micro"
     name = "ccdb"
     username = "ccdb"
     password = "ccdbpassword"
