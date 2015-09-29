@@ -78,6 +78,24 @@ variable "dns_zone_name" {
   default     = "cf.paas.alphagov.co.uk"
 }
 
+variable "uaadb_username" {
+  description = "UAA RDS DB username"
+  default     = "uaadb"
+}
+
+variable "uaadb_password" {
+  description = "UAA RDS DB password"
+}
+
+variable "ccdb_username" {
+  description = "Cloud Controller RDS DB username"
+  default     = "ccdb"
+}
+
+variable "ccdb_password" {
+  description = "Cloud Controller RDS DB password"
+}
+
 # Terraform currently only has limited support for reading environment variables
 # Variables for use with terraform must be prefexed with 'TF_VAR_'
 # These two variables are passed in as environment variables named:
