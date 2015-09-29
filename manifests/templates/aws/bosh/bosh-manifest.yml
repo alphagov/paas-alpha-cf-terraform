@@ -38,7 +38,7 @@ resource_pools:
     sha1: 1a29c43d4e8abf7476ed6bb83168df1bdb742022
   cloud_properties:
     instance_type: t2.medium
-    ephemeral_disk: {size: 25_000, type: gp2}
+    ephemeral_disk: {size: 40_000, type: gp2}
     availability_zone: (( terraform_outputs.zone0 ))
 
 disk_pools:
@@ -62,9 +62,6 @@ networks:
 
 jobs:
 - name: bosh
-  resource_pool: vms
-  persistent_disk_pool: disks
-
 
   properties:
     nats:

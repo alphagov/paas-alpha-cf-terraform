@@ -54,9 +54,7 @@ networks:
     type: vip
 
 jobs:
-
-    resource_pool: vms
-    persistent_disk_pool: disks
+- name: bosh
 
     properties:
       nats:

@@ -49,6 +49,9 @@ jobs:
 
   templates: (( meta.default_bosh_job_templates meta.specific_bosh_job_templates ))
 
+  resource_pool: vms
+  persistent_disk_pool: disks
+
   networks:
   - name: private
     static_ips: (( merge || meta.default_bosh_private_static_ips ))
