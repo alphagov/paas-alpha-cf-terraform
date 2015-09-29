@@ -8,6 +8,11 @@ meta:
 
   bosh_service_ip: (( merge ))
 
+  default_bosh_private_static_ips:
+    - (( meta.bosh_private_ip ))
+  default_bosh_public_static_ips:
+    - (( meta.bosh_public_ip ))
+
   default_bosh_job_templates:
     - {name: nats, release: bosh}
     - {name: redis, release: bosh}
@@ -41,6 +46,13 @@ jobs:
   instances: 1
 
   templates: (( meta.default_bosh_job_templates meta.specific_bosh_job_templates ))
+
+  networks:
+  - name: private
+    static_ips: (( merge || meta.default_bosh_private_static_ips ))
+    default: [dns, gateway]
+  - name: public
+    static_ips: (( merge || meta.default_bosh_public_static_ips ))
 
 
 properties: (( merge || nil ))

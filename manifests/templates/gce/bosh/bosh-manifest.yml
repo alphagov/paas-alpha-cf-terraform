@@ -58,13 +58,6 @@ jobs:
     resource_pool: vms
     persistent_disk_pool: disks
 
-    networks:
-      - name: private
-        default: [dns, gateway]
-      - name: public
-        static_ips:
-        - (( meta.bosh_public_ip ))
-
     properties:
       nats:
         address: 127.0.0.1
@@ -122,6 +115,9 @@ jobs:
              endpoint: (( "http://" meta.bosh_public_ip ":25250" ))
              user: agent
              password: agent-password
+  networks:
+  - name: private
+    static_ips: null
 
       ntp: (( meta.ntp ))
 
