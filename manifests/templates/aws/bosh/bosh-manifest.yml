@@ -124,18 +124,10 @@ cloud_provider:
     name: cpi
     release: bosh-aws-cpi
 
-  ssh_tunnel:
-    host: (( meta.bosh_private_ip ))
-    port: 22
-    user: vcap
-    private_key: .ssh/id_rsa # Path relative to this manifest file
-
-  mbus: (( "https://mbus:mbus-password@" meta.bosh_private_ip ":6868" ))
-
   properties:
     aws: (( meta.aws ))
     agent:
-      mbus: "https://mbus:mbus-password@0.0.0.0:6868"
+      mbus: "https://mbus:mbus@0.0.0.0:6868"
     blobstore:
       provider: local
       path: /var/vcap/micro_bosh/data/cache

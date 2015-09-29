@@ -8,6 +8,8 @@ meta:
 
   bosh_service_ip: (( merge ))
 
+  ntp: (( merge ))
+
   default_bosh_private_static_ips:
     - (( meta.bosh_private_ip ))
   default_bosh_public_static_ips:
@@ -57,5 +59,15 @@ jobs:
 
 properties: (( merge || nil ))
 
-cloud_provider: (( merge ))
+cloud_provider:
+  template: (( merge ))
 
+  ssh_tunnel:
+    host: (( meta.bosh_service_ip ))
+    port: 22
+    user: vcap
+    private_key: .ssh/id_rsa
+
+  mbus: (( "https://mbus:mbus@" meta.bosh_service_ip  ":6868" ))
+
+  properties: (( merge ))
