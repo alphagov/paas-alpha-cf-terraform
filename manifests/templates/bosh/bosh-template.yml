@@ -99,6 +99,17 @@ jobs:
 
     ntp: (( meta.ntp ))
 
+    registry:
+      host: (( meta.bosh_service_ip ))
+      db: (( meta.postgres ))
+      http:
+        # Variables used by official job release
+        user: admin
+        password: admin
+      # Variables used by Google job release
+      username: admin
+      password: admin
+
     dns: (( merge || meta.default_dns ))
 
     <<: (( merge ))

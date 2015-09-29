@@ -64,15 +64,6 @@ jobs:
 - name: bosh
 
   properties:
-    registry:
-      address: (( meta.bosh_private_ip ))
-      host: (( meta.bosh_private_ip ))
-      db: *db
-      http: {user: admin, password: admin, port: 25777}
-      username: admin
-      password: admin
-      port: 25777
-
     blobstore:
       address: (( meta.bosh_private_ip ))
       port: 25250

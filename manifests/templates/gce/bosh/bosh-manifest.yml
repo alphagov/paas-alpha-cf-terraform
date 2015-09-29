@@ -56,11 +56,6 @@ networks:
 jobs:
 - name: bosh
 
-      registry:
-        host: (( meta.bosh_public_ip ))
-        username: admin
-        password: admin
-
       blobstore:
         address: (( meta.bosh_public_ip ))
         provider: dav
