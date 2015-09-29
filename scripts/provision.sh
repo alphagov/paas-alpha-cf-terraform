@@ -65,7 +65,7 @@ function install_dependencies {
     zlib1g-dev
     ruby
     ruby-dev openssl
-    libxslt-dev
+    libxslt1-dev
     libxml2-dev
     libssl-dev
     libreadline6
@@ -82,7 +82,7 @@ function install_dependencies {
   "
 
   echo "Installing system packages..."
-  if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
+  if dpkg-query -W -f='${Status}\n' $PACKAGES | grep -q not-installed -q; then
     sudo apt-get -y update
     sudo apt-get install -y $PACKAGES
   fi
