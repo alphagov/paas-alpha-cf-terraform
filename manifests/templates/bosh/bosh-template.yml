@@ -38,6 +38,9 @@ meta:
     db: (( meta.postgres ))
     recursor: 8.8.8.8
 
+  default_agent:
+    mbus: (( "nats://nats:nats-password@" meta.bosh_service_ip ":4222" ))
+
 name: (( merge ))
 
 releases:
@@ -45,7 +48,6 @@ releases:
   url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=207
   sha1: 5f835bad5fc46230cd2fa823c0a52a94829ee044
 - (( meta.cpi-release ))
-
 
 resource_pools: (( merge ))
 
@@ -85,6 +87,20 @@ jobs:
 
     postgres: (( meta.postgres ))
 
+    blobstore:
+      address: (( meta.bosh_service_ip ))
+      provider: dav
+      director:
+        user: director
+        password: director-password
+      agent:
+        user: agent
+        password: agent-password
+      options:
+        endpoint: (( "http://" meta.bosh_public_ip ":25250" ))
+        user: agent
+        password: agent-password
+
     director:
       address: 127.0.0.1
       name: my-bosh
@@ -98,6 +114,8 @@ jobs:
       resurrector_enabled: (( merge || "true" ))
 
     ntp: (( meta.ntp ))
+
+    agent: (( merge || meta.default_agent ))
 
     registry:
       host: (( meta.bosh_service_ip ))

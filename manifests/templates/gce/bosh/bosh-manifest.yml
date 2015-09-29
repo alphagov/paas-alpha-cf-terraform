@@ -56,20 +56,6 @@ networks:
 jobs:
 - name: bosh
 
-      blobstore:
-        address: (( meta.bosh_public_ip ))
-        provider: dav
-        director: {user: director, password: director-password}
-        agent: {user: agent, password: agent-password}
-
-      agent:
-        mbus: (( "nats://nats:nats-password@" meta.bosh_public_ip ":4222" ))
-        ntp: (( meta.ntp ))
-        blobstore:
-           options:
-             endpoint: (( "http://" meta.bosh_public_ip ":25250" ))
-             user: agent
-             password: agent-password
   networks:
   - name: private
     static_ips: null

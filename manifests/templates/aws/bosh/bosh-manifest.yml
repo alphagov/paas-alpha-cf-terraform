@@ -64,18 +64,8 @@ jobs:
 - name: bosh
 
   properties:
-    blobstore:
-      address: (( meta.bosh_private_ip ))
-      port: 25250
-      provider: dav
-      director: {user: director, password: director-password}
-      agent: {user: agent, password: agent-password}
-
     hm:
       resurrector_enabled: true
-
-    agent:
-      mbus: (( "nats://nats:nats-password@" meta.bosh_private_ip ":4222" ))
 
     aws: (( meta.aws ))
 
