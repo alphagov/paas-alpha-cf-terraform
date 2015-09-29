@@ -26,15 +26,15 @@ meta:
 name: bosh
 
 resource_pools:
-  - name: vms
-    network: public
-    stemcell:
-      url: https://storage.googleapis.com/gce-bosh-stemcells/light-bosh-stemcell-3074-google-kvm-ubuntu-trusty-go_agent.tgz
-      sha1: 6e264b7fc3a8175466eeb934a4651c23189f6fc5
-    cloud_properties:
-      machine_type: n1-standard-2
-      root_disk_size_gb: 40
-      root_disk_type: pd-standard
+- name: vms
+  network: public
+  stemcell:
+    url: https://storage.googleapis.com/gce-bosh-stemcells/light-bosh-stemcell-3074-google-kvm-ubuntu-trusty-go_agent.tgz
+    sha1: 6e264b7fc3a8175466eeb934a4651c23189f6fc5
+  cloud_properties:
+    machine_type: n1-standard-2
+    root_disk_size_gb: 40
+    root_disk_type: pd-standard
 
 disk_pools:
 - name: disks
@@ -42,16 +42,16 @@ disk_pools:
     type: pd-standard
 
 networks:
-  - name: private
-    type: dynamic
-    cloud_properties:
-      network_name: (( terraform_outputs.bosh_network_name ))
-      ip_forwarding: true
-      tags:
-        - bosh
-        - bastion
-  - name: public
-    type: vip
+- name: private
+  type: dynamic
+  cloud_properties:
+    network_name: (( terraform_outputs.bosh_network_name ))
+    ip_forwarding: true
+    tags:
+      - bosh
+      - bastion
+- name: public
+  type: vip
 
 jobs:
 - name: bosh
