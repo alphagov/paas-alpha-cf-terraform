@@ -1,7 +1,7 @@
 resource "google_compute_instance" "bastion" {
   name = "${var.env}-cf-bastion"
   depends_on = [ "google_compute_firewall.ssh" ]
-  machine_type = "n1-standard-1"
+  machine_type = "g1-small"
   zone = "${lookup(var.zones, concat("zone", count.index))}"
   disk {
     image = "${var.os_image}"
