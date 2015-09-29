@@ -8,6 +8,16 @@ meta:
 
   bosh_service_ip: (( merge ))
 
+  default_bosh_job_templates:
+    - {name: nats, release: bosh}
+    - {name: redis, release: bosh}
+    - {name: postgres, release: bosh}
+    - {name: blobstore, release: bosh}
+    - {name: director, release: bosh}
+    - {name: health_monitor, release: bosh}
+
+  specific_bosh_job_templates: (( merge ))
+
 name: (( merge ))
 
 releases:
@@ -26,7 +36,12 @@ disk_pools:
 
 networks: (( merge ))
 
-jobs: (( merge ))
+jobs:
+- name: bosh
+  instances: 1
+
+  templates: (( meta.default_bosh_job_templates meta.specific_bosh_job_templates ))
+
 
 properties: (( merge || nil ))
 

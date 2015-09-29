@@ -54,19 +54,6 @@ networks:
     type: vip
 
 jobs:
-  - name: bosh
-    instances: 1
-
-    templates:
-      - {name: nats, release: bosh}
-      - {name: redis, release: bosh}
-      - {name: postgres, release: bosh}
-      - {name: blobstore, release: bosh}
-      - {name: director, release: bosh}
-      - {name: health_monitor, release: bosh}
-      - {name: registry, release: bosh-google-cpi}
-      - {name: cpi, release: bosh-google-cpi}
-      - {name: powerdns, release: bosh}
 
     resource_pool: vms
     persistent_disk_pool: disks

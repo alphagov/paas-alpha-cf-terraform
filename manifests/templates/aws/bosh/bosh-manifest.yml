@@ -19,6 +19,10 @@ meta:
     url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=28
     sha1: c7ce03393ebedd87a860dc609758ddb9654360fa
 
+  specific_bosh_job_templates:
+    - {name: registry, release: bosh}
+    - {name: cpi, release: bosh-aws-cpi}
+
   ntp:
   - 0.pool.ntp.org
   - 1.pool.ntp.org
@@ -58,18 +62,6 @@ networks:
 
 jobs:
 - name: bosh
-  instances: 1
-
-  templates:
-  - {name: nats, release: bosh}
-  - {name: redis, release: bosh}
-  - {name: postgres, release: bosh}
-  - {name: blobstore, release: bosh}
-  - {name: director, release: bosh}
-  - {name: health_monitor, release: bosh}
-  - {name: registry, release: bosh}
-  - {name: cpi, release: bosh-aws-cpi}
-
   resource_pool: vms
   persistent_disk_pool: disks
 
