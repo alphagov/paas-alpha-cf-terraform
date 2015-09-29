@@ -82,7 +82,7 @@ function install_dependencies {
   "
 
   echo "Installing system packages..."
-  if dpkg-query -W -f='${Status}\n' $PACKAGES | grep -q not-installed -q; then
+  if dpkg-query -W -f='${Package} ${Status}\n' $PACKAGES 2>&1 | grep -v 'ok installed' | grep  '^..*$'; then
     sudo apt-get -y update
     sudo apt-get install -y $PACKAGES
   fi
