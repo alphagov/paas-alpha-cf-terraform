@@ -75,10 +75,7 @@ function install_dependencies {
     sqlite3
     dstat
     unzip
-  "
-
-  GEMS="
-    bosh_cli:${BOSH_CLI_VERSION}
+    bundler
   "
 
   echo "Installing system packages..."
@@ -88,13 +85,7 @@ function install_dependencies {
   fi
 
   echo "Installing gem packages..."
-  for gem in $GEMS; do
-    local gem_name=$(echo $gem | cut -f 1 -d : )
-    local gem_version=$(echo $gem | cut -f 2 -d : )
-    if ! gem list | grep -q "$gem_name ($gem_version)"; then
-      sudo gem install $gem_name ${gem_version:+--version $gem_version} --no-ri --no-rdoc
-    fi
-  done
+  bundle install --gemfile=$SCRIPT_DIR/Gemfile --quiet
 
   echo "Installing binaries: bosh-init, spiff, cf..."
   if [ ! -x /usr/local/bin/bosh-init ]; then
