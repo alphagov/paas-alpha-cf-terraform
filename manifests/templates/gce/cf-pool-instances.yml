@@ -1,0 +1,19 @@
+# Override some of the GCE default instance types
+meta:
+  resource_pools:
+    small:
+      cloud_properties:
+        machine_type: f1-micro
+
+resource_pools:
+  - name: medium_z1
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
+
+  - name: medium_z2
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
+
+  - name: router_z1
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
+
+  - name: router_z2
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
