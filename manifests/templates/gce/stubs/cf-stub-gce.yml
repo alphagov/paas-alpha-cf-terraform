@@ -69,7 +69,7 @@ properties:
     roles:
       - tag: admin
         name: ccadmin
-        password: admin
+        password: (( merge ))
     databases:
       - tag: cc
         name: ccdb
@@ -82,7 +82,7 @@ properties:
     roles:
       - tag: admin
         name: uaaadmin
-        password: admin
+        password: (( merge ))
     databases:
       - tag: uaa
         name: uaadb
@@ -95,10 +95,10 @@ properties:
     roles:
       - tag: admin
         name: ccadmin
-        password: admin
+        password: (( merge ))
       - tag: admin
         name: uaaadmin
-        password: admin
+        password: (( merge ))
     databases:
       - tag: cc
         name: ccdb

@@ -41,6 +41,7 @@ prepare-provision: bastion
 	    manifests/generate_bosh_manifest.sh \
 	    manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
+	@PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/manifest_secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/secrets.yml'
 
 test-aws: set-aws test
 test-gce: set-gce test

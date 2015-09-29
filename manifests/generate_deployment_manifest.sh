@@ -21,7 +21,7 @@ case $infrastructure in
     exit 1
     ;;
 esac
-
+ 
 spiff merge \
   $CF_RELEASE_PATH/templates/cf-deployment.yml \
   $templates/deployments/*.yml \
@@ -35,4 +35,5 @@ spiff merge \
   $templates/${infrastructure}/stubs/*.yml \
   $templates/stubs/*.yml \
   $templates/outputs/terraform-outputs-${infrastructure}.yml \
+  $templates/secrets.yml \
   "$@"
