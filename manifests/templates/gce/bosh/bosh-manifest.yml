@@ -3,6 +3,8 @@ terraform_outputs: (( merge ))
 
 meta:
   bosh_public_ip: (( terraform_outputs.bosh_ip ))
+  bosh_service_ip: (( bosh_public_ip ))
+
   google_properties:
     project: (( terraform_outputs.gce_project_id ))
     json_key: (( terraform_outputs.gce_account_json ))

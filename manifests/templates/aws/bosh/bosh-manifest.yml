@@ -4,6 +4,7 @@ terraform_outputs: (( merge ))
 meta:
   bosh_private_ip: (( terraform_outputs.microbosh_static_private_ip ))
   bosh_public_ip: (( terraform_outputs.microbosh_static_public_ip ))
+  bosh_service_ip: (( bosh_private_ip ))
 
   aws:
     access_key_id: (( terraform_outputs.aws_access_key_id ))

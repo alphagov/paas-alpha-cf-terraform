@@ -1,4 +1,12 @@
 ---
+meta:
+
+  bosh_private_ip: (( merge || nil ))
+
+  bosh_public_ip: (( merge ))
+
+  bosh_service_ip: (( merge ))
+
 name: (( merge ))
 
 releases: (( merge ))
