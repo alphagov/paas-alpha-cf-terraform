@@ -17,6 +17,15 @@ resource "aws_security_group" "bastion" {
     cidr_blocks = ["${split(",", var.office_cidrs)}"]
   }
 
+  ingress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    security_groups = [
+      "${aws_security_group.bosh_vm.id}"
+    ]
+  }
+
   tags {
     Name = "${var.env}-bastion"
   }
