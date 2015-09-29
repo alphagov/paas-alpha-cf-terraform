@@ -29,14 +29,17 @@ manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
 manifests/templates/outputs/terraform-outputs-gce.yml: gce/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < gce/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-gce.yml
+scripts/terraform-outputs-aws.sh: aws/${DEPLOY_ENV}.tfstate
+	./scripts/extract_terraform_outputs_to_sh.rb < aws/${DEPLOY_ENV}.tfstate > scripts/terraform-outputs-aws.sh
+scripts/terraform-outputs-gce.sh: gce/${DEPLOY_ENV}.tfstate
+	./scripts/extract_terraform_outputs_to_sh.rb < gce/${DEPLOY_ENV}.tfstate > scripts/terraform-outputs-gce.sh
 
-prepare-provision-aws: set-aws prepare-provision manifests/templates/outputs/terraform-outputs-aws.yml
-prepare-provision-gce: set-gce prepare-provision manifests/templates/outputs/terraform-outputs-gce.yml
+prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws.yml scripts/terraform-outputs-aws.sh prepare-provision
+prepare-provision-gce: set-gce manifests/templates/outputs/terraform-outputs-gce.yml scripts/terraform-outputs-gce.sh prepare-provision
 prepare-provision: bastion
 	@scp -r -oStrictHostKeyChecking=no manifests/templates manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
-	@scp -r -oStrictHostKeyChecking=no scripts/deploy_psql_broker.sh ubuntu@${bastion}:
-	@cd ${dir} && scp -oStrictHostKeyChecking=no provision.sh ubuntu@${bastion}:provision.sh
-	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:manifest_${dir}.yml
+	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
+	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:bosh-manifest.yml
 
 test-aws: set-aws test
 test-gce: set-gce test
@@ -54,7 +57,7 @@ test: bastion
 provision-aws: set-aws prepare-provision-aws provision
 provision-gce: set-gce prepare-provision-gce provision
 provision: check-env-vars bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash provision.sh $(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bosh_ip)'
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/provision.sh ${dir}'
 
 confirm-execution:
 	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
@@ -78,12 +81,12 @@ delete-stemcell: bastion
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
 delete-route-gce: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./delete-route.sh'
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
 
 bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
 bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete delete-route-gce
 bosh-delete: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | ./bosh-init delete manifest_${dir}.yml'
+	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
 
 destroy-aws: confirm-execution set-aws bosh-delete-aws destroy
 destroy-gce: confirm-execution set-gce bosh-delete-gce destroy

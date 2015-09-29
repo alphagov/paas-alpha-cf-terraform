@@ -8,24 +8,16 @@ DOMAIN=`python -c 'import yaml; print yaml.load(file("cf-manifest.yml"))["proper
 CF_ADMIN="$1"
 CF_PASS="$2"
 
-cf_version=6.12.3
-if ! cf_version_orig=`dpkg-query -W cf-cli` || [[ "${cf_version_orig}" != *"${cf_version}"* ]]; then
-	sudo dpkg -r cf-cli
-	wget -O cf-cli_${cf_version}_amd64.deb "https://cli.run.pivotal.io/stable?release=debian64&version=${cf_version}&source=github-rel"
-	sudo dpkg -i cf-cli_${cf_version}_amd64.deb
-fi
-
 PACKAGES="maven openjdk-7-jdk"
 if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
   sudo apt-get update
   sudo apt-get install -y $PACKAGES
 fi
-# The two above should be part of provision.sh
 
 echo "*** Logging in to CF and creating admin space..."
 cf api --skip-ssl-validation https://api.${DOMAIN}
-echo -e "\n" | cf login -u ${CF_ADMIN} -p ${CF_PASS}
-echo -e "\n" | cf create-org admin
+echo | cf login -u ${CF_ADMIN} -p ${CF_PASS}
+echo | cf create-org admin
 cf create-space admin -o admin
 cf target -o admin -s admin
 
