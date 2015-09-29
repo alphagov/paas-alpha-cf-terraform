@@ -47,6 +47,8 @@ BOSH_INIT_VERSION=0.0.72
 BOSH_INIT_URL=https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${BOSH_INIT_VERSION}-linux-amd64
 SPIFF_VERSION=v1.0.7
 SPIFF_URL=https://github.com/cloudfoundry-incubator/spiff/releases/download/${SPIFF_VERSION}/spiff_linux_amd64.zip
+BOSH_CLI_VERSION=1.3056.0
+CF_CLI_VERSION=6.12.3
 
 # Constants
 BOSH_MANIFEST=~/bosh-manifest.yml
@@ -76,7 +78,7 @@ function install_dependencies {
   "
 
   GEMS="
-    bosh_cli:1.3056.0
+    bosh_cli:${BOSH_CLI_VERSION}
   "
 
   echo "Installing system packages..."
@@ -94,7 +96,7 @@ function install_dependencies {
     fi
   done
 
-  echo "Installing binaries: bosh-init, spiff..."
+  echo "Installing binaries: bosh-init, spiff, cf..."
   if [ ! -x /usr/local/bin/bosh-init ]; then
     sudo wget -q $BOSH_INIT_URL -O /usr/local/bin/bosh-init
     sudo chmod +x /usr/local/bin/bosh-init
@@ -105,6 +107,13 @@ function install_dependencies {
     sudo unzip -qo spiff_linux_amd64.zip -d /usr/local/bin
     sudo chmod +x /usr/local/bin/spiff
     rm spiff_linux_amd64.zip
+  fi
+
+  if ! cf_version_orig=`dpkg-query -W cf-cli 2>/dev/null` || [[ "${cf_version_orig}" != *"${CF_CLI_VERSION}"* ]]; then
+    sudo dpkg -r cf-cli 2>/dev/null
+    wget -q -O /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb "https://cli.run.pivotal.io/stable?release=debian64&version=${CF_CLI_VERSION}&source=github-rel"
+    sudo dpkg -i /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb > /dev/null
+    rm /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb
   fi
 
 }
