@@ -30,6 +30,7 @@ spiff merge \
   $CF_RELEASE_PATH/templates/cf-properties.yml \
   $CF_RELEASE_PATH/templates/cf-lamb.yml \
   $infrastructure_template \
+  $templates/${infrastructure}/cf-pool-instances.yml \
   $CF_RELEASE_PATH/templates/cf-minimal-dev.yml \
   $templates/${infrastructure}/stubs/*.yml \
   $templates/stubs/*.yml \

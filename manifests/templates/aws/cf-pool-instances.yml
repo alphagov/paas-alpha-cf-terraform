@@ -1,0 +1,58 @@
+meta:
+  resource_pools:
+    small:
+      cloud_properties:
+        instance_type: t2.micro
+    large:
+      cloud_properties:
+          instance_type: t2.medium
+    runner:
+      cloud_properties:
+          instance_type: r3.large
+    bigerrand:
+      cloud_properties:
+          instance_type: c4.xlarge
+
+compilation:
+  cloud_properties: (( meta.resource_pools.large.cloud_properties ))
+
+resource_pools:
+  - name: small_z1
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
+
+  - name: small_z2
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
+
+  - name: medium_z1
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
+
+  - name: medium_z2
+    cloud_properties: (( meta.resource_pools.small.cloud_properties ))
+
+  - name: large_z1
+    cloud_properties: (( meta.resource_pools.large.cloud_properties ))
+
+  - name: large_z2
+    cloud_properties: (( meta.resource_pools.large.cloud_properties ))
+
+  - name: runner_z1
+    cloud_properties: (( meta.resource_pools.runner.cloud_properties ))
+
+  - name: runner_z2
+    cloud_properties: (( meta.resource_pools.runner.cloud_properties ))
+
+  - name: router_z1
+    cloud_properties:
+      instance_type: (( meta.resource_pools.small.cloud_properties.instance_type ))
+      elbs: (( merge || ["cfrouter"] ))
+
+  - name: router_z2
+    cloud_properties:
+      instance_type: (( meta.resource_pools.small.cloud_properties.instance_type ))
+      elbs: (( merge || ["cfrouter"] ))
+
+  - name: small_errand
+    cloud_properties: (( meta.resource_pools.large.cloud_properties ))
+
+  - name: xlarge_errand
+    cloud_properties: (( meta.resource_pools.bigerrand.cloud_properties ))
