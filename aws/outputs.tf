@@ -22,6 +22,10 @@ output "region" {
 	value = "${var.region}"
 }
 
+output "bosh_subnet_id" {
+	value = "${aws_subnet.infra.0.id}"
+}
+
 output "cf1_subnet_id" {
 	value = "${aws_subnet.cf.0.id}"
 }
