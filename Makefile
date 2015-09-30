@@ -66,28 +66,28 @@ confirm-execution:
 delete-deployment-aws: set-aws delete-deployment
 delete-deployment-gce: set-gce delete-deployment
 delete-deployment: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 	    'for deployment in $$(bosh deployments | cut -f 2 -d "|" | grep -v -e ^+- -e ^$$ -e "total:" -e "Name") ; do bosh -n delete deployment $$deployment --force ; done'
 
 delete-release-aws: set-aws delete-release
 delete-release-gce: set-gce delete-release
 delete-release: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 	    'for release in $$(bosh releases | grep "|" | cut -f 2 -d "|" | grep -v -e "Name") ; do bosh -n delete release $$release --force ; done'
 
 delete-stemcell-aws: set-aws delete-stemcell
 delete-stemcell-gce: set-gce delete-stemcell
 delete-stemcell: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
 delete-route-gce: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
 
 bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
 bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete delete-route-gce
 bosh-delete: bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
 
 destroy-aws: confirm-execution set-aws bosh-delete-aws destroy
 destroy-gce: confirm-execution set-gce bosh-delete-gce destroy
@@ -102,4 +102,4 @@ show:
 ssh-aws: set-aws ssh
 ssh-gce: set-gce ssh
 ssh: check-env-vars bastion
-	@ssh -oStrictHostKeyChecking=no ubuntu@${bastion}
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion}
