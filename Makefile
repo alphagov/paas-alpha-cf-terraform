@@ -37,9 +37,10 @@ scripts/terraform-outputs-gce.sh: gce/${DEPLOY_ENV}.tfstate
 prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws.yml scripts/terraform-outputs-aws.sh prepare-provision
 prepare-provision-gce: set-gce manifests/templates/outputs/terraform-outputs-gce.yml scripts/terraform-outputs-gce.sh prepare-provision
 prepare-provision: bastion
-	@scp -r -oStrictHostKeyChecking=no manifests/templates manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
+	@scp -r -oStrictHostKeyChecking=no manifests/templates \
+	    manifests/generate_bosh_manifest.sh \
+	    manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
-	@cd ${dir} && scp -oStrictHostKeyChecking=no manifest.yml ubuntu@${bastion}:bosh-manifest.yml
 
 test-aws: set-aws test
 test-gce: set-gce test

@@ -10,7 +10,9 @@ update:
 
 jobs:
   - name: runner_z1
-    instances: 2
+    instances: 1
+  - name: runner_z2
+    instances: 1
   - name: consul_z1
     instances: 1
 

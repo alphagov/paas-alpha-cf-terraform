@@ -1,0 +1,93 @@
+---
+terraform_outputs: (( merge ))
+
+meta:
+  bosh_public_ip: (( terraform_outputs.bosh_ip ))
+  bosh_service_ip: (( bosh_public_ip ))
+
+  google_properties:
+    project: (( terraform_outputs.gce_project_id ))
+    json_key: (( terraform_outputs.gce_account_json ))
+    default_zone: ((  terraform_outputs.zone0 ))
+
+  ntp:
+  - 169.254.169.254
+
+  cpi-release:
+    name: bosh-google-cpi
+    url: http://storage.googleapis.com/bosh-stemcells/bosh-google-cpi-5.tgz
+    sha1: c5de3053f233e6ef42c2a4228fa94179d955cc84
+
+  specific_bosh_job_templates:
+    - {name: registry, release: bosh-google-cpi}
+    - {name: cpi, release: bosh-google-cpi}
+    - {name: powerdns, release: bosh}
+
+name: bosh
+
+resource_pools:
+- name: vms
+  network: public
+  stemcell:
+    url: https://storage.googleapis.com/gce-bosh-stemcells/light-bosh-stemcell-3074-google-kvm-ubuntu-trusty-go_agent.tgz
+    sha1: 6e264b7fc3a8175466eeb934a4651c23189f6fc5
+  cloud_properties:
+    machine_type: n1-standard-2
+    root_disk_size_gb: 40
+    root_disk_type: pd-standard
+
+disk_pools:
+- name: disks
+  cloud_properties:
+    type: pd-standard
+
+networks:
+- name: private
+  type: dynamic
+  cloud_properties:
+    network_name: (( terraform_outputs.bosh_network_name ))
+    ip_forwarding: true
+    tags:
+      - bosh
+      - bastion
+- name: public
+  type: vip
+
+jobs:
+- name: bosh
+
+  networks:
+  - name: private
+    static_ips: null
+
+  properties:
+    google: (( meta.google_properties ))
+
+    hm:
+      resurrector_enabled: false
+
+    agent:
+      blobstore:
+        options:
+          endpoint: (( "http://" meta.bosh_service_ip ":25250" ))
+          password: agent-password
+          user: agent
+      mbus: (( "nats://nats:nats-password@" meta.bosh_service_ip ":4222" ))
+      ntp: (( meta.ntp ))
+
+    ntp: (( meta.ntp ))
+
+cloud_provider:
+  template:
+    name: cpi
+    release: bosh-google-cpi
+
+  properties:
+    google: (( meta.google_properties ))
+    agent:
+      mbus: https://mbus:mbus@0.0.0.0:6868
+      ntp: (( meta.ntp ))
+      blobstore:
+        provider: local
+        options:
+          blobstore_path: /var/vcap/micro_bosh/data/cache

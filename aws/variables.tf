@@ -45,7 +45,7 @@ variable "ubuntu_amis" {
 
 variable "key_pair_name" {
   description = "SSH Key Pair name to be used to launch EC2 instances"
-  default     = "deployer-tsuru-example"
+  default     = "insecure-deployer"
 }
 
 variable "health_check_interval" {
@@ -76,4 +76,16 @@ variable "dns_zone_id" {
 variable "dns_zone_name" {
   description = "Amazon Route53 DNS zone name"
   default     = "cf.paas.alphagov.co.uk"
+}
+
+# Terraform currently only has limited support for reading environment variables
+# Variables for use with terraform must be prefexed with 'TF_VAR_'
+# These two variables are passed in as environment variables named:
+# TF_VAR_AWS_ACCESS_KEY_ID and TF_VAR_AWS_SECRET_ACCESS_KEY respectively
+variable "AWS_ACCESS_KEY_ID" {
+  description = "AWS access key to be pass to the bosh CPI"
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+  description = "AWS secret access key to be pass to the bosh CPI"
 }

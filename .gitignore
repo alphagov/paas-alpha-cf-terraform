@@ -2,10 +2,6 @@ aws/ssh
 gce/ssh
 ssh
 ssh/
-aws/manifest.yml
-gce/manifest.yml
-aws/cf-manifest.yml
-gce/cf-manifest.yml
 gce/account.json
 *.tfstate
 *.tfstate.backup

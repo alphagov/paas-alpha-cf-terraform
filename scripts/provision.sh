@@ -8,11 +8,11 @@ SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 TARGET_PLATFORM=$1
 case $TARGET_PLATFORM in
   aws)
-    STEMCELL=light-bosh-stemcell-3069-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
+    STEMCELL=light-bosh-stemcell-3074-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
     ;;
   gce)
-    STEMCELL=light-bosh-stemcell-2968-google-kvm-ubuntu-trusty-go_agent.tgz
-    STEMCELL_URL=http://storage.googleapis.com/bosh-stemcells/$STEMCELL
+    STEMCELL=light-bosh-stemcell-3074-google-kvm-ubuntu-trusty-go_agent.tgz
+    STEMCELL_URL=http://storage.googleapis.com/gce-bosh-stemcells/$STEMCELL
     ;;
   *)
     echo "Must specify the target platform: gce|aws"
@@ -140,6 +140,7 @@ deploy_and_login_bosh() {
       gce_delete_fix_routing $terraform_output_environment
     fi
 
+    cd ~ && ./generate_bosh_manifest.sh $TARGET_PLATFORM > $BOSH_MANIFEST
     export BOSH_INIT_LOG_LEVEL=debug
     export BOSH_INIT_LOG_PATH=/tmp/bosh_init.log
     time bosh-init deploy $BOSH_MANIFEST
