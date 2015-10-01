@@ -259,7 +259,9 @@ cf_deploy() {
 
 cf_post_deploy() {
   # Deploy psql broker
-  time bash $SCRIPT_DIR/deploy_psql_broker.sh admin $(get_cf_secret secrets/uaa_admin_password)
+  time bash $SCRIPT_DIR/deploy_psql_broker.sh \
+    admin $(get_cf_secret secrets/uaa_admin_password) \
+    admin $(get_cf_secret secrets/postgres_password)
 }
 
 install_dependencies
