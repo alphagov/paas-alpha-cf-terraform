@@ -30,7 +30,7 @@ meta:
   postgres:
     host: 127.0.0.1
     user: postgres
-    password: (( secrets.postgres_password ))
+    password: (( secrets.bosh_postgres_password ))
     database: bosh
     adapter: postgres
 
@@ -41,7 +41,7 @@ meta:
     recursor: 8.8.8.8
 
   default_agent:
-    mbus: (( "nats://nats:" secrets.nats_password "@" meta.bosh_service_ip ":4222" ))
+    mbus: (( "nats://nats:" secrets.bosh_nats_password "@" meta.bosh_service_ip ":4222" ))
 
 name: (( merge ))
 
@@ -80,12 +80,12 @@ jobs:
     nats:
       address: 127.0.0.1
       user: nats
-      password: (( secrets.nats_password ))
+      password: (( secrets.bosh_nats_password ))
 
     redis:
       listen_address: 127.0.0.1
       address: 127.0.0.1
-      password: (( secrets.redis_password ))
+      password: (( secrets.bosh_redis_password ))
 
     postgres: (( meta.postgres ))
 
@@ -94,14 +94,14 @@ jobs:
       provider: dav
       director:
         user: director
-        password: (( secrets.blobstore_director_password ))
+        password: (( secrets.bosh_blobstore_director_password ))
       agent:
         user: agent
-        password: (( secrets.agent_password ))
+        password: (( secrets.bosh_agent_password ))
       options:
         endpoint: (( "http://" meta.bosh_public_ip ":25250" ))
         user: agent
-        password: (( secrets.agent_password ))
+        password: (( secrets.bosh_agent_password ))
 
     director:
       address: 127.0.0.1
@@ -114,7 +114,7 @@ jobs:
     hm:
       director_account:
         user: admin
-        password: (( secrets.hm_director_password ))
+        password: (( secrets.bosh_hm_director_password ))
       resurrector_enabled: (( merge || "true" ))
 
     ntp: (( meta.ntp ))
@@ -127,10 +127,10 @@ jobs:
       http:
         # Variables used by official job release
         user: admin
-        password: (( secrets.registry_password ))
+        password: (( secrets.bosh_registry_password ))
       # Variables used by Google job release
       username: admin
-      password: (( secrets.registry_password ))
+      password: (( secrets.bosh_registry_password ))
 
     dns: (( merge || meta.default_dns ))
 
