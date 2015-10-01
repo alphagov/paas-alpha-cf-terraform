@@ -1,3 +1,4 @@
+secrets: (( merge ))
 jobs:
 - <<: (( merge ))
 - name: postgres
@@ -19,7 +20,7 @@ jobs:
       roles:
         - tag: admin
           name: admin
-          password: (( merge ))
+          password: (( secrets.postgres_password ))
           permissions:
             - SUPERUSER
             - INHERIT

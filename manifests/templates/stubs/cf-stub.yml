@@ -1,9 +1,14 @@
 ---
 terraform_outputs: ((merge))
+secrets: (( merge ))
+
 director_uuid: BOSH_UUID
 name: (( "cloudfoundry-" meta.environment ))
 meta:
   environment: (( terraform_outputs.environment ))
+  default_env:
+    bosh:
+      password: (( secrets.vcap_password ))
 
 update:
   serial: false # makes every job deploy at the same time.
@@ -20,21 +25,55 @@ jobs:
 properties:
   cc:
     staging_upload_user: username
+    staging_upload_password: (( secrets.staging_upload_password ))
+    bulk_api_password: (( secrets.bulk_api_password ))
+    db_encryption_key: (( secrets.cc_db_encryption_key ))
     min_cli_version: '6.1.0'
     min_recommended_cli_version: '6.10.0'
   nats:
     user: nats_user
+    password: (( secrets.nats_password ))
   dea_next:
     disk_mb: 10240
     memory_mb: 4096
   router:
     enable_ssl: true
+    ssl_cert: (( secrets.router_ssl_cert ))
+    ssl_key: (( secrets.router_ssl_key ))
     cipher_suites: TLS_RSA_WITH_RC4_128_SHA:TLS_RSA_WITH_AES_128_CBC_SHA
     status:
       user: router_user
+      password: (( secrets.router_password ))
   uaa:
+    admin:
+      client_secret: (( secrets.uaa_admin_client_secret ))
     batch:
       username: batch_username
+      password: (( secrets.uaa_batch_password ))
+    cc:
+      client_secret: (( secrets.uaa_cc_client_secret ))
+    clients:
+      app-direct:
+        secret: (( secrets.uaa_clients_app_direct_secret ))
+      developer_console:
+        secret: (( secrets.uaa_clients_developer_console_secret ))
+      login:
+        secret: (( secrets.uaa_clients_login_secret ))
+      notifications:
+        secret: (( secrets.uaa_clients_notifications_secret ))
+      doppler:
+        secret: (( secrets.uaa_clients_doppler_secret ))
+      cloud_controller_username_lookup:
+        secret: (( secrets.uaa_clients_cloud_controller_username_lookup_secret ))
+      gorouter:
+        secret: (( secrets.uaa_clients_gorouter_secret ))
+    jwt:
+      signing_key: (( secrets.uaa_jwt_signing_key ))
+      verification_key: (( secrets.uaa_jwt_verification_key ))
+    scim:
+      users:
+      - (( "admin|" secrets.uaa_admin_password "|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose" ))
+
   login:
     links:
       network: https://network.gopivotal.com/login
@@ -42,3 +81,6 @@ properties:
     smtp:
       host: localhost
       port: 2525
+
+  loggregator_endpoint:
+    shared_secret: (( secrets.loggregator_endpoint_shared_secret ))

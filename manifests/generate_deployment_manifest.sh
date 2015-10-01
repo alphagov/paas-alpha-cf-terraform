@@ -35,5 +35,5 @@ spiff merge \
   $templates/${infrastructure}/stubs/*.yml \
   $templates/stubs/*.yml \
   $templates/outputs/terraform-outputs-${infrastructure}.yml \
-  $templates/secrets.yml \
+  $templates/cf-secrets.yml \
   "$@"
