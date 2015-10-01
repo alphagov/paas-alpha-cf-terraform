@@ -13,9 +13,6 @@ meta:
       cloud_properties:
           instance_type: c4.xlarge
 
-compilation:
-  cloud_properties: (( meta.resource_pools.large.cloud_properties ))
-
 resource_pools:
   - name: small_z1
     cloud_properties: (( meta.resource_pools.small.cloud_properties ))
