@@ -110,6 +110,11 @@ jobs:
       cpi_job: cpi
       max_threads: 10
       ignore_missing_gateway: "false"
+      user_management:
+        provider: local
+        local:
+          users:
+            - { name: admin, password: (( secrets.bosh_admin_password )) }
 
     hm:
       director_account:
