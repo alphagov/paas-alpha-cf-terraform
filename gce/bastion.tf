@@ -42,4 +42,9 @@ resource "google_compute_instance" "bastion" {
       "chmod 400 /home/ubuntu/.ssh/id_rsa"
     ]
   }
+
+  provisioner "remote-exec" {
+    script = "../scripts/setup-nat-routing.sh"
+  }
+
 }
