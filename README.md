@@ -19,13 +19,28 @@ gce/
         insecure-deployer.pub
 ```
 * Provide `account.json` inside gce
-* Provide AWS access keys as environment variables, plus the corresponding terraform variables. Example in profile:
+* On AWS: Provide AWS access keys as environment variables, plus the corresponding terraform variables. Example in profile:
 
 ```
 export AWS_ACCESS_KEY_ID=XXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=YYYYYYYYYY
 export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+```
+
+* On GCE: Provide GCE developers access keys to access GCS in interoperability
+  mode for compiled package cache, [as described here](https://cloud.google.com/storage/docs/migrating)
+```
+export TF_VAR_GCE_INTEROPERABILITY_ACCESS_KEY_ID=YYYYYYYYYYY
+export TF_VAR_GCE_INTEROPERABILITY_SECRET_ACCESS_KEY=XXXXXXXXXX
+```
+
+Note: Optionally it is possible to use the AWS compile cache bucket by setting:
+
+```
+export TF_VAR_GCE_INTEROPERABILITY_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+export TF_VAR_GCE_INTEROPERABILITY_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+export TF_VAR_GCE_INTEROPERABILITY_HOST=s3-eu-west-1.amazonaws.com
 ```
 
 ##Usage

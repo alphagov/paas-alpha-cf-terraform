@@ -64,14 +64,6 @@ jobs:
 - name: bosh
 
   properties:
-    compiled_package_cache:
-      provider: s3
-      options:
-        access_key_id: (( terraform_outputs.aws_access_key_id ))
-        secret_access_key: (( terraform_outputs.aws_secret_access_key ))
-        bucket_name: shared-cf-bosh-blobstore
-        host: s3-eu-west-1.amazonaws.com
-
     hm:
       resurrector_enabled: true
 

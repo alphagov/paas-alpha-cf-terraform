@@ -55,3 +55,14 @@ output "gce_account_json" {
 #	value = "${replace(file("account.json"), "\n", "")}"
 }
 
+output "compiled_cache_bucket_access_key_id" {
+	value = "${var.GCE_INTEROPERABILITY_ACCESS_KEY_ID}"
+}
+
+output "compiled_cache_bucket_secret_access_key" {
+	value = "${var.GCE_INTEROPERABILITY_SECRET_ACCESS_KEY}"
+}
+
+output "compiled_cache_bucket_host" {
+	value = "${var.GCE_INTEROPERABILITY_HOST}"
+}

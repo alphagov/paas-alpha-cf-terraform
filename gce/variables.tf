@@ -56,3 +56,22 @@ variable "dns_zone_name" {
   description = "Google DNS zone name"
   default     = "cf2.paas.alphagov.co.uk"
 }
+
+# Terraform currently only has limited support for reading environment variables
+# Variables for use with terraform must be prefexed with 'TF_VAR_'
+# These two variables are passed in as environment variables named:
+# TF_VAR_GCE_INTEROPERABILITY_ACCESS_KEY_ID and
+# TF_VAR_GCE_INTEROPERABILITY_SECRET_ACCESS_KEY respectively
+variable "GCE_INTEROPERABILITY_ACCESS_KEY_ID" {
+  description = "GCE interoperability access key to be pass to access buckets"
+}
+
+variable "GCE_INTEROPERABILITY_SECRET_ACCESS_KEY" {
+  description = "GCE interoperability secret access key to be pass to access buckets"
+}
+
+variable "GCE_INTEROPERABILITY_HOST" {
+  description = "GCE interoperability host to access buckets"
+  default = "storage.googleapis.com"
+}
+
