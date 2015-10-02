@@ -38,6 +38,11 @@ jobs:
         port: 80
       wsgi:
         inactivity-timeout: 60
+    grafana:
+      root_url: "/"
+      admin_username: "admin"
+      admin_password: "admin"
+
   templates:
   - name: carbon
     release: graphite
@@ -47,3 +52,5 @@ jobs:
     release: graphite
   - name: metron_agent
     release: (( meta.release.name ))
+  - name: grafana
+    release: grafana

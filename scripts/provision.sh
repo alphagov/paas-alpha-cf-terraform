@@ -44,6 +44,7 @@ elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases
 
 # Dependencies versions
 GRAPHITE_VERSION="0d79bf5aa5f2cf29195bff725d7dee55dea1aedc"
+GRAFANA_VERSION="44564533c9d4d656bdcd5633b808f0bf6fb177ae"
 BOSH_INIT_VERSION=0.0.72
 BOSH_INIT_URL=https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${BOSH_INIT_VERSION}-linux-amd64
 SPIFF_VERSION=v1.0.7
@@ -188,6 +189,24 @@ cf_graphite_release() {
   fi
 }
 
+cf_grafana_release() {
+  echo "*** Creating and uploading grafana release..."
+
+  if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "grafana/${GRAFANA_VERSION}"; then
+    echo "Release grafana version ${GRAFANA_VERSION} already uploaded, skipping"
+  else
+    git_clone https://github.com/vito/grafana-boshrelease.git ${GRAFANA_VERSION}
+
+    cd ~/grafana-boshrelease
+    $BOSH_CLI create release --name grafana --version ${GRAFANA_VERSION}
+
+    $BOSH_CLI upload release 2>&1 | tee /tmp/upload_release.log
+    if [ $PIPESTATUS != 0 ] && ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
+      return 1
+    fi
+  fi
+}
+
 clone_and_update_cf_release() {
   # Git clone and upload release
   echo "Updating ~/cf-release from $CF_RELEASE_GIT_URL:$CF_RELEASE_REVISION"
@@ -252,4 +271,5 @@ cf_prepare_deployment() {
 install_dependencies
 deploy_and_login_bosh
 cf_graphite_release
+cf_grafana_release
 cf_prepare_deployment
