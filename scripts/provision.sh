@@ -34,7 +34,7 @@ BOSH_PORT=${BOSH_PORT:-25555}
 # Git cf-release to clone
 CF_RELEASE=215
 CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
-CF_RELEASE_REVISION=cf_jobs_without_static_ips_dependencies_v215
+CF_RELEASE_REVISION='cf_jobs_without_static_ips_dependencies_v215_103419194_with_dea_next_mtu'
 
 # Releases to upload
 BOSH_RELEASES="

@@ -62,6 +62,9 @@ properties:
       availability_zone: (( terraform_outputs.zone0 ))
       availability_zone2: (( terraform_outputs.zone1 ))
 
+  dea_next:
+    mtu: 1460
+
   ccdb:
     db_scheme: postgres
     address: (( properties.databases.address ))
