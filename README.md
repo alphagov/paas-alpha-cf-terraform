@@ -28,14 +28,8 @@ export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ```
 
-* On GCE: Provide GCE developers access keys to access GCS in interoperability
-  mode for compiled package cache, [as described here](https://cloud.google.com/storage/docs/migrating)
-```
-export TF_VAR_GCE_INTEROPERABILITY_ACCESS_KEY_ID=YYYYYYYYYYY
-export TF_VAR_GCE_INTEROPERABILITY_SECRET_ACCESS_KEY=XXXXXXXXXX
-```
-
-Note: Optionally it is possible to use the AWS compile cache bucket by setting:
+* On GCE: Pass the AWS credentials to access the shared compile package bucket
+  on AWS using the following variables. Specify also the AWS host with the zone.
 
 ```
 export TF_VAR_GCE_INTEROPERABILITY_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
@@ -79,3 +73,26 @@ gcloud compute instances reset --zone europe-west1-b vm-10ced236-8fd0-4274-4f51-
 
 Otherwise, letting it timeout and reruning the `make` command, it will rerun the `bosh-init` which
 will delete the old VM and create a new one. Repeat this step until one works :)
+
+Known issues
+============
+
+GCS with operability mode for compiled packages on GCE
+-------------------------------------------------------
+
+On GCE we tried using the GCS in interoperability
+mode for compiled package cache, [as described here](https://cloud.google.com/storage/docs/migrating)
+
+```
+export TF_VAR_GCE_INTEROPERABILITY_ACCESS_KEY_ID=YYYYYYYYYYY
+export TF_VAR_GCE_INTEROPERABILITY_SECRET_ACCESS_KEY=XXXXXXXXXX
+export TF_VAR_GCE_INTEROPERABILITY_HOST=storage.googleapi.com
+```
+
+But we got random errors using it, like:
+
+```
+Failed compiling packages > java/1dab29614aba5dcec2bc03c1dd7c06ad2e803212: Failed to create object, S3 response error: The request signature we calculated does not match the signature you provided. Check your Google secret key and signing method. (00:01:38)
+```
+
+As this does not affect the evaluation, we will just use S3 AWS for the time being.
