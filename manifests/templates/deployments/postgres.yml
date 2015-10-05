@@ -1,3 +1,4 @@
+secrets: (( merge ))
 jobs:
 - <<: (( merge ))
 - name: postgres
@@ -18,8 +19,8 @@ jobs:
       log_line_prefix: "psql %m:"
       roles:
         - tag: admin
-          name: (( merge || "admin" ))
-          password: (( merge || "administrator" ))
+          name: admin
+          password: (( secrets.postgres_password ))
           permissions:
             - SUPERUSER
             - INHERIT

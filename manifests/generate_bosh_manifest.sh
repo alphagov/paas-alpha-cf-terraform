@@ -19,4 +19,5 @@ spiff merge \
   $templates/bosh/bosh-template.yml \
   $templates/${infrastructure}/bosh/*.yml \
   $templates/outputs/terraform-outputs-${infrastructure}.yml \
+  $templates/bosh-secrets.yml \
   "$@"

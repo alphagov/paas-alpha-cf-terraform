@@ -4,6 +4,10 @@ set -e # fail on error
 
 SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
+get_cf_secret() { ${SCRIPT_DIR}/val_from_yaml.rb templates/cf-secrets.yml $1; }
+get_bosh_secret() { ${SCRIPT_DIR}/val_from_yaml.rb templates/bosh-secrets.yml $1; }
+get_output() { ${SCRIPT_DIR}/val_from_yaml.rb templates/outputs/terraform-outputs-${TARGET_PLATFORM}.yml $1; }
+
 # Read the platform configuration
 TARGET_PLATFORM=$1
 case $TARGET_PLATFORM in
@@ -27,7 +31,6 @@ esac
 . $SCRIPT_DIR/terraform-outputs-${TARGET_PLATFORM}.sh
 
 BOSH_ADMIN_USER=${BOSH_ADMIN_USER:-admin}
-BOSH_ADMIN_PASS=${BOSH_ADMIN_USER:-admin}
 BOSH_IP=${BOSH_IP:-$terraform_output_bosh_ip}
 BOSH_PORT=${BOSH_PORT:-25555}
 
@@ -114,9 +117,12 @@ function install_dependencies {
 
 # Bosh
 bosh_login() {
+  BOSH_ADMIN_PASS=$(get_bosh_secret secrets/bosh_admin_password)
   echo "Login to bosh $BOSH_IP:$BOSH_PORT"
   echo -e "${BOSH_ADMIN_USER}\n${BOSH_ADMIN_PASS}" | \
-    $BOSH_CLI target $BOSH_IP:$BOSH_PORT
+    $BOSH_CLI target $BOSH_IP:$BOSH_PORT || return 1
+  echo -e "${BOSH_ADMIN_USER}\n${BOSH_ADMIN_PASS}" | \
+    $BOSH_CLI login
 }
 
 bosh_check_and_login() {
@@ -253,7 +259,9 @@ cf_deploy() {
 
 cf_post_deploy() {
   # Deploy psql broker
-  time bash $SCRIPT_DIR/deploy_psql_broker.sh admin fakepassword
+  time bash $SCRIPT_DIR/deploy_psql_broker.sh \
+    admin $(get_cf_secret secrets/uaa_admin_password) \
+    admin $(get_cf_secret secrets/postgres_password)
 }
 
 install_dependencies

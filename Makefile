@@ -11,6 +11,8 @@ endif
 
 set-aws:
 	$(eval dir=aws)
+	$(eval apply_suffix=-var uaadb_password=`PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/uaadb_password`\
+						-var ccdb_password=`PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/ccdb_password`)
 set-gce:
 	$(eval dir=gce)
 	$(eval apply_suffix=-var gce_account_json="`tr -d '\n' < account.json`")
@@ -41,6 +43,8 @@ prepare-provision: bastion
 	    manifests/generate_bosh_manifest.sh \
 	    manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
+	@PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/cf-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
+	@PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/bosh-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
 
 test-aws: set-aws test
 test-gce: set-gce test
@@ -92,7 +96,7 @@ bosh-delete: bastion
 destroy-aws: confirm-execution set-aws bosh-delete-aws destroy
 destroy-gce: confirm-execution set-gce bosh-delete-gce destroy
 destroy:
-	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} -force
+	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} -force
 
 show-aws: set-aws show
 show-gce: set-gce show

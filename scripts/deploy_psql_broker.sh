@@ -1,12 +1,12 @@
 #!/bin/bash
 echo "*** Deploying and registering PostgreSQL broker..."
 
-ADMIN_PASS="administrator"
-ADMIN_USER="admin"
 PSQL_SERVER=`bosh vms | grep postgres/0 | grep -o '10\.[0-9]\+\.[0-9]\+\.[0-9]\+'`
 DOMAIN=`python -c 'import yaml; print yaml.load(file("cf-manifest.yml"))["properties"]["domain"]'`
 CF_ADMIN="$1"
 CF_PASS="$2"
+PSQL_ADMIN_USER="$3"
+PSQL_ADMIN_PASS="$4"
 
 PACKAGES="maven openjdk-7-jdk"
 if ! dpkg -l $PACKAGES > /dev/null 2>&1; then
@@ -39,14 +39,14 @@ cf create-security-group internal-postgresql internal-psql.json
 cf bind-staging-security-group internal-postgresql
 cf bind-running-security-group internal-postgresql
 
-cf set-env postgresql-cf-service-broker JAVA_OPTS "-Dsecurity.user.password=${ADMIN_PASS}"
-cf set-env postgresql-cf-service-broker MASTER_JDBC_URL "jdbc:postgresql://${PSQL_SERVER}:5432/psqlbroker?user=${ADMIN_USER}&password=${ADMIN_PASS}"
+cf set-env postgresql-cf-service-broker JAVA_OPTS "-Dsecurity.user.password=${PSQL_ADMIN_PASS}"
+cf set-env postgresql-cf-service-broker MASTER_JDBC_URL "jdbc:postgresql://${PSQL_SERVER}:5432/psqlbroker?user=${PSQL_ADMIN_USER}&password=${PSQL_ADMIN_PASS}"
 cf start postgresql-cf-service-broker
 URL=`cf app postgresql-cf-service-broker | grep urls: | awk '{print $2}'`
 
 # Only register if not done already
 cf service-brokers | grep -q ${URL}
 if [[ ! $? == 0 ]] ; then
-  cf create-service-broker postgresql-cf-service-broker user ${ADMIN_PASS} http://${URL}
+  cf create-service-broker postgresql-cf-service-broker user ${PSQL_ADMIN_PASS} http://${URL}
   cf enable-service-access PostgreSQL -p "Basic PostgreSQL Plan"
 fi
