@@ -40,11 +40,9 @@ CF_RELEASE_REVISION='cf_jobs_without_static_ips_dependencies_v215_103419194_with
 BOSH_RELEASES="
 cf,215,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
 elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
-"
-LOCAL_RELEASES="
-graphite,0d79bf5aa5f2cf29195bff725d7dee55dea1aedc,https://github.com/CloudCredo/graphite-statsd-boshrelease.git
-grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git
-collectd,graphite-for-collectd,https://github.com/alphagov/collectd-graphite-boshrelease.git
+graphite,0d79bf5aa5f2cf29195bff725d7dee55dea1aedc,https://github.com/CloudCredo/graphite-statsd-boshrelease.git,create
+collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/collectd-graphite-boshrelease.git,create
+grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
 "
 
 # Dependencies versions
@@ -212,37 +210,23 @@ upload_stemcell() {
   fi
 }
 
-build_and_upload_releases() {
-  for r in $LOCAL_RELEASES; do
-    local name=$(echo $r | cut -f 1 -d ,)
-    local version=$(echo $r | cut -f 2 -d ,)
-    local url=$(echo $r | cut -f 3 -d ,)
-    local path=$(echo ${url} | sed "s|.*/||;s|.git||")
-    if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
-      echo "Release $name version $version already uploaded, skipping"
-      continue
-    else
-      echo "*** Creating and uploading ${name} release..."
-      git_clone ${url} ${version}
-      cd ~/${path}
-      $BOSH_CLI create release --name ${name} --version ${version}
-      $BOSH_CLI upload release 2>&1 | tee /tmp/upload_release.log
-      if [ $PIPESTATUS != 0 ] && ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
-        return 1
-      fi
-    fi
-  done
-}
-
 upload_releases() {
   for r in $BOSH_RELEASES; do
     local name=$(echo $r | cut -f 1 -d ,)
     local version=$(echo $r | cut -f 2 -d ,)
     local url=$(echo $r | cut -f 3 -d ,)
+    local action=$(echo $r | cut -f 4 -d ,)
+
     if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
       echo "Release $name version $version already uploaded, skipping"
       continue
     else
+      if [[ ${action} == "create" ]] ; then
+         git_clone ${url} ${version}
+         $BOSH_CLI create release --name ${name} --version ${version}
+         url=""
+      fi
+
       $BOSH_CLI upload release $url 2>&1 | tee /tmp/upload_release.log
       if [ $PIPESTATUS != 0 ] && ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
         return 1
@@ -255,7 +239,6 @@ cf_prepare_deployment() {
   clone_and_update_cf_release
   upload_stemcell
   upload_releases
-  build_and_upload_releases
 }
 
 install_dependencies
