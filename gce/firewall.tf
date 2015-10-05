@@ -12,6 +12,25 @@ resource "google_compute_firewall" "ssh" {
   }
 }
 
+resource "google_compute_firewall" "bosh" {
+  name = "${var.env}-cf-bosh"
+  description = "Allow bosh deployed vms to route via bastion"
+  network = "${google_compute_network.bastion.name}"
+
+  source_tags = [ "cf" ,"bastion", "bosh"]
+  target_tags = [ "bastion", "cf", "bosh" ]
+
+  allow {
+    protocol = "tcp"
+  }
+  allow {
+    protocol = "udp"
+  }
+  allow {
+    protocol = "icmp"
+  }
+}
+
 # TODO: restrict better, currently opening all for convenience; known ports that need to be open:
 # TCP: 4222, 6868, 25250, 25555, 25777
 # UDP: 52, 3457

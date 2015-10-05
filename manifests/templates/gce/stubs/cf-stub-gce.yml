@@ -18,9 +18,9 @@ networks:
     type: dynamic
     cloud_properties:
       network_name: (( terraform_outputs.cf1_network_name ))
-      ephemeral_external_ip: true
+      ephemeral_external_ip: false
       tags:
-        - bosh
+        - cf
         - (( terraform_outputs.environment ))
         - (( name ))
 
@@ -28,9 +28,9 @@ networks:
     type: dynamic
     cloud_properties:
       network_name: (( terraform_outputs.cf2_network_name ))
-      ephemeral_external_ip: true
+      ephemeral_external_ip: false
       tags:
-        - bosh
+        - cf
         - (( terraform_outputs.environment ))
         - (( name ))
 
@@ -38,9 +38,9 @@ networks:
     type: dynamic
     cloud_properties:
       network_name: (( terraform_outputs.cf1_network_name ))
-      ephemeral_external_ip: true
+      ephemeral_external_ip: false
       tags:
-        - bosh
+        - cf
         - (( terraform_outputs.environment ))
         - (( name ))
       target_pool: (( terraform_outputs.router_pool_name ))
@@ -49,9 +49,9 @@ networks:
     type: dynamic
     cloud_properties:
       network_name: (( terraform_outputs.cf2_network_name ))
-      ephemeral_external_ip: true
+      ephemeral_external_ip: false
       tags:
-        - bosh
+        - cf
         - (( terraform_outputs.environment ))
         - (( name ))
       target_pool: (( terraform_outputs.router_pool_name ))
@@ -62,6 +62,9 @@ properties:
     gce:
       availability_zone: (( terraform_outputs.zone0 ))
       availability_zone2: (( terraform_outputs.zone1 ))
+
+  dea_next:
+    mtu: 1460
 
   ccdb:
     db_scheme: postgres
