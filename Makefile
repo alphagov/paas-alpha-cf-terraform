@@ -19,8 +19,8 @@ set-gce:
 bastion:
 	$(eval bastion=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip))
 
-aws: set-aws apply prepare-provision-aws provision
-gce: set-gce apply prepare-provision-gce provision
+aws: set-aws apply prepare-provision-aws provision deploy-cf
+gce: set-gce apply prepare-provision-gce provision deploy-cf
 
 apply-aws: set-aws apply
 apply-gce: set-gce apply
@@ -64,14 +64,18 @@ provision-gce: set-gce prepare-provision-gce provision
 provision: check-env-vars bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/provision.sh ${dir}'
 
+deploy-cf-aws: set-aws prepare-provision-aws deploy-cf
+deploy-cf-gce: set-gce prepare-provision-gce deploy-cf
+deploy-cf: check-env-vars bastion
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_cf.sh ${dir}'
+
 confirm-execution:
 	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
 
-delete-deployment-aws: set-aws delete-deployment
-delete-deployment-gce: set-gce delete-deployment
-delete-deployment: bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
-	    'for deployment in $$(bosh deployments | cut -f 2 -d "|" | grep -v -e ^+- -e ^$$ -e "total:" -e "Name") ; do bosh -n delete deployment $$deployment --force ; done'
+delete-deployments-aws: set-aws delete-deployments
+delete-deployments-gce: set-gce delete-deployments
+delete-deployments: confirm-execution bastion
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} './scripts/bosh_delete_deployments.rb -y'
 
 delete-release-aws: set-aws delete-release
 delete-release-gce: set-gce delete-release
@@ -88,15 +92,18 @@ delete-stemcell: bastion
 delete-route-gce: bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
 
-bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
-bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete delete-route-gce
+destroy-terraform-aws: confirm-execution set-aws destroy-terraform
+destroy-terraform-gce: confirm-execution set-gce destroy-terraform
+destroy-terraform:
+	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} -force
+
+bosh-delete-aws: set-aws delete-deployments delete-release delete-stemcell bosh-delete
+bosh-delete-gce: set-gce delete-deployments delete-release delete-stemcell bosh-delete delete-route-gce
 bosh-delete: bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
 
-destroy-aws: confirm-execution set-aws bosh-delete-aws destroy
-destroy-gce: confirm-execution set-gce bosh-delete-gce destroy
-destroy:
-	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} -force
+destroy-aws: confirm-execution set-aws delete-deployments bosh-delete-aws destroy-terraform
+destroy-gce: confirm-execution set-gce delete-deployments bosh-delete-gce destroy-terraform
 
 show-aws: set-aws show
 show-gce: set-gce show
