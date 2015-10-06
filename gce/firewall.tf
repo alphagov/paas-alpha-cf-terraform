@@ -17,8 +17,8 @@ resource "google_compute_firewall" "bosh" {
   description = "Allow bosh deployed vms to route via bastion"
   network = "${google_compute_network.bastion.name}"
 
-  source_tags = [ "cf" ,"bastion", "bosh"]
-  target_tags = [ "bastion", "cf", "bosh" ]
+  source_tags = [ "cf", "bastion", "bosh"]
+  target_tags = [ "cf", "bastion", "bosh" ]
 
   allow {
     protocol = "tcp"
