@@ -34,14 +34,6 @@ output "cf2_subnet_id" {
 	value = "${aws_subnet.cf.1.id}"
 }
 
-output "aws_secret_access_key" {
-	value = "${var.AWS_SECRET_ACCESS_KEY}"
-}
-
-output "aws_access_key_id" {
-	value = "${var.AWS_ACCESS_KEY_ID}"
-}
-
 output "ccdb_address" {
 	value = "${aws_db_instance.ccdb.address}"
 }
@@ -96,4 +88,24 @@ output "microbosh_static_public_ip" {
 
 output "key_pair_name" {
 	value = "${var.key_pair_name}"
+}
+
+output "aws_secret_access_key" {
+	value = "${var.AWS_SECRET_ACCESS_KEY}"
+}
+
+output "aws_access_key_id" {
+       value = "${var.AWS_ACCESS_KEY_ID}"
+}
+
+output "compiled_cache_bucket_access_key_id" {
+	value = "${var.AWS_ACCESS_KEY_ID}"
+}
+
+output "compiled_cache_bucket_secret_access_key" {
+	value = "${var.AWS_SECRET_ACCESS_KEY}"
+}
+
+output "compiled_cache_bucket_host" {
+	value = "s3-${var.region}.amazonaws.com"
 }
