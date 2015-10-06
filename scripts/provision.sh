@@ -60,7 +60,7 @@ BOSH_CLI="bundle exec bosh"
 export PATH=$PATH:/usr/local/bin
 
 # Preinstallation of packages
-function install_dependencies {
+install_dependencies() {
   PACKAGES="
     build-essential
     git
@@ -149,6 +149,24 @@ deploy_and_login_bosh() {
     return 1
   fi
 
+}
+
+git_clone() {
+  local url=$1
+  local revision=$2
+  path=$(echo ${url} | sed "s|.*/||;s|.git||")
+
+  if [ ! -d ~/${path}/.git ]; then
+    rm -rf ~/${path}
+    git clone -q ${url} ~/${path}
+  else
+    cd ~/${path}
+    git remote set-url origin ${url}
+    git fetch -q
+  fi
+
+  cd ~/${path}
+  git checkout -q ${revision}
 }
 
 clone_and_update_cf_release(){
