@@ -7,3 +7,5 @@ releases:
   version: latest
 - name: grafana
   version: latest
+- name: collectd
+  version: latest

@@ -1,5 +1,5 @@
 ---
-terraform_outputs: ((merge))
+terraform_outputs: (( merge ))
 secrets: (( merge ))
 name: (( "cloudfoundry-" meta.environment ))
 meta:
@@ -57,6 +57,8 @@ networks:
       target_pool: (( terraform_outputs.router_pool_name ))
 
 properties:
+  graphite:
+    server: (( "0.graphite.cf1." .name ".microbosh" ))
   domain: (( terraform_outputs.environment ".cf2.paas.alphagov.co.uk" ))
   template_only:
     gce:

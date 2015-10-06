@@ -20,7 +20,6 @@ jobs:
   - name: consul_z1
     instances: 1
 
-
 properties:
   cc:
     staging_upload_user: username

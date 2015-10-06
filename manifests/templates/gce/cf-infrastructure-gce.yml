@@ -1,4 +1,4 @@
-name: ((merge))
+name: (( merge ))
 meta:
   zones:
     z1: (( properties.template_only.gce.availability_zone ))
