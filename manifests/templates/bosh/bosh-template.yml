@@ -116,7 +116,6 @@ jobs:
       name: my-bosh
       db: (( meta.postgres ))
       cpi_job: cpi
-      max_threads: 10
       ignore_missing_gateway: "false"
       user_management:
         provider: local
