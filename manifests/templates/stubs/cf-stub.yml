@@ -1,11 +1,10 @@
 ---
 terraform_outputs: ((merge))
 secrets: (( merge ))
-
 director_uuid: BOSH_UUID
-name: (( "cloudfoundry-" meta.environment ))
+name: (( merge ))
 meta:
-  environment: (( terraform_outputs.environment ))
+  <<: (( merge ))
   default_env:
     bosh:
       password: (( secrets.vcap_password ))

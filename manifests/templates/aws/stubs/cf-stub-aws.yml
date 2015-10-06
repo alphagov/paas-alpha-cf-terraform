@@ -1,7 +1,8 @@
 ---
 terraform_outputs: ((merge))
+name: (( "cloudfoundry-" meta.environment ))
 meta:
-  <<: (( merge ))
+  environment: (( terraform_outputs.environment ))
   zones:
     z1: (( terraform_outputs.zone0 ))
     z2: (( terraform_outputs.zone1 ))
