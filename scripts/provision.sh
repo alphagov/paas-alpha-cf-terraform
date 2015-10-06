@@ -241,32 +241,6 @@ cf_prepare_deployment() {
   upload_releases
 }
 
-cf_compile_manifest() {
-  # Use spiff to generate CF deployment manifest
-  cd ~
-
-  # Output the director uuid to be populated by spiff
-  echo -e "---\ndirector_uuid: $($BOSH_CLI status --uuid)" > templates/stubs/director-uuid.yml
-
-  # Generate the manifest
-  CF_RELEASE_PATH=~/cf-release/ ./generate_deployment_manifest.sh $TARGET_PLATFORM > ~/cf-manifest.yml
-}
-
-cf_deploy() {
-  $BOSH_CLI deployment ~/cf-manifest.yml
-  time $BOSH_CLI -n deploy
-}
-
-cf_post_deploy() {
-  # Deploy psql broker
-  time bash $SCRIPT_DIR/deploy_psql_broker.sh \
-    admin $(get_cf_secret secrets/uaa_admin_password) \
-    admin $(get_cf_secret secrets/postgres_password)
-}
-
 install_dependencies
 deploy_and_login_bosh
 cf_prepare_deployment
-cf_compile_manifest
-cf_deploy
-cf_post_deploy
