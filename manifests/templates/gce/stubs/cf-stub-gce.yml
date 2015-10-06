@@ -66,50 +66,8 @@ properties:
   dea_next:
     mtu: 1460
 
-  ccdb:
-    db_scheme: postgres
-    address: (( properties.databases.address ))
-    port: (( properties.databases.port ))
-    roles:
-      - tag: admin
-        name: ccadmin
-        password: (( secrets.ccadmin_password ))
-    databases:
-      - tag: cc
-        name: ccdb
-        citext: true
-
-  uaadb:
-    db_scheme: postgresql
-    address: (( properties.databases.address ))
-    port: (( properties.databases.port ))
-    roles:
-      - tag: admin
-        name: uaaadmin
-        password: (( secrets.uuadmin_password ))
-    databases:
-      - tag: uaa
-        name: uaadb
-        citext: true
-
   databases:
-    db_scheme: postgres
     address: (( "0.postgres-z1.cf1." .name ".microbosh" ))
-    port: 5524
-    roles:
-      - tag: admin
-        name: ccadmin
-        password: (( secrets.ccadmin_password ))
-      - tag: admin
-        name: uaaadmin
-        password: (( secrets.uuadmin_password ))
-    databases:
-      - tag: cc
-        name: ccdb
-        citext: true
-      - tag: uaa
-        name: uaadb
-        citext: true
 
 jobs:
   - name: router_z1
@@ -121,6 +79,9 @@ jobs:
     networks:
       - name: router2
         static_ips: null
+
+  - name: postgres_z1
+    instances: 1
 
 resource_pools:
   - name: router_z1
