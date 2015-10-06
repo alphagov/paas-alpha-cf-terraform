@@ -169,21 +169,10 @@ git_clone() {
   git checkout -q ${revision}
 }
 
-clone_and_update_cf_release(){
+clone_and_update_cf_release() {
   # Git clone and upload release
   echo "Updating ~/cf-release from $CF_RELEASE_GIT_URL:$CF_RELEASE_REVISION"
-
-  if [ ! -d ~/cf-release/.git ]; then
-    rm -rf ~/cf-release
-    git clone -q $CF_RELEASE_GIT_URL ~/cf-release
-  else
-    cd ~/cf-release
-    git remote set-url origin $CF_RELEASE_GIT_URL
-    git fetch -q
-  fi
-
-  cd ~/cf-release
-  git checkout -q $CF_RELEASE_REVISION
+  git_clone $CF_RELEASE_GIT_URL $CF_RELEASE_REVISION
 
   ./update  >> update.log 2>&1
   if [ $? != 0 ]; then
