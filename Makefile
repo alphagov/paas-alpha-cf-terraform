@@ -51,7 +51,8 @@ test-gce: set-gce test
 test: bastion
 	$(eval domain=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate dns_zone_name))
 	smoke_test/smoke_test.json.sh \
-	    ${DEPLOY_ENV} ${domain} > \
+	    ${DEPLOY_ENV} ${domain} \
+	    admin `PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/cf_admin_password` > \
 		smoke_test/smoke_test.json
 	@scp -oStrictHostKeyChecking=no \
 	    smoke_test/smoke_test.sh smoke_test/smoke_test.json \
