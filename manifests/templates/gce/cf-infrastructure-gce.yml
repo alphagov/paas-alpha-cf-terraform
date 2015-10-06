@@ -75,14 +75,14 @@ resource_pools:
   - name: small_z1
     cloud_properties:
       machine_type: f1-micro
-      root_disk_size_gb: 4
+      root_disk_size_gb: 10
       root_disk_type: pd-standard
       zone: (( meta.zones.z1 ))
 
   - name: small_z2
     cloud_properties:
       machine_type: f1-micro
-      root_disk_size_gb: 4
+      root_disk_size_gb: 10
       root_disk_type: pd-standard
       zone: (( meta.zones.z2 ))
 
@@ -131,14 +131,14 @@ resource_pools:
   - name: router_z1
     cloud_properties:
       machine_type: g1-small
-      root_disk_size_gb: 4
+      root_disk_size_gb: 10
       root_disk_type: pd-standard
       zone: (( meta.zones.z1 ))
 
   - name: router_z2
     cloud_properties:
       machine_type: g1-small
-      root_disk_size_gb: 4
+      root_disk_size_gb: 10
       root_disk_type: pd-standard
       zone: (( meta.zones.z2 ))
 
