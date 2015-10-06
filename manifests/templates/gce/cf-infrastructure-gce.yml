@@ -60,7 +60,7 @@ properties:
       fog_connection: (( meta.fog_config ))
 
   uaa:
-    catalina_opts: -Xmx768m -XX:MaxPermSize=256m
+    catalina_opts: -Xmx512m -XX:MaxPermSize=256m
 
   nats:
     address: (( merge || meta.nats.address ))
