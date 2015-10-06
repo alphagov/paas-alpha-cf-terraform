@@ -5,7 +5,9 @@ To provision a microbosh instance on AWS and GCE.
 In order to deploy a microbosh, it is necessary to first create subnets, security groups and static IP reservations which will be used by bosh-init when deploying the microbosh. We are using terraform to create these resources, along with a bastion host which will perform the actual `bosh-init` steps to create the microbosh.
 
 ##Pre-requisites
+
 * You will need to be running ssh-agent and have performed an `ssh-add <deployer_key>` to make the credentials available for ssh to be able to connect into the bastion host
+* You need to have the [team password store `paas-pass` setup](https://github.gds/multicloudpaas/credentials)
 * Make available the ssh directory inside aws and gce
 
 ```
