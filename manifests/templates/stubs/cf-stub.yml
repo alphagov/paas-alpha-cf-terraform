@@ -19,6 +19,8 @@ jobs:
     instances: 1
   - name: consul_z1
     instances: 1
+  - name: stats_z1
+    instances: 1
 
 properties:
   cc:

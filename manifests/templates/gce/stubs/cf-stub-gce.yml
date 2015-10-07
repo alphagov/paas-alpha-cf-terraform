@@ -60,6 +60,9 @@ properties:
   graphite:
     server: (( "0.graphite.cf1." .name ".microbosh" ))
   domain: (( terraform_outputs.environment ".cf2.paas.alphagov.co.uk" ))
+  collector:
+    graphite:
+      address: (( "0.graphite.cf1." .name ".microbosh" ))
   template_only:
     gce:
       availability_zone: (( terraform_outputs.zone0 ))

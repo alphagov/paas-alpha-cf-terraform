@@ -47,6 +47,9 @@ properties:
   graphite:
     server: 10.0.10.40
   domain: (( terraform_outputs.environment ".cf.paas.alphagov.co.uk" ))
+  collector:
+    graphite:
+      address: 10.0.10.40
   cc:
     droplets:
       droplet_directory_key: (( terraform_outputs.environment "-cf-droplets" ))

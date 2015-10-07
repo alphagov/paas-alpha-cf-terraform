@@ -1,0 +1,13 @@
+name: (( merge ))
+
+jobs:
+  - <<: (( merge ))
+
+properties:
+  <<: (( merge ))
+  collector:
+    deployment_name: (( name ))
+    use_graphite: true
+    graphite:
+      address: changeme
+      port: 2003
