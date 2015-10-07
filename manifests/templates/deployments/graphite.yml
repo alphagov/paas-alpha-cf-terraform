@@ -2,6 +2,18 @@ meta:
   release:
     name: cf
 
+  graphite_templates:
+    - name: carbon
+      release: graphite
+    - name: graphite-web
+      release: graphite
+    - name: statsd
+      release: graphite
+    - name: metron_agent
+      release: (( meta.release.name ))
+    - name: grafana
+      release: grafana
+
 jobs:
 - <<: (( merge ))
 - name: graphite
@@ -43,14 +55,4 @@ jobs:
       admin_username: "admin"
       admin_password: "admin"
 
-  templates:
-  - name: carbon
-    release: graphite
-  - name: graphite-web
-    release: graphite
-  - name: statsd
-    release: graphite
-  - name: metron_agent
-    release: (( meta.release.name ))
-  - name: grafana
-    release: grafana
+  templates: (( merge || meta.graphite_templates ))
