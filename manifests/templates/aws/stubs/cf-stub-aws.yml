@@ -1,7 +1,8 @@
 ---
 terraform_outputs: ((merge))
+name: (( "cloudfoundry-" meta.environment ))
 meta:
-  <<: (( merge ))
+  environment: (( terraform_outputs.environment ))
   zones:
     z1: (( terraform_outputs.zone0 ))
     z2: (( terraform_outputs.zone1 ))
@@ -53,31 +54,19 @@ properties:
       resource_directory_key: (( terraform_outputs.environment "-cf-resources" ))
     packages:
       app_package_directory_key: (( terraform_outputs.environment "-cf-packages" ))
-  ccdb:
-    db_scheme: mysql
-    roles:
-    - tag: admin
-      name: (( terraform_outputs.ccdb_username ))
-      password: (( terraform_outputs.ccdb_password ))
-    databases:
-    - tag: cc
-      name: ccdb
-    address: (( terraform_outputs.ccdb_address ))
-    port: 3306
   template_only:
     aws:
       access_key_id: (( terraform_outputs.aws_access_key_id ))
       secret_access_key: (( terraform_outputs.aws_secret_access_key ))
       availability_zone: (( terraform_outputs.zone0 ))
       availability_zone2: (( terraform_outputs.zone1 ))
-  uaadb:
-    db_scheme: mysql
-    roles:
-    - tag: admin
-      name: (( terraform_outputs.uaadb_username ))
-      password: (( terraform_outputs.uaadb_password ))
-    databases:
-    - tag: uaa
-      name: uaadb
-    address: (( terraform_outputs.uaadb_address ))
-    port: 3306
+  databases:
+    address: (( jobs.postgres_z1.networks.cf1.static_ips.[0] ))
+
+jobs:
+  - name: postgres_z1
+    instances: 1
+    networks:
+    - name: cf1
+      static_ips: (( static_ips(7) ))
+

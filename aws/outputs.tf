@@ -34,30 +34,6 @@ output "cf2_subnet_id" {
 	value = "${aws_subnet.cf.1.id}"
 }
 
-output "ccdb_address" {
-	value = "${aws_db_instance.ccdb.address}"
-}
-
-output "ccdb_username" {
-	value = "${aws_db_instance.ccdb.username}"
-}
-
-output "ccdb_password" {
-	value = "${aws_db_instance.ccdb.password}"
-}
-
-output "uaadb_address" {
-	value = "${aws_db_instance.uaadb.address}"
-}
-
-output "uaadb_username" {
-	value = "${aws_db_instance.uaadb.username}"
-}
-
-output "uaadb_password" {
-	value = "${aws_db_instance.uaadb.password}"
-}
-
 output "elb_name" {
 	value = "${aws_elb.router.name}"
 }

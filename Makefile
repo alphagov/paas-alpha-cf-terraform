@@ -11,8 +11,6 @@ endif
 
 set-aws:
 	$(eval dir=aws)
-	$(eval apply_suffix=-var uaadb_password=`PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/uaadb_password`\
-						-var ccdb_password=`PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/ccdb_password`)
 set-gce:
 	$(eval dir=gce)
 	$(eval apply_suffix=-var gce_account_json="`tr -d '\n' < account.json`")
