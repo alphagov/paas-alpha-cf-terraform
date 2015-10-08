@@ -1,0 +1,12 @@
+jobs:
+  - <<: (( merge ))
+  - name: consul_z1
+    <<: (( merge ))
+    update:
+      max_in_flight: 1
+      serial: false
+  - name: consul_z2
+    <<: (( merge ))
+    update:
+      max_in_flight: 1
+      serial: false
