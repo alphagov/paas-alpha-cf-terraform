@@ -2,7 +2,7 @@
 
 To provision a microbosh instance on AWS and GCE.
 
-In order to deploy a microbosh, it is necessary to first create subnets, security groups and static IP reservations which will be used by bosh-init when deploying the microbosh. We are using terraform to create these resources, along with a bastion host which will perform the actual `bosh-init` steps to create the microbosh.
+In order to deploy a microbosh, it is necessary to first create subnets, security groups and static IP reservations which will be used by bosh-init when deploying the microbosh. We are using terraform to create these resources, along with a bastion host which will perform the actual `bosh-init` steps to create the microbosh. Then we use microbosh to deploy Cloud Foundry.
 
 ##Pre-requisites
 
@@ -40,41 +40,45 @@ export TF_VAR_GCE_INTEROPERABILITY_HOST=s3-eu-west-1.amazonaws.com
 ```
 
 ##Usage
+### Build
 ```
-make gce DEPLOY_ENV=<environment_name>
-```
-or...
-
-```
+make gce DEPLOY_ENV=<environment_name> # or...
 make aws DEPLOY_ENV=<environment_name>
 ```
-See the Makefile for other options.
 
-Please note that although we're using `terraform apply` to create the resources, a corresponding `terraform destroy` operation will be unaware of the microbosh VM that bosh-init creates for us. Before 'terraform destroy' can complete, it will be necessary to ssh into the bastion machine and run './bosh-init delete manifest.yml' - this will trigger bosh-init to delete it's deployment, after which 'terraform destroy' can clean up the rest.
+This actually includes 3 separate stages:
 
-Make commands have been created for this:
+1. Terraform
+2. Provision BOSH
+3. Deploy Cloud Foundry
 
-* `bosh-delete-aws` / `bosh-delete-gce`
-* `destroy-aws` / `destroy-gce`
+### Destroy
 
-**Known issue**
+* To destroy everything (stages 1-2-3 above), run:
 
-The bosh VM creation is currently flaky on GCE. It hangs waiting for ssh to start listening at step:
+    ```
+    make destroy-gce DEPLOY_ENV=<environment_name> # or...
+    make destroy-aws DEPLOY_ENV=<environment_name>
+    ```
+* To save time the next time you deploy, you can remove Cloud Foundry and other deployments, but keep BOSH running with all its releases, stemcells and compiled packages (stage 3 above):
 
-```
-Waiting for the agent on VM 'vm-10ced236-8fd0-4274-4f51-3b2ffdc53c7a' to be ready...
-```
+    ```
+    make delete-deployments-gce DEPLOY_ENV=<environment_name> # or...
+    make delete-deployments-aws DEPLOY_ENV=<environment_name>
+    ```
+* You can also delete BOSH separately, provided all the above was deleted (stage 2):
 
-One quick workaround is to reset the VM via the GCE console while is waiting,
-and the deployment should continue after one seconds. You can restart the VM
-with the following `gcloud` command:
+    ```
+    make bosh-delete-aws DEPLOY_ENV=<environment_name> # or...
+    make bosh-delete-gce DEPLOY_ENV=<environment_name>
+    ```
 
-```
-gcloud compute instances reset --zone europe-west1-b vm-10ced236-8fd0-4274-4f51-3b2ffdc53c7a
-```
+* You can also delete Terraform separately, provided all the above was deleted (stage 1):
 
-Otherwise, letting it timeout and reruning the `make` command, it will rerun the `bosh-init` which
-will delete the old VM and create a new one. Repeat this step until one works :)
+    ```
+    make destroy-terraform-aws DEPLOY_ENV=<environment_name> # or...
+    make destroy-terraform-gce DEPLOY_ENV=<environment_name>
+    ```
 
 Known issues
 ============
