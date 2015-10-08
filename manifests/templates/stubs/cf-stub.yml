@@ -19,7 +19,8 @@ jobs:
     instances: 1
   - name: consul_z1
     instances: 1
-
+  - name: stats_z1
+    instances: 1
 
 properties:
   cc:
@@ -54,6 +55,13 @@ properties:
     clients:
       app-direct:
         secret: (( secrets.uaa_clients_app_direct_secret ))
+      graphite-nozzle:
+        access-token-validity: 1209600
+        authorized-grant-types: authorization_code,client_credentials,refresh_token
+        override: true
+        secret: (( secrets.uaa_clients_firehose_password ))
+        scope: openid,oauth.approvals,doppler.firehose
+        authorities: oauth.login,doppler.firehose
       developer_console:
         secret: (( secrets.uaa_clients_developer_console_secret ))
       login:

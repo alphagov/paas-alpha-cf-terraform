@@ -1,0 +1,202 @@
+collectd:
+  name: collectd
+  release: collectd
+
+jobs:
+  - <<: (( merge ))
+  - name: consul_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: consul_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: ha_proxy_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: nats_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: nats_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: etcd_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: etcd_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: stats_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: nfs_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: postgres_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: uaa_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: uaa_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: api_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: api_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: clock_global
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: api_worker_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: api_worker_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: hm9000_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: hm9000_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: runner_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: runner_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: loggregator_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: loggregator_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: doppler_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: doppler_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: loggregator_trafficcontroller_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: loggregator_trafficcontroller_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: router_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+    properties:
+      <<: (( merge ))
+      router:
+        status:
+          user: router_user
+          password: router_password
+  - name: router_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+    properties:
+      <<: (( merge ))
+      router:
+        status:
+          user: router_user
+          password: router_password
+
+  # Two below are defined here just to preserve job ordering
+  - name: acceptance_tests
+    <<: (( merge ))
+  - name: smoke_tests
+    <<: (( merge ))
+
+  # Can't deploy to graphite due to package name conflict ('python')
+  - name: postgres
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: elasticsearch_master_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: elasticsearch_master_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: elasticsearch_data_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+  - name: elasticsearch_data_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( collectd ))
+
+properties:
+  <<: (( merge ))
+  graphite:
+    server: changeme
+    prefix: "servers."

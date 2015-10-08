@@ -34,12 +34,15 @@ BOSH_PORT=${BOSH_PORT:-25555}
 # Git cf-release to clone
 CF_RELEASE=215
 CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
-CF_RELEASE_REVISION='cf_jobs_without_static_ips_dependencies_v215_103419194_with_dea_next_mtu'
+CF_RELEASE_REVISION=gds-paas
 
 # Releases to upload
 BOSH_RELEASES="
 cf,215,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
 elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
+graphite,0d79bf5aa5f2cf29195bff725d7dee55dea1aedc,https://github.com/CloudCredo/graphite-statsd-boshrelease.git,create
+collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/collectd-graphite-boshrelease.git,create
+grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
 "
 
 # Dependencies versions
@@ -60,7 +63,7 @@ BOSH_CLI="bundle exec bosh"
 export PATH=$PATH:/usr/local/bin
 
 # Preinstallation of packages
-function install_dependencies {
+install_dependencies() {
   PACKAGES="
     build-essential
     git
@@ -151,21 +154,28 @@ deploy_and_login_bosh() {
 
 }
 
-clone_and_update_cf_release(){
-  # Git clone and upload release
-  echo "Updating ~/cf-release from $CF_RELEASE_GIT_URL:$CF_RELEASE_REVISION"
+git_clone() {
+  local url=$1
+  local revision=$2
+  path=$(echo ${url} | sed "s|.*/||;s|.git||")
 
-  if [ ! -d ~/cf-release/.git ]; then
-    rm -rf ~/cf-release
-    git clone -q $CF_RELEASE_GIT_URL ~/cf-release
+  if [ ! -d ~/${path}/.git ]; then
+    rm -rf ~/${path}
+    git clone -q ${url} ~/${path}
   else
-    cd ~/cf-release
-    git remote set-url origin $CF_RELEASE_GIT_URL
+    cd ~/${path}
+    git remote set-url origin ${url}
     git fetch -q
   fi
 
-  cd ~/cf-release
-  git checkout -q $CF_RELEASE_REVISION
+  cd ~/${path}
+  git checkout -q ${revision}
+}
+
+clone_and_update_cf_release() {
+  # Git clone and upload release
+  echo "Updating ~/cf-release from $CF_RELEASE_GIT_URL:$CF_RELEASE_REVISION"
+  git_clone $CF_RELEASE_GIT_URL $CF_RELEASE_REVISION
 
   ./update  >> update.log 2>&1
   if [ $? != 0 ]; then
@@ -205,10 +215,18 @@ upload_releases() {
     local name=$(echo $r | cut -f 1 -d ,)
     local version=$(echo $r | cut -f 2 -d ,)
     local url=$(echo $r | cut -f 3 -d ,)
+    local action=$(echo $r | cut -f 4 -d ,)
+
     if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
       echo "Release $name version $version already uploaded, skipping"
       continue
     else
+      if [[ ${action} == "create" ]] ; then
+         git_clone ${url} ${version}
+         $BOSH_CLI create release --name ${name} --version ${version}
+         url=""
+      fi
+
       $BOSH_CLI upload release $url 2>&1 | tee /tmp/upload_release.log
       if [ $PIPESTATUS != 0 ] && ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
         return 1

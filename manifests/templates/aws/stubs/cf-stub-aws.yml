@@ -1,5 +1,5 @@
 ---
-terraform_outputs: ((merge))
+terraform_outputs: (( merge ))
 name: (( "cloudfoundry-" meta.environment ))
 meta:
   environment: (( terraform_outputs.environment ))
@@ -44,7 +44,12 @@ resource_pools:
       - (( terraform_outputs.elb_name ))
 
 properties:
+  graphite:
+    server: 10.0.10.40
   domain: (( terraform_outputs.environment ".cf.paas.alphagov.co.uk" ))
+  collector:
+    graphite:
+      address: 10.0.10.40
   cc:
     droplets:
       droplet_directory_key: (( terraform_outputs.environment "-cf-droplets" ))

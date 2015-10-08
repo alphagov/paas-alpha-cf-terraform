@@ -2,6 +2,12 @@ meta:
   release:
     name: cf
 
+  elasticsearch_templates:
+  - name: elasticsearch
+    release: elasticsearch
+  - name: metron_agent
+    release: (( meta.release.name ))
+
 jobs:
 - <<: (( merge ))
 - name: elasticsearch_master_z1
@@ -26,11 +32,7 @@ jobs:
       discovery_minimum_master: (( merge || 2 ))
       discovery_ping_timeout: (( merge || 3 ))
   resource_pool: (( merge || "small_z1" ))
-  templates:
-  - name: elasticsearch
-    release: elasticsearch
-  - name: metron_agent
-    release: (( meta.release.name ))
+  templates: (( merge || meta.elasticsearch_templates ))
 
 - name: elasticsearch_master_z2
   instances: 1
@@ -54,11 +56,7 @@ jobs:
       discovery_minimum_master: (( merge || 2 ))
       discovery_ping_timeout: (( merge || 3 ))
   resource_pool: (( merge || "small_z2" ))
-  templates:
-  - name: elasticsearch
-    release: elasticsearch
-  - name: metron_agent
-    release: (( meta.release.name ))
+  templates: (( merge || meta.elasticsearch_templates ))
 
 - name: elasticsearch_data_z1
   instances: 2
@@ -82,11 +80,7 @@ jobs:
       discovery_minimum_master: (( merge || 2 ))
       discovery_ping_timeout: (( merge || 3 ))
   resource_pool: (( merge || "medium_z1" ))
-  templates:
-  - name: elasticsearch
-    release: elasticsearch
-  - name: metron_agent
-    release: (( meta.release.name ))
+  templates: (( merge || meta.elasticsearch_templates ))
 
 - name: elasticsearch_data_z2
   instances: 2
@@ -110,10 +104,4 @@ jobs:
       discovery_minimum_master: (( merge || 2 ))
       discovery_ping_timeout: (( merge || 3 ))
   resource_pool: (( merge || "medium_z1" ))
-  templates:
-  - name: elasticsearch
-    release: elasticsearch
-  - name: metron_agent
-    release: (( meta.release.name ))
-
-
+  templates: (( merge || meta.elasticsearch_templates ))

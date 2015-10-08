@@ -53,6 +53,10 @@ cf_post_deploy() {
   time bash $SCRIPT_DIR/deploy_psql_broker.sh \
     admin $(get_cf_secret secrets/uaa_admin_password) \
     admin $(get_cf_secret secrets/postgres_password)
+  # Deploy graphite nozzle
+  time bash $SCRIPT_DIR/deploy_graphite_nozzle.sh \
+    admin $(get_cf_secret secrets/uaa_admin_password) \
+    graphite-nozzle $(get_cf_secret secrets/uaa_clients_firehose_password)
 }
 
 cf_compile_manifest

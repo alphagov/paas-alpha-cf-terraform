@@ -3,4 +3,9 @@ releases:
   version: 215
 - name: elasticsearch
   version: 0.1.0
-
+- name: graphite
+  version: latest
+- name: grafana
+  version: latest
+- name: collectd
+  version: latest

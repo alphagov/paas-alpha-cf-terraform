@@ -1,3 +1,10 @@
+meta:
+  postgres_templates:
+    - name: postgres
+      release: cf
+    - name: metron_agent
+      release: cf
+
 secrets: (( merge ))
 jobs:
 - <<: (( merge ))
@@ -31,8 +38,4 @@ jobs:
         - tag: psqlbroker
           name: psqlbroker
   resource_pool: (( merge || "medium_z1" ))
-  templates:
-    - name: postgres
-      release: cf
-    - name: metron_agent
-      release: cf
+  templates: (( merge || meta.postgres_templates ))
