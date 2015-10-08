@@ -24,9 +24,6 @@ case $TARGET_PLATFORM in
     ;;
 esac
 
-# Include functions to setup GCE BOSH networking
-. $SCRIPT_DIR/gce-assign-fixed-ip.sh
-
 # Include the terraform output variables
 . $SCRIPT_DIR/terraform-outputs-${TARGET_PLATFORM}.sh
 
@@ -141,27 +138,12 @@ deploy_and_login_bosh() {
     echo "MicroBOSH up and running, not updating. Run 'bosh-init deploy $BOSH_MANIFEST' to rerun deploy manually."
   else
     echo "MicroBOSH node in $BOSH_IP:$BOSH_PORT is not configured or responding. Deploying it with bosh-init."
-    if [ "$TARGET_PLATFORM" == "gce" ]; then
-      gcloud_login
-      gce_delete_fix_routing $terraform_output_environment
-    fi
-
     cd ~ && ./generate_bosh_manifest.sh $TARGET_PLATFORM > $BOSH_MANIFEST
     export BOSH_INIT_LOG_LEVEL=debug
     export BOSH_INIT_LOG_PATH=/tmp/bosh_init.log
     time bosh-init deploy $BOSH_MANIFEST
   fi
 
-  if [ "$TARGET_PLATFORM" == "gce" ]; then
-    gcloud_login
-    if ! gce_check_fix_routing $terraform_output_environment; then
-      echo "Adding route for $terraform_output_bosh_network_name  $terraform_output_bosh_ip"
-
-      gce_set_fix_routing $terraform_output_environment \
-	$terraform_output_bosh_network_name \
-	$terraform_output_bosh_ip
-    fi
-  fi
   if ! bosh_check_and_login; then
     echo "Failed to contact BOSH node $BOSH_IP:$BOSH_PORT after provisioning"
     return 1
