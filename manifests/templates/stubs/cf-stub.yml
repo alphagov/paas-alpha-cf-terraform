@@ -19,6 +19,12 @@ jobs:
     instances: 1
   - name: consul_z1
     instances: 1
+    update:
+      serial: false
+  - name: consul_z2
+    instances: 0
+    update:
+      serial: false
   - name: stats_z1
     instances: 1
 
