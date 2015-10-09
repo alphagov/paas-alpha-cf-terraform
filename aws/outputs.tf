@@ -34,6 +34,14 @@ output "cf2_subnet_id" {
 	value = "${aws_subnet.cf.1.id}"
 }
 
+output "logsearch1_subnet_id" {
+	value = "${aws_subnet.logsearch.0.id}"
+}
+
+output "logsearch2_subnet_id" {
+	value = "${aws_subnet.logsearch.1.id}"
+}
+
 output "elb_name" {
 	value = "${aws_elb.router.name}"
 }
