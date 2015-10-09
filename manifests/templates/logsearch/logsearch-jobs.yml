@@ -18,8 +18,8 @@ properties:
   curator:
     <<: (( merge ))
     elasticsearch_host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ))
-    purge_logs: 
-      retention_period: 7 
+    purge_logs:
+      retention_period: 7
   logstash_parser:
     <<: (( merge ))
     debug: false
@@ -30,12 +30,12 @@ properties:
   push-kibana:
     app_name: logs
     oauth2_client_id: logsearch-for-cloudfoundry
-    oauth2_client_secret: (( merge )) 
+    oauth2_client_secret: (( merge ))
   redis:
     host: (( jobs.queue.networks.default.static_ips.[0] ))
   elasticsearch:
     <<: (( merge ))
-    admin_ip: (( jobs.elasticsearch_master.networks.default.static_ips.[0] )) 
+    admin_ip: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ))
     log_level: INFO
     discovery:
       minimum_master_nodes: 1
@@ -43,14 +43,14 @@ properties:
     cluster_name: (( name ))
   cloudfoundry:
     skip_ssl_validation: true
-    system_domain: (( merge )) 
-    api_access_security_group: (( merge )) 
+    system_domain: (( merge ))
+    api_access_security_group: (( merge ))
     firehose_port: (( merge ))
     firehose_user: (( merge ))
     firehose_password: (( merge ))
     admin_username: (( merge ))
     admin_password: "(( merge ))"
-    admin_client_secret: "(( merge ))" 
+    admin_client_secret: "(( merge ))"
 
 jobs:
 - name: elasticsearch_master
