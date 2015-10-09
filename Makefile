@@ -96,8 +96,8 @@ destroy-terraform-gce: confirm-execution set-gce destroy-terraform
 destroy-terraform:
 	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} -force
 
-bosh-delete-aws: set-aws delete-deployment delete-release delete-stemcell bosh-delete
-bosh-delete-gce: set-gce delete-deployment delete-release delete-stemcell bosh-delete
+bosh-delete-aws: set-aws delete-deployments delete-release delete-stemcell bosh-delete
+bosh-delete-gce: set-gce delete-deployments delete-release delete-stemcell bosh-delete
 bosh-delete: bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
 
