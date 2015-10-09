@@ -122,7 +122,7 @@ jobs:
 - name: ingestor_firehose
   templates:
   - { release: logsearch-for-cloudfoundry, name: ingestor_cloudfoundry-firehose }
-  - { release: logsearch-for-cloudfoundry, name: collector }
+  - { release: cf, name: collector }
   instances: 1
   resource_pool: medium
   networks:
