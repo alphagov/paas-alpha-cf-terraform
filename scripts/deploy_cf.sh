@@ -57,6 +57,10 @@ cf_post_deploy() {
   time bash $SCRIPT_DIR/deploy_graphite_nozzle.sh \
     admin $(get_cf_secret secrets/uaa_admin_password) \
     graphite-nozzle $(get_cf_secret secrets/uaa_clients_firehose_password)
+  # Deploy syslog nozzle
+  time bash $SCRIPT_DIR/deploy_syslog_nozzle.sh \
+    admin $(get_cf_secret secrets/uaa_admin_password) \
+#    syslog-nozzle $(get_cf_secret secrets/uaa_clients_syslog_password)
 }
 
 cf_compile_manifest
