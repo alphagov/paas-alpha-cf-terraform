@@ -35,11 +35,13 @@ BOSH_PORT=${BOSH_PORT:-25555}
 CF_RELEASE=215
 CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
 CF_RELEASE_REVISION=gds-paas
+LOGSEARCH_VERSION=23.0.0
 
 # Releases to upload
 BOSH_RELEASES="
 cf,$CF_RELEASE,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
 elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
+logsearch,$LOGSEARCH_VERSION,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=$LOGSEARCH_VERSION
 graphite,0d79bf5aa5f2cf29195bff725d7dee55dea1aedc,https://github.com/CloudCredo/graphite-statsd-boshrelease.git,create
 collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/collectd-graphite-boshrelease.git,create
 grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create

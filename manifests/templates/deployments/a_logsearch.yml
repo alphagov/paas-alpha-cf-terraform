@@ -1,0 +1,53 @@
+name: (( merge ))
+meta:
+  release:
+    name: logsearch
+
+  logsearch_templates:
+    - name: api
+    - name: kibana
+    - name: ingestor_syslog
+    - name: ingestor_relp
+    - name: queue
+    - name: parser
+    - name: curator
+
+networks: (( merge ))
+
+properties:
+  <<: (( merge ))
+  elasticsearch_host: (( jobs.elasticsearch_master_z1.networks.cf1.static_ips.[0] ))
+
+jobs:
+- <<: (( merge ))
+- name: logsearch
+  release: logsearch
+  templates: (( merge || meta.logsearch_templates ))
+  instances: 1
+  update: 
+    serial: false  
+  resource_pool: medium_z1
+  persistent_disk: 50000
+  default_networks:
+  - name: cf1
+    static_ips: ~
+  networks: (( merge || default_networks ))
+  properties:
+    kibana:
+      elasticsearch: (( jobs.elasticsearch_master_z1.networks.cf1.static_ips.[0] ":9200"))
+    logstash_ingestor:
+      debug: false
+      relp:
+        port: ~
+    logstash_ingestor:
+      debug: false
+    redis:
+      host: (( jobs.logsearch.networks.cf1.static_ips.[0] ))
+    api:
+      elasticsearch_host: (( jobs.elasticsearch_master_z1.networks.cf1.static_ips.[0] ":9200" ))
+    logstash_parser:
+      debug: false
+      use_local_elasticsearch: false
+    elasticsearch:
+      cluster_name: "elasticsearch_cluster"
+      host: (( jobs.elasticsearch_master_z1.networks.cf1.static_ips.[0] ))
