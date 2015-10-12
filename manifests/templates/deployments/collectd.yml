@@ -144,23 +144,11 @@ jobs:
     templates:
       - <<: (( merge ))
       - (( collectd ))
-    properties:
-      <<: (( merge ))
-      router:
-        status:
-          user: router_user
-          password: router_password
   - name: router_z2
     <<: (( merge ))
     templates:
       - <<: (( merge ))
       - (( collectd ))
-    properties:
-      <<: (( merge ))
-      router:
-        status:
-          user: router_user
-          password: router_password
 
   # Two below are defined here just to preserve job ordering
   - name: acceptance_tests
