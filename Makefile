@@ -66,7 +66,9 @@ provision: check-env-vars bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/provision.sh ${dir}'
 
 confirm-execution:
-	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
+	@if test "${SKIP_CONFIRM}" = "" ; then \
+		read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]]; \
+	fi
 
 delete-deployment-aws: set-aws delete-deployment
 delete-deployment-gce: set-gce delete-deployment
