@@ -69,7 +69,9 @@ deploy-cf: check-env-vars bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_cf.sh ${dir}'
 
 confirm-execution:
-	@read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]];
+	@if test "${SKIP_CONFIRM}" = "" ; then \
+		read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]]; \
+	fi
 
 delete-deployments-aws: set-aws delete-deployments
 delete-deployments-gce: set-gce delete-deployments
