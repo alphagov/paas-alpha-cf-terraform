@@ -68,6 +68,11 @@ variable "health_check_unhealthy" {
   default     = 2
 }
 
+variable "elb_idle_timeout" {
+  description = "Timeout idle connections after 300 seconds"
+  default     = 300
+}
+
 variable "dns_zone_id" {
   description = "Amazon Route53 DNS zone identifier"
   default = "Z3SI0PSH6KKVH4"
