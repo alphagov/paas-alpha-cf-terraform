@@ -1,6 +1,7 @@
 resource "aws_elb" "router" {
   name = "${var.env}-cf-router-elb"
   subnets = ["${aws_subnet.infra.*.id}"]
+  idle_timeout = "${var.elb_idle_timeout}"
   security_groups = [
     "${aws_security_group.web.id}",
   ]
