@@ -1,0 +1,16 @@
+worker:
+  name: cloud_controller_worker
+  release: cf
+
+jobs:
+  - name: api_z1
+    <<: (( merge ))
+    templates:
+      - (( worker ))
+      - <<: (( merge ))
+  - name: api_z2
+    <<: (( merge ))
+    templates:
+      - (( worker ))
+      - <<: (( merge ))
+  - <<: (( merge ))
