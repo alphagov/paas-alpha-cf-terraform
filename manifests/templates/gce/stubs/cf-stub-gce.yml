@@ -63,6 +63,15 @@ properties:
   collector:
     graphite:
       address: (( "0.graphite.cf1." .name ".microbosh" ))
+  cc:
+    droplets:
+      droplet_directory_key: (( terraform_outputs.environment "-cf-droplets" ))
+    buildpacks:
+      buildpack_directory_key: (( terraform_outputs.environment "-cf-buildpacks" ))
+    resource_pool:
+      resource_directory_key: (( terraform_outputs.environment "-cf-resources" ))
+    packages:
+      app_package_directory_key: (( terraform_outputs.environment "-cf-packages" ))
   template_only:
     gce:
       availability_zone: (( terraform_outputs.zone0 ))
