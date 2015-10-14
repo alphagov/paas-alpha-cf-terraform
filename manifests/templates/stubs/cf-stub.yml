@@ -13,6 +13,8 @@ update:
   serial: false # makes every job deploy at the same time.
 
 jobs:
+  - name: api_worker_z1
+    instances: 0
   - name: runner_z1
     instances: 1
   - name: runner_z2
