@@ -1,6 +1,8 @@
 .PHONY: all apply provision destroy ssh
 SHELL := /bin/bash
 
+ROOT_PASS_DIR ?= .
+
 all:
 	$(error Usage: make <aws|gce> DEPLOY_ENV=name)
 
@@ -23,7 +25,8 @@ gce: set-gce apply prepare-provision-gce provision deploy-cf
 apply-aws: set-aws apply
 apply-gce: set-gce apply
 apply: check-env-vars
-	@cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix}
+	@cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} \
+		|| terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix}
 
 manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
@@ -41,8 +44,8 @@ prepare-provision: bastion
 	    manifests/generate_bosh_manifest.sh \
 	    manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
-	@PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/cf-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
-	@PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/bosh-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
+	@PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
+	@PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
 
 test-aws: set-aws test
 test-gce: set-gce test
@@ -50,7 +53,7 @@ test: bastion
 	$(eval domain=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate dns_zone_name))
 	smoke_test/smoke_test.json.sh \
 	    ${DEPLOY_ENV} ${domain} \
-	    admin `PASSWORD_STORE_DIR=~/.paas-pass pass cloudfoundry/cf_admin_password` > \
+	    admin `PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf_admin_password` > \
 		smoke_test/smoke_test.json
 	@scp -oStrictHostKeyChecking=no \
 	    smoke_test/smoke_test.sh smoke_test/smoke_test.json \
