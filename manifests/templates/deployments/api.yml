@@ -3,6 +3,10 @@ worker:
   release: cf
 
 jobs:
+  - name: consul_z1
+    <<: (( merge ))
+  - name: consul_z2
+    <<: (( merge ))
   - name: api_z1
     <<: (( merge ))
     templates:
