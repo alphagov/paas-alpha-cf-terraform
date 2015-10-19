@@ -152,21 +152,39 @@ resource "aws_security_group" "web" {
     from_port = 80
     to_port   = 80
     protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [
+      "${split(",", var.office_cidrs)}",
+      "${aws_instance.bastion.public_ip}/32"
+    ]
+    security_groups = [
+      "${aws_security_group.bosh_vm.id}"
+    ]
   }
 
   ingress {
     from_port = 443
     to_port   = 443
     protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [
+      "${split(",", var.office_cidrs)}",
+      "${aws_instance.bastion.public_ip}/32"
+    ]
+    security_groups = [
+      "${aws_security_group.bosh_vm.id}"
+    ]
   }
 
   ingress {
     from_port = 4443
     to_port   = 4443
     protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [
+      "${split(",", var.office_cidrs)}",
+      "${aws_instance.bastion.public_ip}/32"
+    ]
+    security_groups = [
+      "${aws_security_group.bosh_vm.id}"
+    ]
   }
 
   tags {
