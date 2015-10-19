@@ -57,7 +57,11 @@ resource "google_compute_firewall" "web" {
   description = "Security group for web that allows web traffic from internet"
   network = "${google_compute_network.bastion.name}"
 
-  source_ranges = [ "0.0.0.0/0" ]
+  source_ranges = [ "${split(",", var.office_cidrs)}",
+                    "${var.bastion_cidr}",
+                    "${google_compute_address.bosh.address}/32",
+                    "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}/32",
+                    "${google_compute_instance.bastion.network_interface.0.address}/32" ]
   target_tags = [ "router1", "router2" ]
 
   allow {
