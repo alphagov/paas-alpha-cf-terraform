@@ -36,7 +36,8 @@ resource "google_compute_firewall" "internal" {
   description = "Open internal communication between instances"
   network = "${google_compute_network.bastion.name}"
 
-  source_ranges = [ "${var.bastion_cidr}", "${google_compute_address.bosh.address}/32",
+  source_ranges = [ "${var.bastion_cidr}",
+                    "${google_compute_address.bosh.address}/32",
                     "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}/32",
                     "${google_compute_instance.bastion.network_interface.0.address}/32" ]
   target_tags = [ "bosh" ]

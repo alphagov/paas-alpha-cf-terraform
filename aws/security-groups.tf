@@ -1,6 +1,6 @@
 resource "aws_security_group" "bastion" {
   name = "${var.env}-bastion"
-  description = "Security group for bastion that allows SSH traffic from the office"
+  description = "Security group for bastion that allows NAT traffic and SSH connections from the office"
   vpc_id = "${aws_vpc.default.id}"
 
   egress {
@@ -11,19 +11,19 @@ resource "aws_security_group" "bastion" {
   }
 
   ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    cidr_blocks = ["${split(",", var.office_cidrs)}"]
-  }
-
-  ingress {
     from_port = 0
     to_port   = 0
     protocol  = "-1"
     security_groups = [
       "${aws_security_group.bosh_vm.id}"
     ]
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["${split(",", var.office_cidrs)}"]
   }
 
   tags {
@@ -53,21 +53,21 @@ resource "aws_security_group" "director" {
   }
 
   ingress {
+    from_port = 6868
+    to_port   = 6868
+    protocol  = "tcp"
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+    ]
+  }
+
+  ingress {
     from_port = 4222
     to_port   = 4222
     protocol  = "tcp"
     security_groups = [
       "${aws_security_group.bastion.id}",
       "${aws_security_group.bosh_vm.id}",
-    ]
-  }
-
-  ingress {
-    from_port = 6868
-    to_port   = 6868
-    protocol  = "tcp"
-    security_groups = [
-      "${aws_security_group.bastion.id}",
     ]
   }
 
