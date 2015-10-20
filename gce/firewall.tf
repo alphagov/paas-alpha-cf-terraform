@@ -54,11 +54,12 @@ resource "google_compute_firewall" "internal" {
 
 resource "google_compute_firewall" "web" {
   name = "${var.env}-cf-web"
-  description = "Security group for web that allows web traffic from internet"
+  description = "Security group for web that allows web traffic from the office and jenkins"
   network = "${google_compute_network.bastion.name}"
 
   source_ranges = [ "${split(",", var.office_cidrs)}",
                     "${var.bastion_cidr}",
+                    "${var.jenkins_elastic}",
                     "${google_compute_address.bosh.address}/32",
                     "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}/32",
                     "${google_compute_instance.bastion.network_interface.0.address}/32" ]
