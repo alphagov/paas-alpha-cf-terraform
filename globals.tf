@@ -16,3 +16,8 @@ variable "microbosh_IP" {
   description = "microbosh internal IP. Do not change. This is more of a constant than variable."
   default     = "10.0.0.6"
 }
+
+variable "jenkins_elastic" {
+  description = "Elastic IP for Jenkins server which will be trusted"
+  default     = "52.17.162.85/32"
+}

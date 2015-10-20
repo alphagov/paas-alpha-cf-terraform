@@ -3,7 +3,7 @@ resource "google_compute_firewall" "ssh" {
   description = "SSH from trusted external sources"
   network = "${google_compute_network.bastion.name}"
 
-  source_ranges = [ "${split(",", var.office_cidrs)}" ]
+  source_ranges = [ "${split(",", var.office_cidrs)}", "${var.jenkins_elastic}" ]
   target_tags = [ "bastion", "bosh" ]
 
   allow {

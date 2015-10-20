@@ -23,7 +23,7 @@ resource "aws_security_group" "bastion" {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-    cidr_blocks = ["${split(",", var.office_cidrs)}"]
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${var.jenkins_elastic}"]
   }
 
   tags {
