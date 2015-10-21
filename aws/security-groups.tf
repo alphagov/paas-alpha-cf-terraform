@@ -1,6 +1,6 @@
 resource "aws_security_group" "bastion" {
   name = "${var.env}-bastion"
-  description = "Security group for bastion that allows NAT traffic and SSH connections from the office"
+  description = "Security group for bastion that allows NAT traffic and SSH connections from the office and jenkins"
   vpc_id = "${aws_vpc.default.id}"
 
   egress {
@@ -23,7 +23,7 @@ resource "aws_security_group" "bastion" {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-    cidr_blocks = ["${split(",", var.office_cidrs)}"]
+    cidr_blocks = ["${split(",", var.office_cidrs)}", "${var.jenkins_elastic}"]
   }
 
   tags {
@@ -138,7 +138,7 @@ resource "aws_security_group" "bosh_vm" {
 
 resource "aws_security_group" "web" {
   name = "${var.env}-web-cf"
-  description = "Security group for web that allows web traffic from internet"
+  description = "Security group for web that allows web traffic from the office and jenkins"
   vpc_id = "${aws_vpc.default.id}"
 
   egress {
@@ -154,7 +154,8 @@ resource "aws_security_group" "web" {
     protocol  = "tcp"
     cidr_blocks = [
       "${split(",", var.office_cidrs)}",
-      "${aws_instance.bastion.public_ip}/32"
+      "${aws_instance.bastion.public_ip}/32",
+      "${var.jenkins_elastic}"
     ]
     security_groups = [
       "${aws_security_group.bosh_vm.id}"
@@ -167,7 +168,8 @@ resource "aws_security_group" "web" {
     protocol  = "tcp"
     cidr_blocks = [
       "${split(",", var.office_cidrs)}",
-      "${aws_instance.bastion.public_ip}/32"
+      "${aws_instance.bastion.public_ip}/32",
+      "${var.jenkins_elastic}"
     ]
     security_groups = [
       "${aws_security_group.bosh_vm.id}"
@@ -180,7 +182,8 @@ resource "aws_security_group" "web" {
     protocol  = "tcp"
     cidr_blocks = [
       "${split(",", var.office_cidrs)}",
-      "${aws_instance.bastion.public_ip}/32"
+      "${aws_instance.bastion.public_ip}/32",
+      "${var.jenkins_elastic}"
     ]
     security_groups = [
       "${aws_security_group.bosh_vm.id}"
