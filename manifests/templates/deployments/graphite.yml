@@ -35,6 +35,9 @@ jobs:
         - name: "my_storage_schema_2"
           pattern: "metrics$"
           retentions: "15s:7d,1m:21d,15m:5y"
+        - name: "catch_all"
+          pattern: "^.*"
+          retentions: "10s:1d,60s:7d"
       storage_aggregations:
         - name: "my_storage_aggregation"
           pattern: "^my\\.metrics\\.*" # NB: Note the double escapes - this will evaluate to "^my\.metrics\.*"
