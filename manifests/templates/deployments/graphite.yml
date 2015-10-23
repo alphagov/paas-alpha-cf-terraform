@@ -18,7 +18,7 @@ jobs:
 - <<: (( merge ))
 - name: graphite
   instances: 1
-  resource_pool: (( merge || "small_z1" ))
+  resource_pool: (( merge || "large_z1" ))
   default_networks:
   - name: cf1
     static_ips: ~
