@@ -3,6 +3,11 @@ name: (( merge ))
 jobs:
   - <<: (( merge ))
 
+meta:
+  collector:
+    intervals:
+      default: 10
+
 properties:
   <<: (( merge ))
   collector:
@@ -11,3 +16,8 @@ properties:
     graphite:
       address: changeme
       port: 2003
+    intervals:
+      healthz: (( meta.collector.intervals.default ))
+      local_metrics: (( meta.collector.intervals.default ))
+      nats_ping: (( meta.collector.intervals.default ))
+      varz: (( meta.collector.intervals.default ))

@@ -1,7 +1,7 @@
 jobs:
   - name: graphite
     instances: 1
-    persistent_disk: 20480
+    persistent_disk: 204800
     networks:
     - name: cf1
       static_ips: null

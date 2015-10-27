@@ -185,6 +185,8 @@ jobs:
 
 properties:
   <<: (( merge ))
+  collectd:
+    interval: 10
   graphite:
     server: changeme
     prefix: "servers."
