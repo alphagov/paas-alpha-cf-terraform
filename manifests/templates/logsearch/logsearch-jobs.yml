@@ -1,5 +1,7 @@
 ---
-meta: (( merge ))
+meta:
+  elasticsearch_master_host: (( merge || jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+  redis_host: (( merge || jobs.queue.networks.default.static_ips.[0] ))
 networks: (( merge ))
 name: (( merge ))
 
@@ -17,7 +19,7 @@ properties:
     machines: (( merge ))
   curator:
     <<: (( merge ))
-    elasticsearch_host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+    elasticsearch_host: (( meta.elasticsearch_master_host ))
     purge_logs:
       retention_period: 7
   logstash_parser:
@@ -32,14 +34,14 @@ properties:
     oauth2_client_id: logsearch-for-cloudfoundry
     oauth2_client_secret: (( merge ))
   redis:
-    host: (( jobs.queue.networks.default.static_ips.[0] ))
+    host: (( meta.redis_host ))
   elasticsearch:
     <<: (( merge ))
-    admin_ip: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+    admin_ip: (( meta.elasticsearch_master_host ))
     log_level: INFO
     discovery:
       minimum_master_nodes: 1
-    host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ))  #NB This should contain all the elasticsearch_master IPs
+    host: (( meta.elasticsearch_master_host ))   #NB This should contain all the elasticsearch_master IPs
     cluster_name: (( name ))
   cloudfoundry:
     skip_ssl_validation: true
@@ -65,7 +67,7 @@ jobs:
   resource_pool: medium
   networks:
   - name: default
-    static_ips: (( static_ips(0) ))
+    static_ips: (( merge || static_ips(0) ))
   persistent_disk_pool: elasticsearch_master
   properties:
     elasticsearch:
@@ -99,7 +101,7 @@ jobs:
   persistent_disk_pool: queue
   networks:
   - name: default
-    static_ips: (( static_ips(1) ))
+    static_ips: (( merge || static_ips(1) ))
 
 - name: parser
   templates:
@@ -117,7 +119,7 @@ jobs:
   resource_pool: medium
   networks:
   - name: default
-    static_ips: (( static_ips(2) ))
+    static_ips: (( merge || static_ips(2) ))
 
 - name: ingestor_firehose
   templates:
