@@ -34,12 +34,20 @@ output "cf2_network_name" {
 	value = "${google_compute_network.bastion.name}"
 }
 
+output "logsearch1_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
+
 output "bosh_network_name" {
 	value = "${google_compute_network.bastion.name}"
 }
 
 output "router_pool_name" {
 	value = "${google_compute_target_pool.router.name}"
+}
+
+output "cf_root_domain" {
+	value = "${var.env}.${var.dns_zone_name}"
 }
 
 output "dns_zone_name" {
