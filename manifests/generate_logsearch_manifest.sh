@@ -7,6 +7,7 @@ infrastructure=$1
 shift
 
 if [ "$infrastructure" != "aws" ] && \
+    [ "$infrastructure" != "gce" ] && \
     [ "$infrastructure" != "warden" ] && \
     [ "$infrastructure" != "vsphere" ] ; then
   echo "usage: ./generate_deployment_manifest <aws|warden|vsphere> [stubs...]"
