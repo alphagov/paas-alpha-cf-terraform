@@ -2,9 +2,9 @@
 terraform_outputs: (( merge ))
 secrets: (( merge ))
 meta:
-  environment: (( name ))
+  environment: (( terraform_outputs.environment ))
 
-name: logsearch
+name: (( "logsearch-" meta.environment ))
 
 properties:
   push-kibana:
