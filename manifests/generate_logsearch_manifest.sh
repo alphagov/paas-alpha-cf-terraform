@@ -16,7 +16,7 @@ fi
 spiff merge \
   $templates/logsearch/logsearch-deployment.yml \
   $templates/logsearch/logsearch-filters.yml \
-  $templates/logsearch/logsearch-jobs.yml \
+  $templates/logsearch/logsearch-minimal-jobs.yml \
   $templates/logsearch/logsearch-infrastructure-${infrastructure}.yml \
   $templates/logsearch/stub.yml \
   $templates/stubs/director-uuid.yml \
