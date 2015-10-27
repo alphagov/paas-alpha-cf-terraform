@@ -1,0 +1,92 @@
+---
+meta:
+  elasticsearch_master_host: (( merge || jobs.logsearch_minimal.networks.default.static_ips.[0] ))
+  redis_host: (( merge || jobs.logsearch_minimal.networks.default.static_ips.[0] ))
+networks: (( merge ))
+name: (( merge ))
+
+properties:
+  <<: (( merge ))
+  collector:
+    deployment_name: CF
+    use_gelf: true
+    gelf:
+      address: 127.0.0.1
+  nats:
+    password: (( merge ))
+    user: (( merge ))
+    port: (( merge || 4222 ))
+    machines: (( merge ))
+  curator:
+    <<: (( merge ))
+    elasticsearch_host: (( meta.elasticsearch_master_host ))
+    purge_logs:
+      retention_period: 7
+  logstash_parser:
+    <<: (( merge ))
+    debug: false
+  logstash_ingestor:
+    debug: false
+    syslog:
+      port: 514
+  push-kibana:
+    app_name: logs
+    oauth2_client_id: logsearch-for-cloudfoundry
+    oauth2_client_secret: (( merge ))
+  redis:
+    host: (( meta.redis_host ))
+  elasticsearch:
+    <<: (( merge ))
+    admin_ip: (( meta.elasticsearch_master_host ))
+    log_level: INFO
+    discovery:
+      minimum_master_nodes: 1
+    host: (( meta.elasticsearch_master_host ))   #NB This should contain all the elasticsearch_master IPs
+    cluster_name: (( name ))
+  cloudfoundry:
+    skip_ssl_validation: true
+    system_domain: (( merge ))
+    api_access_security_group: (( merge ))
+    firehose_port: (( merge ))
+    firehose_user: (( merge ))
+    firehose_password: (( merge ))
+    admin_username: (( merge ))
+    admin_password: "(( merge ))"
+    admin_client_secret: "(( merge ))"
+
+jobs:
+- name: logsearch_minimal
+  templates:
+  - { release: logsearch, name: api }
+  - { release: logsearch, name: elasticsearch }
+  - { release: logsearch, name: elasticsearch_config }
+  - { release: logsearch, name: curator }
+  - { release: logsearch, name: queue }
+  - { release: logsearch, name: parser }
+  - { release: logsearch, name: ingestor_syslog }
+  - { release: logsearch, name: ingestor_relp }
+  - { release: logsearch-for-cloudfoundry, name: ingestor_cloudfoundry-firehose }
+  - { release: cf, name: collector }
+  instances: 1
+  update:
+    serial: true
+  resource_pool: high_memory
+  networks:
+  - name: default
+    static_ips: (( merge || static_ips(0) ))
+  persistent_disk_pool: elasticsearch_master
+  properties:
+    elasticsearch:
+      <<: (( merge ))
+      node:
+        allow_master: true
+        allow_data: data
+
+- name: push-kibana
+  templates:
+  - { release: logsearch-for-cloudfoundry, name: push-kibana }
+  lifecycle: errand
+  instances: 1
+  resource_pool: tiny
+  networks:
+  - name: default
