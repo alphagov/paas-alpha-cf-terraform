@@ -19,8 +19,8 @@ set-gce:
 bastion:
 	$(eval bastion=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip))
 
-aws: set-aws apply prepare-provision-aws provision deploy-cf
-gce: set-gce apply prepare-provision-gce provision deploy-cf
+aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch
+gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch
 
 apply-aws: set-aws apply
 apply-gce: set-gce apply
@@ -72,6 +72,11 @@ deploy-cf-aws: set-aws prepare-provision-aws deploy-cf
 deploy-cf-gce: set-gce prepare-provision-gce deploy-cf
 deploy-cf: check-env-vars bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_cf.sh ${dir}'
+
+deploy-logsearch-aws: set-aws deploy-logsearch
+deploy-logsearch-gce: set-gce deploy-logsearch
+deploy-logsearch: check-env-vars bastion
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_logsearch.sh ${dir}'
 
 confirm-execution:
 	@if test "${SKIP_CONFIRM}" = "" ; then \
