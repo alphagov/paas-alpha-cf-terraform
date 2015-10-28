@@ -37,7 +37,9 @@ properties:
     host: (( meta.redis_host ))
   elasticsearch:
     <<: (( merge ))
-    admin_ip: (( meta.elasticsearch_master_host ))
+    # This IP is used to deploy kibana dashboard. Allow merge to override with
+    # the allocated IP on GCE.
+    admin_ip: (( merge || meta.elasticsearch_master_host ))
     log_level: INFO
     discovery:
       minimum_master_nodes: 1
