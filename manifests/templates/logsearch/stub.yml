@@ -40,10 +40,7 @@ properties:
     # But it is not the case, so lets use the public one
     #
     api_access_security_group: "public"
-  # FIXME: do not hardcode the machines
   nats:
     user: nats_user
     password: (( secrets.nats_password ))
-    machines:
-    - 10.0.10.11
-    - 10.0.11.11
+

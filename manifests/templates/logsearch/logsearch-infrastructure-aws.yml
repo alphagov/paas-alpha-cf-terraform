@@ -13,6 +13,10 @@ meta:
 
 properties:
   <<: (( merge ))
+  nats:
+    machines:
+    - 10.0.10.11
+    - 10.0.11.11
 
 update:
   canaries: 1

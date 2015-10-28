@@ -45,6 +45,11 @@ jobs:
 
 properties:
   <<: (( merge ))
+  nats:
+    machines:
+    - (( "0.nats-z1.cf1.cloudfoundry-" meta.environment ".microbosh" ))
+    - (( "0.nats-z2.cf2.cloudfoundry-" meta.environment ".microbosh" ))
+
 
 update:
   canaries: 1
