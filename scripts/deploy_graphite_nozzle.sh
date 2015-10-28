@@ -19,6 +19,11 @@ cf target -o admin -s admin
 
 git clone https://github.com/CloudCredo/graphite-nozzle go/src/github.com/cloudcredo/graphite-nozzle
 cd go/src/github.com/cloudcredo/graphite-nozzle
+git remote add fork https://github.com/alphagov/graphite-nozzle
+git reset --hard
+git clean -fdx
+git fetch --all
+git checkout fork/106191208-deaggregated_names
 
 # The buildpack only supports go1.4.0-2
 cat <<EOF | python
@@ -53,6 +58,7 @@ cf set-env graphite-nozzle FIREHOSE_PASSWORD "${FIREHOSE_PASS}"
 cf set-env graphite-nozzle SUBSCRIPTION_ID firehose
 cf set-env graphite-nozzle STATSD_PREFIX cfstats.
 cf set-env graphite-nozzle SKIP_SSL_VALIDATION true
+cf set-env graphite-nozzle PREFIX_JOB true
 
 cat <<EOF > graphite-nozzle.json
 [
