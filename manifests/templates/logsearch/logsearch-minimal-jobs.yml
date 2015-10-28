@@ -28,7 +28,9 @@ properties:
   logstash_ingestor:
     debug: false
     syslog:
-      port: 514
+      # Move the syslog port as it conflicts with cloudfoundry-to-logstash
+      # template, which is not parametrizable
+      port: 3514
   push-kibana:
     app_name: logs
     oauth2_client_id: logsearch-for-cloudfoundry
@@ -80,7 +82,7 @@ jobs:
       <<: (( merge ))
       node:
         allow_master: true
-        allow_data: data
+        allow_data: true
 
 - name: push-kibana
   templates:
