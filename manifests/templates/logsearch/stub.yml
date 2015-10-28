@@ -3,12 +3,15 @@ terraform_outputs: (( merge ))
 secrets: (( merge ))
 meta:
   environment: (( terraform_outputs.environment ))
+  default_env:
+    bosh:
+      password: (( secrets.vcap_password ))
 
 name: (( "logsearch-" meta.environment ))
 
 properties:
   push-kibana:
-    oauth2_client_secret: "c1oudc0w"
+    oauth2_client_secret: (( secrets.kibana_oauth2_client_secret ))
   cloudfoundry:
     skip_ssl_validation: true
     system_domain: (( terraform_outputs.cf_root_domain ))
