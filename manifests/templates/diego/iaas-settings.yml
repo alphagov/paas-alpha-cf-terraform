@@ -1,0 +1,219 @@
+terraform_outputs: (( merge ))
+meta:
+  # FIXME: do not hardcode this
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+    z3: (( terraform_outputs.zone2 ))
+iaas_settings:
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  subnet_configs:
+    - name: diego1
+      subnets:
+      - range: 10.0.80.0/24
+        gateway: 10.0.80.1
+        dns: [10.0.0.2]
+        reserved:
+        - 10.0.80.2 - 10.0.80.9
+        static:
+        - 10.0.80.10 - 10.0.80.40
+        cloud_properties:
+          subnet: (( terraform_outputs.diego1_subnet_id ))
+    - name: diego2
+      subnets:
+      - range: 10.0.81.0/24
+        gateway: 10.0.81.1
+        dns: [10.0.0.2]
+        reserved:
+        - 10.0.81.2 - 10.0.81.9
+        static:
+        - 10.0.81.10 - 10.0.81.40
+        cloud_properties:
+          subnet: (( terraform_outputs.diego2_subnet_id ))
+    - name: diego3
+      subnets:
+      - range: 10.0.82.0/24
+        gateway: 10.0.82.1
+        dns: [10.0.0.2]
+        reserved:
+        - 10.0.82.2 - 10.0.82.9
+        static:
+        - 10.0.82.10 - 10.0.82.40
+        cloud_properties:
+          subnet: (( terraform_outputs.diego3_subnet_id ))
+  compilation_cloud_properties:
+    availability_zone: (( meta.zones.z1 ))
+    instance_type: c3.large
+
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z1 ))
+        instance_type: m3.medium
+    - name: access_z2
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z2 ))
+        instance_type: m3.medium
+    - name: access_z3
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z3 ))
+        instance_type: m3.medium
+    - name: brain_z1
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z1 ))
+        instance_type: m3.medium
+    - name: brain_z2
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z2 ))
+        instance_type: m3.medium
+    - name: brain_z3
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z3 ))
+        instance_type: m3.medium
+    - name: cc_bridge_z1
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z1 ))
+        instance_type: m3.medium
+    - name: cc_bridge_z2
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z2 ))
+        instance_type: m3.medium
+    - name: cc_bridge_z3
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z3 ))
+        instance_type: m3.medium
+    - name: cell_z1
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z1 ))
+        instance_type: r3.xlarge
+    - name: cell_z2
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z2 ))
+        instance_type: r3.xlarge
+    - name: cell_z3
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z3 ))
+        instance_type: r3.xlarge
+    - name: colocated_z1
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z1 ))
+        instance_type: m3.large
+    - name: colocated_z2
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z2 ))
+        instance_type: m3.large
+    - name: colocated_z3
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z3 ))
+        instance_type: m3.large
+    - name: database_z1
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z1 ))
+        instance_type: m3.large
+    - name: database_z2
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z2 ))
+        instance_type: m3.large
+    - name: database_z3
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z3 ))
+        instance_type: m3.large
+    - name: route_emitter_z1
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z1 ))
+        instance_type: m3.medium
+    - name: route_emitter_z2
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z2 ))
+        instance_type: m3.medium
+    - name: route_emitter_z3
+      cloud_properties:
+        <<: (( merge ))
+        ephemeral_disk:
+          size: 65_536
+          type: gp2
+        availability_zone: (( meta.zones.z3 ))
+        instance_type: m3.medium
+
