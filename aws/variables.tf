@@ -41,6 +41,14 @@ variable "logsearch_cidrs" {
     zone0 = "10.0.40.0/24"
     zone1 = "10.0.41.0/24"
     zone2 = "10.0.42.0/24"
+}
+
+variable "diego_cidrs" {
+  description = "CIDR for diego components subnet indexed by AZ"
+  default     = {
+    zone0 = "10.0.80.0/24"
+    zone1 = "10.0.81.0/24"
+    zone2 = "10.0.82.0/24"
   }
 }
 
