@@ -31,6 +31,11 @@ jobs:
     instances: 1
 
 properties:
+  # FIXME: Starting v218 consul has SSL enabled by default, but
+  # we must provide the certificates.
+  # For testing, we had explicitelly disable consul SSL.
+  consul:
+    require_ssl: false
   cc:
     staging_upload_user: username
     staging_upload_password: (( secrets.staging_upload_password ))
