@@ -3,6 +3,11 @@ config_from_cf: (( merge ))
 persistent_disk_overrides: {}
 
 property_overrides:
+  diego:
+    tps:
+      watcher:
+        # FIXME Need this to avoid conflict with the garden port
+        debug_addr: 0.0.0.0:17015
   converger:
     log_level: debug
   etcd:
