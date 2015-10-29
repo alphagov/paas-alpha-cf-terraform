@@ -18,6 +18,10 @@ output "zone1" {
 	value = "${var.zones.zone1}"
 }
 
+output "zone2" {
+	value = "${var.zones.zone2}"
+}
+
 output "region" {
 	value = "${var.region}"
 }
@@ -32,6 +36,18 @@ output "cf1_subnet_id" {
 
 output "cf2_subnet_id" {
 	value = "${aws_subnet.cf.1.id}"
+}
+
+output "diego1_subnet_id" {
+	value = "${aws_subnet.diego.0.id}"
+}
+
+output "diego2_subnet_id" {
+	value = "${aws_subnet.diego.1.id}"
+}
+
+output "diego3_subnet_id" {
+	value = "${aws_subnet.diego.2.id}"
 }
 
 output "elb_name" {

@@ -35,6 +35,15 @@ variable "cf_cidrs" {
   }
 }
 
+variable "diego_cidrs" {
+  description = "CIDR for diego components subnet indexed by AZ"
+  default     = {
+    zone0 = "10.0.80.0/24"
+    zone1 = "10.0.81.0/24"
+    zone2 = "10.0.82.0/24"
+  }
+}
+
 variable "ubuntu_amis" {
   description = "Base AMI to launch the instances with"
   default = {
