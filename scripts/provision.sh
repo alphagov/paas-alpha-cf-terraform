@@ -34,7 +34,7 @@ BOSH_PORT=${BOSH_PORT:-25555}
 # Git cf-release to clone
 CF_RELEASE=218
 CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
-CF_RELEASE_REVISION=gds-paas
+CF_RELEASE_REVISION=gds-paas-v218
 
 # Releases to upload
 BOSH_RELEASES="
