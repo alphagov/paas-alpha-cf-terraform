@@ -1,6 +1,6 @@
 releases:
 - name: cf
-  version: 215
+  version: 218
 - name: elasticsearch
   version: 0.1.0
 - name: graphite
