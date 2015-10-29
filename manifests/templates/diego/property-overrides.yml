@@ -1,3 +1,5 @@
+config_from_cf: (( merge ))
+
 persistent_disk_overrides: {}
 
 property_overrides:
@@ -244,7 +246,7 @@ property_overrides:
   receptor:
     register_with_router: true
     domain_names:
-     - receptor.10.244.0.34.xip.io
+     - (( "receptor." config_from_cf.system_domain ))
     log_level: debug
   rep:
     evacuation_timeout_in_seconds: 60
