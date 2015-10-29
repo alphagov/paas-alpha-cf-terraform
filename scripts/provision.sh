@@ -45,6 +45,9 @@ collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/co
 grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
 logsearch,23.0.0,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=23.0.0
 logsearch-for-cloudfoundry,7,https://logsearch-for-cloudfoundry-boshrelease.s3.amazonaws.com/boshrelease-logsearch-for-cloudfoundry-7.tgz
+garden-linux-release,0.305.0,https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release?v=0.305.0
+etcd-release,15,https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release?v=15
+diego-release,0.1430.0,https://bosh.io/d/github.com/cloudfoundry-incubator/diego-release?v=0.1430.0
 "
 
 # Dependencies versions
