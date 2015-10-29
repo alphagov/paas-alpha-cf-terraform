@@ -43,6 +43,9 @@ elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases
 graphite,0d79bf5aa5f2cf29195bff725d7dee55dea1aedc,https://github.com/CloudCredo/graphite-statsd-boshrelease.git,create
 collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/collectd-graphite-boshrelease.git,create
 grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
+garden-linux-release,0.305.0,https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release?v=0.305.0
+etcd-release,15,https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release?v=15
+diego-release,0.1430.0,https://bosh.io/d/github.com/cloudfoundry-incubator/diego-release?v=0.1430.0
 "
 
 # Dependencies versions
