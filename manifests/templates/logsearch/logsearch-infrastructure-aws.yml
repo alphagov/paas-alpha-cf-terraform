@@ -1,0 +1,75 @@
+---
+terraform_outputs: (( merge ))
+meta:
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+
+  environment: (( merge ))
+
+properties:
+  <<: (( merge ))
+  nats:
+    machines:
+    - 10.0.10.11
+    - 10.0.11.11
+
+update:
+  canaries: 1
+  max_in_flight: 50
+  canary_watch_time: 1000-600000
+  update_watch_time: 1000-600000
+  serial: false
+
+compilation:
+  cloud_properties:
+    instance_type: c3.large
+    availability_zone: (( meta.zones.z1 ))
+
+resource_pools:
+- name: tiny
+  cloud_properties:
+    instance_type: t2.micro
+    ephemeral_disk:
+      size: 10_240
+      type: gp2
+    availability_zone: (( meta.zones.z1 ))
+- name: medium
+  cloud_properties:
+    instance_type: t2.micro
+    ephemeral_disk:
+      size: 10_240
+      type: gp2
+    availability_zone: (( meta.zones.z1 ))
+- name: high_memory
+  cloud_properties:
+    instance_type: r3.large
+    ephemeral_disk:
+      size: 10_240
+      type: gp2
+    availability_zone: (( meta.zones.z1 ))
+- name: high_cpu
+  cloud_properties:
+    instance_type: c4.large
+    ephemeral_disk:
+      size: 10_240
+      type: gp2
+    availability_zone: (( meta.zones.z1 ))
+
+networks:
+- name: default
+  subnets:
+    - range: 10.0.40.0/24
+      gateway: 10.0.40.1
+      dns: [10.0.0.2]
+      reserved:
+      - 10.0.40.2 - 10.0.40.9
+      static:
+      - 10.0.40.10 - 10.0.40.40
+      cloud_properties:
+        subnet: (( terraform_outputs.logsearch1_subnet_id ))
+

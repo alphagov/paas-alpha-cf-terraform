@@ -35,6 +35,15 @@ variable "cf_cidrs" {
   }
 }
 
+variable "logsearch_cidrs" {
+  description = "CIDR for logsearch components subnet indexed by AZ"
+  default     = {
+    zone0 = "10.0.40.0/24"
+    zone1 = "10.0.41.0/24"
+    zone2 = "10.0.42.0/24"
+  }
+}
+
 variable "ubuntu_amis" {
   description = "Base AMI to launch the instances with"
   default = {

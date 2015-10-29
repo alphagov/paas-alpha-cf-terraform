@@ -1,0 +1,49 @@
+---
+terraform_outputs: (( merge ))
+secrets: (( merge ))
+meta:
+  environment: (( terraform_outputs.environment ))
+  default_env:
+    bosh:
+      password: (( secrets.vcap_password ))
+
+name: (( "logsearch-" meta.environment ))
+
+properties:
+  push-kibana:
+    oauth2_client_secret: (( secrets.kibana_oauth2_client_secret ))
+  cloudfoundry:
+    skip_ssl_validation: true
+    system_domain: (( terraform_outputs.cf_root_domain ))
+    firehose_port: 443
+    firehose_user: admin
+    firehose_password: (( secrets.uaa_admin_password ))
+    admin_username: admin
+    admin_password: (( secrets.uaa_admin_password ))
+    admin_client_secret: (( secrets.uaa_admin_client_secret ))
+    #
+    # If the api is internal,
+    # we need to create this application securiry to allow access
+    # to the api from the apps running in CF
+    #
+    # This way kibana can verify the credentials
+    #
+    # http://docs.pivotal.io/pivotalcf/adminguide/app-sec-groups.html
+    #
+    # cf create-security-group cf-api-access <(
+    # [
+    # {
+    #	"protocol":"tcp",
+    #	"destination":"private_ip",
+    #	"ports":"443"
+    # }
+    # ]
+    # )
+    #
+    # But it is not the case, so lets use the public one
+    #
+    api_access_security_group: "public"
+  nats:
+    user: nats_user
+    password: (( secrets.nats_password ))
+

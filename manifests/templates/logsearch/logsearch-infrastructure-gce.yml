@@ -1,0 +1,102 @@
+---
+terraform_outputs: (( merge ))
+name: (( merge ))
+meta:
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+
+  stemcell:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    version: latest
+
+  environment: (( merge ))
+
+  # Hostnames for the services using bosh powerdns service discovery
+  #
+  # If using a normal deployment, use these values:
+  #
+  #  elasticsearch_master_host: (( "0.elasticsearch-master.default." .name ".microbosh" ))
+  #  redis_host: (( "0.queue.default." .name ".microbosh" ))
+  elasticsearch_master_host: (( "0.logsearch-minimal.default." .name ".microbosh" ))
+  redis_host: (( "0.logsearch-minimal.default." .name ".microbosh" ))
+
+# set static ips to null
+jobs:
+- name: logsearch_minimal
+  networks:
+  - name: default
+    static_ips: null
+#
+# Jobs for standard deployment
+#
+#- name: elasticsearch_master
+#  networks:
+#  - name: default
+#    static_ips: null
+#- name: queue
+#  networks:
+#  - name: default
+#    static_ips: null
+#- name: ingestor_syslog
+#  networks:
+#  - name: default
+#    static_ips: null
+
+properties:
+  <<: (( merge ))
+  nats:
+    machines:
+    - (( "0.nats-z1.cf1.cloudfoundry-" meta.environment ".microbosh" ))
+    - (( "0.nats-z2.cf2.cloudfoundry-" meta.environment ".microbosh" ))
+
+
+update:
+  canaries: 1
+  max_in_flight: 50
+  canary_watch_time: 1000-600000
+  update_watch_time: 1000-600000
+  serial: false
+
+compilation:
+  cloud_properties:
+    machine_type: n1-highcpu-2
+    availability_zone: (( meta.zones.z1 ))
+
+resource_pools:
+- name: tiny
+  cloud_properties:
+    machine_type: f1-micro
+    root_disk_size_gb: 10
+    root_disk_type: pd-standard
+    availability_zone: (( meta.zones.z1 ))
+- name: medium
+  cloud_properties:
+    machine_type: g1-small
+    root_disk_size_gb: 10
+    root_disk_type: pd-standard
+    availability_zone: (( meta.zones.z1 ))
+- name: high_memory
+  cloud_properties:
+    machine_type: n1-highmem-2
+    root_disk_size_gb: 10
+    root_disk_type: pd-standard
+    availability_zone: (( meta.zones.z1 ))
+- name: high_cpu
+  cloud_properties:
+    machine_type: n1-highcpu-2
+    root_disk_size_gb: 10
+    root_disk_type: pd-standard
+    availability_zone: (( meta.zones.z1 ))
+
+networks:
+- name: default
+  type: dynamic
+  cloud_properties:
+    network_name: (( terraform_outputs.logsearch1_network_name ))
+    ephemeral_external_ip: false
+    tags:
+      - logsearch
+      - (( terraform_outputs.environment ))
+      - cf # This tag is needed for nat routing
+

@@ -74,6 +74,11 @@ properties:
   databases:
     address: (( "0.postgres-z1.cf1." .name ".microbosh" ))
 
+  syslog_daemon_config:
+    address: (( "0.logsearch-minimal.default.logsearch-" meta.environment ".microbosh" ))
+    port: 2514
+    transport: relp
+
 jobs:
   - name: router_z1
     networks:
