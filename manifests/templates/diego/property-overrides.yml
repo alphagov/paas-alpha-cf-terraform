@@ -243,6 +243,9 @@ property_overrides:
       network: tcp
       address: 127.0.0.1:7777
     log_level: debug
+    memory_capacity_mb: 6144
+    disk_capacity_mb: 50000
+
   garden:
     listen_network: tcp
     listen_address: 0.0.0.0:7777
