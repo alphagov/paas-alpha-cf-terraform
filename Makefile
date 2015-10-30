@@ -41,8 +41,8 @@ prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws
 prepare-provision-gce: set-gce manifests/templates/outputs/terraform-outputs-gce.yml scripts/terraform-outputs-gce.sh prepare-provision
 prepare-provision: bastion
 	@scp -r -oStrictHostKeyChecking=no manifests/templates \
-	    manifests/generate_bosh_manifest.sh \
-	    manifests/generate_deployment_manifest.sh ubuntu@${bastion}:
+	    manifests/generate_*.sh \
+	    ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
 	@PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
 	@PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
