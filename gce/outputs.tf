@@ -18,6 +18,10 @@ output "zone1" {
 	value = "${var.zones.zone1}"
 }
 
+output "zone2" {
+	value = "${var.zones.zone2}"
+}
+
 output "region" {
 	value = "${var.region}"
 }
@@ -31,6 +35,18 @@ output "cf1_network_name" {
 }
 
 output "cf2_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
+
+output "diego1_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
+
+output "diego2_network_name" {
+	value = "${google_compute_network.bastion.name}"
+}
+
+output "diego3_network_name" {
 	value = "${google_compute_network.bastion.name}"
 }
 
