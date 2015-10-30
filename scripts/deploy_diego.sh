@@ -26,8 +26,9 @@ git_clone() {
 
 git_clone $DIEGO_RELEASE_URL $DIEGO_RELEASE_REVISION
 
-DIEGO_RELEASE_PATH=~/workspace/diego-release/ ./generate_diego_release.sh aws > diego-manifest.yml
+cd ~
+DIEGO_RELEASE_PATH=~/diego-release/ ./generate_diego_release.sh $1 > diego-manifest.yml
 
 bosh deployment ~/diego-manifest.yml
-bosh deploy
+bosh -n deploy
 
