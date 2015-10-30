@@ -160,7 +160,7 @@ deploy_and_login_bosh() {
 git_clone() {
   local url=$1
   local revision=$2
-  path=$(echo ${url} | sed "s|.*/||;s|.git||")
+  path=$(echo ${url} | sed "s|/$||;s|.*/||;s|.git||")
 
   if [ ! -d ~/${path}/.git ]; then
     rm -rf ~/${path}
