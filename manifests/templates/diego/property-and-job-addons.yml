@@ -32,7 +32,7 @@ jobs:
     resource_pool: colocated_z1
     networks:
       - name: diego1
-        static_ips: (( static_ips(11,12,13,14,15,16,17,18,19,20) ))
+        static_ips: (( merge || static_ips(11,12,13,14,15,16,17,18,19,20) ))
     update:
       serial: true
       max_in_flight: 1
