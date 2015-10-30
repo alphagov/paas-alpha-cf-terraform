@@ -16,15 +16,14 @@ spiff merge \
   > ${tmpdir}/config-from-cf.yml
 
 spiff merge \
+  ${manifest_generation}/misc-templates/bosh.yml \
+  ${templates_dir}/stubs/director-uuid.yml \
+  ${templates_dir}/diego/property-and-job-addons.yml \
   ${manifest_generation}/diego.yml \
   ${templates_dir}/diego/colocated-instance-count-overrides.yml \
   ${templates_dir}/diego/property-overrides.yml \
   ${templates_dir}/diego/iaas-settings.yml \
   ${tmpdir}/config-from-cf.yml \
   ${templates_dir}/outputs/terraform-outputs-aws.yml \
-  > ${tmpdir}/diego.yml
 
-spiff merge \
-  ${manifest_generation}/misc-templates/bosh.yml \
-  ${templates_dir}/stubs/director-uuid.yml \
-  ${tmpdir}/diego.yml
+

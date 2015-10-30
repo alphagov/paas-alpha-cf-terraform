@@ -1,5 +1,7 @@
 instance_count_overrides:
   - name: colocated_z1
+    instances: 0
+  - name: colocated_services_z1
     instances: 1
   - name: access_z1
     instances: 0
@@ -16,7 +18,7 @@ instance_count_overrides:
   - name: cc_bridge_z2
     instances: 0
   - name: cell_z1
-    instances: 0
+    instances: 1
   - name: cell_z2
     instances: 0
   - name: database_z1
