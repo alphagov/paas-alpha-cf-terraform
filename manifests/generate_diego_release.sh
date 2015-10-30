@@ -12,14 +12,24 @@ EOF
 
 if [ -z "${DIEGO_RELEASE_PATH}" ]; then
   echo "You must pass DIEGO_RELEASE_PATH environment variable"
+  usage
   exit 1
 fi
 
 CF_MANIFEST_FILE=${CF_MANIFEST_FILE:-~/cf-manifest.yml}
 if [ ! -f "$CF_MANIFEST_FILE" ]; then
   echo "Cannot find the cf-manifest.tml file. Pass it with CF_MANIFEST_FILE"
+  usage
   exit 1
 fi
+
+if [ -z "$1" ]; then
+  echo "Provide target platform"
+  usage
+  exit 1
+fi
+
+TARGET_PLATFORM=$1
 
 manifest_generation=${DIEGO_RELEASE_PATH}/manifest-generation
 templates_dir=$(cd $(dirname $0); pwd)/templates
@@ -42,8 +52,8 @@ spiff merge \
   ${manifest_generation}/diego.yml \
   ${templates_dir}/diego/colocated-instance-count-overrides.yml \
   ${templates_dir}/diego/property-overrides.yml \
-  ${templates_dir}/diego/iaas-settings.yml \
+  ${templates_dir}/diego/iaas-settings-${TARGET_PLATFORM}.yml \
   ${tmpdir}/config-from-cf.yml \
-  ${templates_dir}/outputs/terraform-outputs-aws.yml \
+  ${templates_dir}/outputs/terraform-outputs-${TARGET_PLATFORM}.yml \
 
 
