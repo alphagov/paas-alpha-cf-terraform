@@ -180,7 +180,7 @@ clone_and_update_cf_release() {
   echo "Updating ~/cf-release from $CF_RELEASE_GIT_URL:$CF_RELEASE_REVISION"
   git_clone $CF_RELEASE_GIT_URL $CF_RELEASE_REVISION
 
-  ./update  >> update.log 2>&1
+  ./scripts/update  >> update.log 2>&1
   if [ $? != 0 ]; then
     echo "Update failed, check ~/cf-release/update.log for details: "
     tail update.log
