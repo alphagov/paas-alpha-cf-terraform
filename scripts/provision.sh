@@ -45,6 +45,7 @@ collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/co
 grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
 logsearch,23.0.0,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=23.0.0
 logsearch-for-cloudfoundry,7,https://logsearch-for-cloudfoundry-boshrelease.s3.amazonaws.com/boshrelease-logsearch-for-cloudfoundry-7.tgz
+redis,420,https://bosh.io/d/github.com/pivotal-cf/cf-redis-release?v=420
 "
 
 # Dependencies versions

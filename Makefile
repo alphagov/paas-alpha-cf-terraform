@@ -20,7 +20,7 @@ bastion:
 	$(eval bastion=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip))
 
 aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch
-gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch
+gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis
 
 apply-aws: set-aws apply
 apply-gce: set-gce apply
@@ -44,6 +44,7 @@ prepare-provision: bastion
 	    manifests/generate_bosh_manifest.sh \
 	    manifests/generate_deployment_manifest.sh \
 	    manifests/generate_logsearch_manifest.sh \
+	    manifests/generate_redis_manifest.sh \
 	    ubuntu@${bastion}:
 	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
 	@PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
@@ -77,6 +78,11 @@ deploy-logsearch-aws: set-aws deploy-logsearch
 deploy-logsearch-gce: set-gce deploy-logsearch
 deploy-logsearch: check-env-vars bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_logsearch.sh ${dir}'
+
+deploy-redis-aws: set-aws deploy-redis
+deploy-redis-gce: set-gce deploy-redis
+deploy-redis: check-env-vars bastion
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_redis.sh ${dir}'
 
 confirm-execution:
 	@if test "${SKIP_CONFIRM}" = "" ; then \
