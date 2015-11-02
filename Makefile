@@ -17,7 +17,7 @@ set-gce:
 	$(eval dir=gce)
 	$(eval apply_suffix=-var gce_account_json="`tr -d '\n' < account.json`")
 bastion:
-	$(eval bastion=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip))
+	$(eval bastion=$(shell DEPLOY_ENV=${DEPLOY_ENV} ./scripts/get_bastion_host.sh ${dir}))
 
 aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch
 gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch
