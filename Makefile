@@ -102,9 +102,6 @@ delete-stemcell: bastion
 	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
-delete-route-gce: bastion
-	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
-
 destroy-terraform-aws: confirm-execution set-aws destroy-terraform
 destroy-terraform-gce: confirm-execution set-gce destroy-terraform
 destroy-terraform:
