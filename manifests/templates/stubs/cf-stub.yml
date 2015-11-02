@@ -9,6 +9,9 @@ meta:
     bosh:
       password: (( secrets.vcap_password ))
 
+  consul_release: # Override consul release. Requires https://github.com/alphagov/cf-release/tree/gds-paas-v218
+    name: consul
+
 update:
   serial: false # makes every job deploy at the same time.
 
