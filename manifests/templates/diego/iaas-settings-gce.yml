@@ -1,0 +1,229 @@
+terraform_outputs: (( merge ))
+meta:
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+    z3: (( terraform_outputs.zone2 ))
+
+jobs:
+  - name: access_z1
+    networks:
+      - name: diego1
+        static_ips: null
+
+  - name: access_z2
+    networks:
+      - name: diego2
+        static_ips: null
+
+  - name: access_z3
+    networks:
+      - name: diego3
+        static_ips: null
+
+  - name: colocated_z1
+    networks:
+      - name: diego1
+        static_ips: null
+
+  - name: colocated_z2
+    networks:
+      - name: diego2
+        static_ips: null
+
+  - name: colocated_z3
+    networks:
+      - name: diego3
+        static_ips: null
+
+  - name: colocated_services_z1
+    networks:
+      - name: diego1
+        static_ips: null
+
+iaas_settings:
+  stemcell:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    version: latest
+  networks:
+    - name: diego1
+      type: dynamic
+      cloud_properties:
+        network_name: (( terraform_outputs.diego1_network_name ))
+        ephemeral_external_ip: false
+        tags:
+          - logsearch
+          - (( terraform_outputs.environment ))
+          - cf # This tag is needed for nat routing
+    - name: diego2
+      type: dynamic
+      cloud_properties:
+        network_name: (( terraform_outputs.diego2_network_name ))
+        ephemeral_external_ip: false
+        tags:
+          - logsearch
+          - (( terraform_outputs.environment ))
+          - cf # This tag is needed for nat routing
+    - name: diego3
+      type: dynamic
+      cloud_properties:
+        network_name: (( terraform_outputs.diego3_network_name ))
+        ephemeral_external_ip: false
+        tags:
+          - logsearch
+          - (( terraform_outputs.environment ))
+          - cf # This tag is needed for nat routing
+  compilation_cloud_properties:
+    availability_zone: (( meta.zones.z1 ))
+    availability_zone: (( meta.zones.z1 ))
+    machine_type: n1-highcpu-2
+
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z1 ))
+    - name: access_z2
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z2 ))
+    - name: access_z3
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z3 ))
+    - name: brain_z1
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z1 ))
+    - name: brain_z2
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z2 ))
+    - name: brain_z3
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z3 ))
+    - name: cc_bridge_z1
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z1 ))
+    - name: cc_bridge_z2
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z2 ))
+    - name: cc_bridge_z3
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z3 ))
+    - name: cell_z1
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: n1-highmem-2
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z1 ))
+    - name: cell_z2
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: n1-highmem-2
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z2 ))
+    - name: cell_z3
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: n1-highmem-2
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z3 ))
+    - name: colocated_z1
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: n1-highmem-2
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z1 ))
+    - name: colocated_z2
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: n1-highmem-2
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z2 ))
+    - name: colocated_z3
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: n1-highmem-2
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z3 ))
+    - name: database_z1
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z1 ))
+    - name: database_z2
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z2 ))
+    - name: database_z3
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z3 ))
+    - name: route_emitter_z1
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z1 ))
+    - name: route_emitter_z2
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z2 ))
+    - name: route_emitter_z3
+      cloud_properties:
+        <<: (( merge ))
+        machine_type: g1-small
+        root_disk_size_gb: 64
+        root_disk_type: pd-standard
+        zone: (( meta.zones.z3 ))
+

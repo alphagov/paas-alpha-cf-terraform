@@ -3,8 +3,8 @@ echo "*** Deploying diego release..."
 
 set -e
 
-DIEGO_RELEASE_URL=https://github.com/cloudfoundry-incubator/diego-release
-DIEGO_RELEASE_REVISION=0.1430.0
+DIEGO_RELEASE_URL=https://github.com/keymon/diego-release
+DIEGO_RELEASE_REVISION=0.1430.0-gds-paas
 
 git_clone() {
   local url=$1
