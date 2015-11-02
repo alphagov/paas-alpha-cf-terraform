@@ -1,0 +1,65 @@
+---
+terraform_outputs: (( merge ))
+secrets: (( merge ))
+networks: (( merge ))
+name: (( merge ))
+
+jobs:
+  - name: redis
+    templates:
+    - name: cf-redis-broker
+      release: cf-redis
+    - name: syslog-configurator
+      release: cf-redis
+    instances: 1
+    resource_pool: redis
+    persistent_disk: 10240
+    networks:
+    - name: default
+      static_ips: (( merge ))
+
+  - name: broker-registrar
+    instances: 1
+    lifecycle: errand
+    networks:
+    - name: default
+    resource_pool: tiny
+    templates:
+    - name: broker-registrar
+      release: cf-redis
+
+  - name: broker-deregistrar
+    instances: 1
+    lifecycle: errand
+    networks:
+    - name: default
+    resource_pool: tiny
+    templates:
+    - name: broker-deregistrar
+      release: cf-redis
+
+  - name: smoke-tests
+    instances: 1
+    lifecycle: errand
+    networks:
+    - name: default
+    resource_pool: tiny
+    templates:
+    - name: smoke-tests
+      release: cf-redis
+
+properties: 
+  <<: (( merge ))
+  syslog_aggregator:
+    address: (( merge ))
+    port: 2514
+  cf:
+    api_url: (( "https://api." terraform_outputs.cf_root_domain ))
+    apps_domain: (( terraform_outputs.cf_root_domain ))
+    admin_username: admin
+    admin_password: (( secrets.uaa_admin_password ))
+    nats:
+      host: (( merge ))
+      port: 4222
+      username: nats_user
+      password: (( secrets.nats_password ))
