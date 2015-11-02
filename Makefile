@@ -25,7 +25,7 @@ gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch
 apply-aws: set-aws apply
 apply-gce: set-gce apply
 apply: check-env-vars
-	@cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} \
+	cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} \
 		|| terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix}
 
 manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
@@ -40,14 +40,16 @@ scripts/terraform-outputs-gce.sh: gce/${DEPLOY_ENV}.tfstate
 prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws.yml scripts/terraform-outputs-aws.sh prepare-provision
 prepare-provision-gce: set-gce manifests/templates/outputs/terraform-outputs-gce.yml scripts/terraform-outputs-gce.sh prepare-provision
 prepare-provision: bastion
-	@scp -r -oStrictHostKeyChecking=no manifests/templates \
+	scp -r -oStrictHostKeyChecking=no manifests/templates \
 	    manifests/generate_bosh_manifest.sh \
 	    manifests/generate_deployment_manifest.sh \
 	    manifests/generate_logsearch_manifest.sh \
 	    ubuntu@${bastion}:
-	@scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
-	@PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
-	@PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
+	scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-secrets.yml | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
 
 test-aws: set-aws test
 test-gce: set-gce test
@@ -57,26 +59,26 @@ test: bastion
 	    ${DEPLOY_ENV} ${domain} \
 	    admin `PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf_admin_password` > \
 		smoke_test/smoke_test.json
-	@scp -oStrictHostKeyChecking=no \
+	scp -oStrictHostKeyChecking=no \
 	    smoke_test/smoke_test.sh smoke_test/smoke_test.json \
 	    ubuntu@${bastion}:
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 	    '/bin/bash smoke_test.sh'
 
 provision-aws: set-aws prepare-provision-aws provision
 provision-gce: set-gce prepare-provision-gce provision
 provision: check-env-vars bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/provision.sh ${dir}'
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/provision.sh ${dir}'
 
 deploy-cf-aws: set-aws prepare-provision-aws deploy-cf
 deploy-cf-gce: set-gce prepare-provision-gce deploy-cf
 deploy-cf: check-env-vars bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_cf.sh ${dir}'
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_cf.sh ${dir}'
 
 deploy-logsearch-aws: set-aws deploy-logsearch
 deploy-logsearch-gce: set-gce deploy-logsearch
 deploy-logsearch: check-env-vars bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_logsearch.sh ${dir}'
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_logsearch.sh ${dir}'
 
 confirm-execution:
 	@if test "${SKIP_CONFIRM}" = "" ; then \
@@ -91,27 +93,27 @@ delete-deployments: confirm-execution bastion
 delete-release-aws: set-aws delete-release
 delete-release-gce: set-gce delete-release
 delete-release: bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 	    'for release in $$(bosh releases | grep "|" | cut -f 2 -d "|" | grep -v -e "Name") ; do bosh -n delete release $$release --force ; done'
 
 delete-stemcell-aws: set-aws delete-stemcell
 delete-stemcell-gce: set-gce delete-stemcell
 delete-stemcell: bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
 delete-route-gce: bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} "/bin/bash ./scripts/gce-delete-fixed-ip.sh ${DEPLOY_ENV}"
 
 destroy-terraform-aws: confirm-execution set-aws destroy-terraform
 destroy-terraform-gce: confirm-execution set-gce destroy-terraform
 destroy-terraform:
-	@cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} -force
+	cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} -force
 
 bosh-delete-aws: set-aws delete-deployments delete-release delete-stemcell bosh-delete
 bosh-delete-gce: set-gce delete-deployments delete-release delete-stemcell bosh-delete
 bosh-delete: bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} 'yes | bosh-init delete bosh-manifest.yml'
 
 destroy-aws: confirm-execution set-aws delete-deployments bosh-delete-aws destroy-terraform
 destroy-gce: confirm-execution set-gce delete-deployments bosh-delete-gce destroy-terraform
@@ -119,9 +121,9 @@ destroy-gce: confirm-execution set-gce delete-deployments bosh-delete-gce destro
 show-aws: set-aws show
 show-gce: set-gce show
 show:
-	@cd ${dir} && terraform show ${DEPLOY_ENV}.tfstate
+	cd ${dir} && terraform show ${DEPLOY_ENV}.tfstate
 
 ssh-aws: set-aws ssh
 ssh-gce: set-gce ssh
 ssh: check-env-vars bastion
-	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion}
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion}
