@@ -123,4 +123,4 @@ show:
 ssh-aws: set-aws ssh
 ssh-gce: set-gce ssh
 ssh: check-env-vars bastion
-	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion}
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} ${CMD}
