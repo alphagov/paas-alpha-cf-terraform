@@ -19,7 +19,7 @@ set-gce:
 bastion:
 	$(eval bastion=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate bastion_ip))
 
-aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch
+aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch deploy-redis
 gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis
 
 apply-aws: set-aws apply
