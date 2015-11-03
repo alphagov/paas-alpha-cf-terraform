@@ -1,0 +1,63 @@
+---
+terraform_outputs: (( merge ))
+meta:
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+
+  environment: (( merge ))
+
+jobs:
+- name: redis
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.40.51
+
+properties:
+  <<: (( merge ))
+  syslog_aggregator:
+    address: 10.0.40.10
+  cf:
+    nats:
+      host: 10.0.10.11
+
+update: ~
+
+compilation:
+  cloud_properties:
+    instance_type: c3.large
+    availability_zone: (( meta.zones.z1 ))
+
+resource_pools:
+- name: tiny
+  cloud_properties:
+    instance_type: t2.micro
+    ephemeral_disk:
+      size: 10_240
+      type: gp2
+    availability_zone: (( meta.zones.z1 ))
+- name: redis
+  cloud_properties:
+    instance_type: m3.medium
+    ephemeral_disk:
+      size: 10_240
+      type: gp2
+    availability_zone: (( meta.zones.z1 ))
+
+networks:
+- name: default
+  subnets:
+    - range: 10.0.40.0/24
+      gateway: 10.0.40.1
+      dns: [10.0.0.2]
+      reserved:
+      - 10.0.40.2 - 10.0.40.50
+      static:
+      - 10.0.40.51 - 10.0.40.60
+      cloud_properties:
+        subnet: (( terraform_outputs.logsearch1_subnet_id ))
