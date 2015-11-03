@@ -219,6 +219,7 @@ upload_releases() {
     local version=$(echo $r | cut -f 2 -d ,)
     local url=$(echo $r | cut -f 3 -d ,)
     local action=$(echo $r | cut -f 4 -d ,)
+    local directory=$(echo $r | awk -F"/" '{print $NF}' | cut -d"." -f 1)
 
     if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
       echo "Release $name version $version already uploaded, skipping"
@@ -226,7 +227,9 @@ upload_releases() {
     else
       if [[ ${action} == "create" ]] ; then
          git_clone ${url} ${version}
-         $BOSH_CLI create release --name ${name} --version ${version}
+         if [[ $(grep -R ${version} ~/${directory}/dev_releases/) == "" ]]; then
+           $BOSH_CLI create release --name ${name} --version ${version}
+         fi
          url=""
       fi
 
