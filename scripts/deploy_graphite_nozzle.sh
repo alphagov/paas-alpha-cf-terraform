@@ -1,4 +1,9 @@
 #!/bin/bash
+if [[ -n $(cf app graphite-nozzle | grep running) ]] ; then
+  echo "Graphite nozzle seems to be running already, skipping deploy..."
+  exit 0
+fi
+
 echo "*** Deploying and starting graphite nozzle..."
 
 CF_ADMIN="$1"

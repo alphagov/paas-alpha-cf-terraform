@@ -1,4 +1,8 @@
 #!/bin/bash
+if [[ -n $(cf app postgresql-cf-service-broker | grep running) ]] ; then
+  echo "PostgreSQL broker seems to be running already, skipping deploy..."
+  exit 0
+fi
 echo "*** Deploying and registering PostgreSQL broker..."
 
 PSQL_SERVER=`bosh vms | grep postgres/0 | grep -o '10\.[0-9]\+\.[0-9]\+\.[0-9]\+'`
