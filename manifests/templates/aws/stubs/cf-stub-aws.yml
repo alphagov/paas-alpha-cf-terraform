@@ -68,7 +68,7 @@ properties:
   databases:
     address: (( jobs.postgres_z1.networks.cf1.static_ips.[0] ))
   syslog_daemon_config:
-    address: 10.0.40.12
+    address: 10.0.40.10
     port: 2514
     transport: relp
 

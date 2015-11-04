@@ -1,0 +1,31 @@
+---
+terraform_outputs: (( merge ))
+secrets: (( merge ))
+
+meta:
+  environment: (( terraform_outputs.environment ))
+  default_env:
+    bosh:
+      password: (( secrets.vcap_password ))
+  broker_host: ~
+  nats_host: ~
+  syslog_host: ~
+
+name: (( "redis-" meta.environment ))
+properties:
+  broker:
+    name: redis
+    host: (( merge ))
+    username: admin
+    password: (( secrets.redis_broker_admin_password || "password" ))
+    host: (( "redis-broker." terraform_outputs.cf_root_domain ))
+  redis:
+    config_command: ""
+    broker:
+      network: default
+      service_name: redis
+      service_instance_limit: 100
+      dedicated_nodes:  null
+      auth:
+        username: admin
+        password: (( secrets.redis_broker_admin_password || "password" ))

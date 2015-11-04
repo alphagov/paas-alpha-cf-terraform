@@ -1,0 +1,61 @@
+---
+terraform_outputs: (( merge ))
+name: (( merge ))
+meta:
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+
+  stemcell:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    version: latest
+
+  environment: (( merge ))
+
+# set static ips to null
+jobs:
+- name: redis
+  networks:
+  - name: default
+    static_ips: null
+
+properties:
+  <<: (( merge ))
+  syslog_aggregator:
+    address: (( "0.logsearch-minimal.default.logsearch-" .meta.environment ".microbosh" ))
+  cf:
+    nats:
+      host: (( "0.nats-z1.cf1.cloudfoundry-" .meta.environment ".microbosh" ))
+  
+update: ~
+
+compilation:
+  cloud_properties:
+    machine_type: n1-highcpu-2
+    availability_zone: (( meta.zones.z1 ))
+
+resource_pools:
+- name: tiny
+  cloud_properties:
+    machine_type: f1-micro
+    root_disk_size_gb: 10
+    root_disk_type: pd-standard
+    availability_zone: (( meta.zones.z1 ))
+- name: redis
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 10
+    root_disk_type: pd-standard
+    availability_zone: (( meta.zones.z1 ))
+
+networks:
+- name: default
+  type: dynamic
+  cloud_properties:
+    network_name: (( terraform_outputs.logsearch1_network_name ))
+    ephemeral_external_ip: false
+    tags:
+      - redis
+      - (( terraform_outputs.environment ))
+      - cf # This tag is needed for nat routing
+

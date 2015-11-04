@@ -45,6 +45,7 @@ collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/co
 grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
 logsearch,23.0.0,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=23.0.0
 logsearch-for-cloudfoundry,7,https://logsearch-for-cloudfoundry-boshrelease.s3.amazonaws.com/boshrelease-logsearch-for-cloudfoundry-7.tgz
+redis,420,https://bosh.io/d/github.com/pivotal-cf/cf-redis-release?v=420
 "
 
 # Dependencies versions
@@ -218,6 +219,7 @@ upload_releases() {
     local version=$(echo $r | cut -f 2 -d ,)
     local url=$(echo $r | cut -f 3 -d ,)
     local action=$(echo $r | cut -f 4 -d ,)
+    local directory=$(echo $r | awk -F"/" '{print $NF}' | cut -d"." -f 1)
 
     if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
       echo "Release $name version $version already uploaded, skipping"
@@ -225,7 +227,9 @@ upload_releases() {
     else
       if [[ ${action} == "create" ]] ; then
          git_clone ${url} ${version}
-         $BOSH_CLI create release --name ${name} --version ${version}
+         if [[ $(grep -R ${version} ~/${directory}/dev_releases/) == "" ]]; then
+           $BOSH_CLI create release --name ${name} --version ${version}
+         fi
          url=""
       fi
 
