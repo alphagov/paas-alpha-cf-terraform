@@ -5,6 +5,11 @@ meta:
     z2: (( terraform_outputs.zone1 ))
     z3: (( terraform_outputs.zone2 ))
 
+additional_jobs:
+  releases:
+    - name: consul_release
+      version: latest
+
 jobs:
   - name: access_z1
     networks:
@@ -45,6 +50,7 @@ iaas_settings:
   stemcell:
     name: bosh-google-kvm-ubuntu-trusty-go_agent
     version: latest
+  consul_agent_release: consul_release
   networks:
     - name: diego1
       type: dynamic
