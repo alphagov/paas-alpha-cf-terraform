@@ -50,7 +50,7 @@ iaas_settings:
   stemcell:
     name: bosh-google-kvm-ubuntu-trusty-go_agent
     version: latest
-  consul_agent_release: consul_release
+  consul_agent_release: consul
   networks:
     - name: diego1
       type: dynamic
