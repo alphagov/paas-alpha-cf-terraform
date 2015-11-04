@@ -22,6 +22,7 @@ git_clone() {
 
   cd ~/${path}
   git checkout -q ${revision}
+  git pull --rebase
 }
 
 git_clone $DIEGO_RELEASE_URL $DIEGO_RELEASE_REVISION

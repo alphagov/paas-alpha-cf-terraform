@@ -7,7 +7,7 @@ meta:
 
 additional_jobs:
   releases:
-    - name: consul_release
+    - name: consul
       version: latest
 
 jobs:
