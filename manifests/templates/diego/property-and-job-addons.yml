@@ -5,6 +5,7 @@
 #
 property_overrides: (( merge ))
 instance_count_overrides: (( merge ))
+iaas_settings: (( merge ))
 
 properties:
   <<: (( merge ))
@@ -68,7 +69,7 @@ base_job_templates:
     - name: converger
       release: diego
     - name: consul_agent
-      release: cf
+      release: (( iaas_settings.consul_agent_release || cf ))
     - name: etcd
       release: diego
     - name: file_server
