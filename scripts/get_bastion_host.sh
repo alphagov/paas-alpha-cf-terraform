@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -z "$DEPLOY_ENV" -o -z "$1" ]; then
   cat << EOF
