@@ -1,0 +1,39 @@
+nginx:
+  name: nginx
+  release: nginx
+
+jobs:
+  - <<: (( merge ))
+  - name: router_z1
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( nginx ))
+  - name: router_z2
+    <<: (( merge ))
+    templates:
+      - <<: (( merge ))
+      - (( nginx ))
+
+properties:
+  <<: (( merge ))
+  nginx_conf: |
+    worker_processes  1;
+    error_log /dev/stdout   info;
+    events {
+      worker_connections  1024;
+    }
+    http {
+      client_body_temp_path /tmp/nginx_body_cache;
+      proxy_temp_path /tmp/nginx_proxy_cache;
+      fastcgi_temp_path /tmp/nginx_fastcgi_cache;
+      uwsgi_temp_path /tmp/nginx_uwsgi_cache;
+      scgi_temp_path /tmp/nginx_scgi_cache;
+      keepalive_timeout 0;
+      server {
+        listen 80;
+        return 301 https://$host$request_uri;
+        access_log /dev/stdout;
+        error_log /dev/stdout;
+      }
+    }

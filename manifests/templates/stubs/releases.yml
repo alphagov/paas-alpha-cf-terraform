@@ -9,3 +9,5 @@ releases:
   version: latest
 - name: collectd
   version: latest
+- name: nginx
+  version: latest
