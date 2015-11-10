@@ -51,6 +51,6 @@ URL=`cf app postgresql-cf-service-broker | grep urls: | awk '{print $2}'`
 # Only register if not done already
 cf service-brokers | grep -q ${URL}
 if [[ ! $? == 0 ]] ; then
-  cf create-service-broker postgresql-cf-service-broker user ${PSQL_ADMIN_PASS} http://${URL}
+  cf create-service-broker postgresql-cf-service-broker user ${PSQL_ADMIN_PASS} https://${URL}
   cf enable-service-access PostgreSQL -p "Basic PostgreSQL Plan"
 fi

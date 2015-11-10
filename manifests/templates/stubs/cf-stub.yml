@@ -38,6 +38,7 @@ properties:
     db_encryption_key: (( secrets.cc_db_encryption_key ))
     min_cli_version: '6.1.0'
     min_recommended_cli_version: '6.10.0'
+    external_protocol: https
   nats:
     user: nats_user
     password: (( secrets.nats_password ))
@@ -46,6 +47,7 @@ properties:
     memory_mb: 4096
   router:
     enable_ssl: true
+    port: 8090 # We bind router on port 8090 as it's not wanted, but we can't disable it
     ssl_cert: (( secrets.router_ssl_cert ))
     ssl_key: (( secrets.router_ssl_key ))
     cipher_suites: TLS_RSA_WITH_RC4_128_SHA:TLS_RSA_WITH_AES_128_CBC_SHA
