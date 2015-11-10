@@ -70,3 +70,19 @@ resource "google_compute_firewall" "web" {
     ports = [ 80, 443 ]
   }
 }
+
+resource "google_compute_firewall" "graphite" {
+  name = "${var.env}-graphite"
+  description = "Security group for graphite that allows web traffic from the office and jenkins"
+  network = "${google_compute_network.bastion.name}"
+
+  source_ranges = [ "${split(",", var.office_cidrs)}",
+                    "${var.bastion_cidr}",
+                    "${var.jenkins_elastic}" ]
+  target_tags = [ "graphite1" ]
+
+  allow {
+    protocol = "tcp"
+    ports = [ 80, 3000 ]
+  }
+}
