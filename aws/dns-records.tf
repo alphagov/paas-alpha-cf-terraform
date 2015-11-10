@@ -21,3 +21,11 @@ resource "aws_route53_record" "bosh" {
   ttl = "60"
   records = ["${aws_eip.bosh.public_ip}"]
 }
+
+resource "aws_route53_record" "grafana" {
+  zone_id = "${var.dns_zone_id}"
+  name = "${var.env}-grafana.${var.dns_zone_name}."
+  type = "CNAME"
+  ttl = "60"
+  records = ["${aws_elb.graphite.dns_name}"]
+}
