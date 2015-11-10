@@ -56,13 +56,24 @@ networks:
         - (( name ))
       target_pool: (( terraform_outputs.router_pool_name ))
 
+  - name: graphite1
+    type: dynamic
+    cloud_properties:
+      network_name: (( terraform_outputs.cf1_network_name ))
+      ephemeral_external_ip: false
+      tags:
+        - cf
+        - (( terraform_outputs.environment ))
+        - (( name ))
+      target_pool: (( terraform_outputs.graphite_pool_name ))
+
 properties:
   graphite:
-    server: (( "0.graphite.cf1." .name ".microbosh" ))
+    server: (( "0.graphite.graphite1." .name ".microbosh" ))
   domain: (( terraform_outputs.environment ".cf2.paas.alphagov.co.uk" ))
   collector:
     graphite:
-      address: (( "0.graphite.cf1." .name ".microbosh" ))
+      address: (( "0.graphite.graphite1." .name ".microbosh" ))
   template_only:
     gce:
       availability_zone: (( terraform_outputs.zone0 ))
@@ -98,3 +109,5 @@ resource_pools:
     network: router1
   - name: router_z2
     network: router2
+  - name: graphite_z1
+    network: graphite1
