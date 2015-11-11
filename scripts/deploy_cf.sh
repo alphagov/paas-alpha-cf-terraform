@@ -57,6 +57,9 @@ cf_post_deploy() {
   time bash $SCRIPT_DIR/deploy_graphite_nozzle.sh \
     admin $(get_cf_secret secrets/uaa_admin_password) \
     graphite-nozzle $(get_cf_secret secrets/uaa_clients_firehose_password)
+  # Deploy grafana dashboards
+  time bash $SCRIPT_DIR/deploy_grafana_dashboards.sh \
+    $terraform_output_grafana_dns_name
 }
 
 cf_compile_manifest
