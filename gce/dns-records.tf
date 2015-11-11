@@ -22,3 +22,10 @@ resource "google_dns_record_set" "bosh" {
   rrdatas = ["${google_compute_address.bosh.address}"]
 }
 
+resource "google_dns_record_set" "grafana" {
+  managed_zone = "${var.dns_zone_id}"
+  name = "${var.env}-grafana.${var.dns_zone_name}."
+  type = "A"
+  ttl = "60"
+  rrdatas = ["${google_compute_address.graphite.address}"]
+}

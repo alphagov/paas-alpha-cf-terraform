@@ -1,7 +1,21 @@
+terraform_outputs: (( merge ))
+meta:
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+
+resource_pools:
+  - name: graphite_z1
+    cloud_properties:
+      machine_type: n1-highcpu-2
+      root_disk_size_gb: 20
+      root_disk_type: pd-standard
+      zone: (( meta.zones.z1 ))
+
 jobs:
   - name: graphite
     instances: 1
     persistent_disk: 204800
     networks:
-    - name: cf1
+    - name: graphite1
       static_ips: null

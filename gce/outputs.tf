@@ -46,6 +46,10 @@ output "router_pool_name" {
 	value = "${google_compute_target_pool.router.name}"
 }
 
+output "graphite_pool_name" {
+	value = "${google_compute_target_pool.graphite.name}"
+}
+
 output "cf_root_domain" {
 	value = "${var.env}.${var.dns_zone_name}"
 }
