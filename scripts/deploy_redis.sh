@@ -36,8 +36,8 @@ cd ~
 $BOSH_CLI deployment ~/redis-manifest.yml
 time $BOSH_CLI -n deploy
 
-# Register broker
-curl --fail --silent --insecure https://redis.$terraform_output_cf_root_domain > /dev/null || time $BOSH_CLI -n run errand broker-registrar
+# Register broker (if not done yet)
+cf service-brokers | grep -q ^redis || time $BOSH_CLI -n run errand broker-registrar
 
 # Cofigure security
 REDIS_IP=$(/usr/local/bin/bosh vms 2>&1 | awk  '$2 ~ /redis\/0/ {print $8}')
