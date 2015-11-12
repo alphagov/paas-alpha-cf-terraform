@@ -47,6 +47,7 @@ logsearch,23.0.0,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=
 logsearch-for-cloudfoundry,7,https://logsearch-for-cloudfoundry-boshrelease.s3.amazonaws.com/boshrelease-logsearch-for-cloudfoundry-7.tgz
 redis,420,https://bosh.io/d/github.com/pivotal-cf/cf-redis-release?v=420
 nginx,2,https://s3.amazonaws.com/nginx-release/nginx-2.tgz
+docker,23,https://bosh.io/d/github.com/cf-platform-eng/docker-boshrelease?v=23
 "
 
 # Dependencies versions
