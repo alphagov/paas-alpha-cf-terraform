@@ -19,7 +19,8 @@ set-gce:
 bastion:
 	$(eval bastion=$(shell DEPLOY_ENV=${DEPLOY_ENV} ./scripts/get_bastion_host.sh ${dir}))
 
-aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch deploy-redis
+aws: set-aws apply prepare-provision-aws prepare-dev-ssl provision deploy-cf deploy-logsearch deploy-redis
+aws-trial: set-aws apply prepare-provision-aws prepare-trial-ssl provision deploy-cf deploy-logsearch deploy-redis
 gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis
 
 apply-aws: set-aws apply
@@ -51,6 +52,15 @@ prepare-provision: bastion
 	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
 	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | \
 	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
+
+prepare-dev-ssl: bastion
+	scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-dev-ssl-certificates.yml | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-ssl-certificates.yml'
+prepare-trial-ssl: bastion
+	scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-trial-ssl-certificates.yml | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-ssl-certificates.yml'
 
 test-aws: set-aws test
 test-gce: set-gce test
