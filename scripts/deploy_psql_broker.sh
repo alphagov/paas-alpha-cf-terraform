@@ -53,4 +53,7 @@ cf service-brokers | grep -q ${URL}
 if [[ ! $? == 0 ]] ; then
   cf create-service-broker postgresql-cf-service-broker user ${PSQL_ADMIN_PASS} https://${URL}
   cf enable-service-access PostgreSQL -p "Basic PostgreSQL Plan"
+  # Set the service plan to be free of charge.
+  PSQL_PLAN_GUID=`cf curl /v2/service_plans -X 'GET' | jq -r '(.resources[] | select(.entity.name == "Basic PostgreSQL Plan")).metadata.guid'`
+  cf curl /v2/service_plans/$PSQL_PLAN_GUID -X 'PUT' -d '{"free":true}'
 fi
