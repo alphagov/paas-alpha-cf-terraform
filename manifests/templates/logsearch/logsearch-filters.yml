@@ -67,7 +67,7 @@ properties:
                   }
 
                   mutate {
-                      remove => [ "msg" ]
+                      remove_field => [ "msg" ]
                   }
               }
           }
