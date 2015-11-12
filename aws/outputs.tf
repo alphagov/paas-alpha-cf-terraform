@@ -50,6 +50,10 @@ output "graphite_elb_name" {
   value = "${aws_elb.graphite.name}"
 }
 
+output "grafana_dns_name" {
+  value = "${aws_route53_record.grafana.fqdn}"
+}
+
 output "cf_root_domain" {
 	value = "${var.env}.${var.dns_zone_name}"
 }
