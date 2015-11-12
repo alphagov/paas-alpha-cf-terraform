@@ -243,9 +243,16 @@ properties:
               target => "msgdata"
           }
 
-          json {
-              source => "_message_json"
-              remove_field => "_message_json"
+          #If it looks like JSON, it must be JSON...
+          if [_message_json] =~ /^\s*{".*}\s*$/ {
+              json {
+                  source => "_message_json"
+                  remove_field => "_message_json"
+              }
+          } else {
+              mutate {
+                  rename => [ "_message_json", "_message_invalid_json" ]
+              }
           }
 
           mutate {
@@ -258,13 +265,19 @@ properties:
           }
 
           if [source] == "NatsStreamForwarder" {
-              json {
-                  source => "[data][nats_message]"
-                  target => "nats_message"
-              }
-
-              mutate {
-                  remove_field => "[data][nats_message]"
+              #If it looks like JSON, it must be JSON...
+              if [data][nats_message] =~ /^\s*{".*}\s*$/ {
+                  json {
+                      source => "[data][nats_message]"
+                      target => "nats_message"
+                  }
+                  mutate {
+                      remove_field => "[data][nats_message]"
+                  }
+              } else {
+                  mutate {
+                      rename => [ "[data][nats_message]", "_nats_invalid_json" ]
+                  }
               }
           }
 
