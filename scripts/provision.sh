@@ -86,6 +86,7 @@ install_dependencies() {
     dstat
     unzip
     bundler
+    jq
   "
 
   echo "Installing system packages..."
