@@ -55,7 +55,7 @@ output "cf_root_domain" {
 }
 
 output "grafana_dns_name" {
-  value = "${google_dns_record_set.grafana.name}"
+  value = "${replace(google_dns_record_set.grafana.name, "/\.$/", "")}"
 }
 
 output "dns_zone_name" {
