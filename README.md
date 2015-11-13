@@ -43,7 +43,7 @@ export TF_VAR_GCE_INTEROPERABILITY_HOST=s3-eu-west-1.amazonaws.com
 ### Build
 ```
 make gce DEPLOY_ENV=<environment_name> # or...
-make aws DEPLOY_ENV=<environment_name>
+make aws DEPLOY_ENV=<environment_name> [WEB_ACCESS_CIDRS='<comma separated list of cidrs>']
 ```
 
 This actually includes 3 separate stages:
@@ -51,6 +51,8 @@ This actually includes 3 separate stages:
 1. Terraform
 2. Provision BOSH
 3. Deploy Cloud Foundry
+
+The optional argument WEB_ACCESS_CIDRS can be used to overide the default web access ingress range. It accepts a comma separated list of cidrs (no spaces)
 
 ### Destroy
 

@@ -10,6 +10,9 @@ check-env-vars:
 ifndef DEPLOY_ENV
     $(error Must pass DEPLOY_ENV=<name>)
 endif
+ifdef WEB_ACCESS_CIDRS
+    WEB_ACCESS_OPTION= -var web_access_cidrs=${WEB_ACCESS_CIDRS}
+endif
 
 set-aws:
 	$(eval dir=aws)
@@ -25,8 +28,8 @@ gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch de
 apply-aws: set-aws apply
 apply-gce: set-gce apply
 apply: check-env-vars
-	cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} \
-		|| terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix}
+	cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix} \
+		|| terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix}
 
 manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
@@ -111,7 +114,7 @@ delete-stemcell: bastion
 destroy-terraform-aws: confirm-execution set-aws destroy-terraform
 destroy-terraform-gce: confirm-execution set-gce destroy-terraform
 destroy-terraform:
-	cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${apply_suffix} -force
+	cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix} -force
 
 bosh-delete-aws: set-aws delete-deployments delete-release delete-stemcell bosh-delete
 bosh-delete-gce: set-gce delete-deployments delete-release delete-stemcell bosh-delete
