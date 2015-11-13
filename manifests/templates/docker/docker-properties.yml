@@ -1,0 +1,32 @@
+---
+terraform_outputs: (( merge ))
+secrets: (( merge ))
+
+properties:
+  nats:
+    user: nats_user
+    password: (( secrets.nats_password ))
+    port: 4222
+    machines: (( merge ))
+
+  cf:
+    api_url: (( "https://api." terraform_outputs.cf_root_domain ))
+    admin_username: admin
+    admin_password: (( secrets.uaa_admin_password ))
+
+  docker:
+    tcp_address: (( merge ))
+
+  fetch_containers_images:
+    docker_url: (( merge ))
+
+  broker:
+    name: cf-containers-broker
+    protocol: https
+    host: (( "cf-containers-broker." terraform_outputs.cf_root_domain ))
+    port: 443
+    username: (( secrets.docker_broker_user || "containers" ))
+    password: (( secrets.docker_broker_password || "containers" ))
+    cookie_secret: (( secrets.docker_broker_cookie_secret || "e7247dae-a252-4393-afa3-2219c1c02efd" ))
+    max_containers: 20
+    services: (( merge ))
