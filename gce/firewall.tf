@@ -78,7 +78,10 @@ resource "google_compute_firewall" "graphite" {
 
   source_ranges = [ "${split(",", var.office_cidrs)}",
                     "${var.bastion_cidr}",
-                    "${var.jenkins_elastic}" ]
+                    "${var.jenkins_elastic}",
+                    "${google_compute_address.bosh.address}/32",
+                    "${google_compute_instance.bastion.network_interface.0.access_config.0.nat_ip}/32",
+                    "${google_compute_instance.bastion.network_interface.0.address}/32" ]
   target_tags = [ "graphite1" ]
 
   allow {
