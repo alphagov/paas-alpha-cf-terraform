@@ -153,7 +153,7 @@ resource "aws_security_group" "web" {
     to_port   = 80
     protocol  = "tcp"
     cidr_blocks = [
-      "${split(",", var.office_cidrs)}",
+      "${split(",", var.web_access_cidrs)}",
       "${aws_instance.bastion.public_ip}/32",
       "${var.jenkins_elastic}"
     ]
@@ -167,7 +167,7 @@ resource "aws_security_group" "web" {
     to_port   = 443
     protocol  = "tcp"
     cidr_blocks = [
-      "${split(",", var.office_cidrs)}",
+      "${split(",", var.web_access_cidrs)}",
       "${aws_instance.bastion.public_ip}/32",
       "${var.jenkins_elastic}"
     ]
@@ -181,7 +181,7 @@ resource "aws_security_group" "web" {
     to_port   = 4443
     protocol  = "tcp"
     cidr_blocks = [
-      "${split(",", var.office_cidrs)}",
+      "${split(",", var.web_access_cidrs)}",
       "${aws_instance.bastion.public_ip}/32",
       "${var.jenkins_elastic}"
     ]
