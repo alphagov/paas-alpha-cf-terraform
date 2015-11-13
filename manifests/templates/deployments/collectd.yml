@@ -162,26 +162,6 @@ jobs:
     templates:
       - <<: (( merge ))
       - (( collectd ))
-  - name: elasticsearch_master_z1
-    <<: (( merge ))
-    templates:
-      - <<: (( merge ))
-      - (( collectd ))
-  - name: elasticsearch_master_z2
-    <<: (( merge ))
-    templates:
-      - <<: (( merge ))
-      - (( collectd ))
-  - name: elasticsearch_data_z1
-    <<: (( merge ))
-    templates:
-      - <<: (( merge ))
-      - (( collectd ))
-  - name: elasticsearch_data_z2
-    <<: (( merge ))
-    templates:
-      - <<: (( merge ))
-      - (( collectd ))
 
 properties:
   <<: (( merge ))
