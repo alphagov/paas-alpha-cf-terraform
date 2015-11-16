@@ -1,0 +1,13 @@
+language: bash
+
+before_isntall:
+  - wget https://releases.hashicorp.com/terraform/0.6.6/terraform_0.6.6_linux_amd64.zip
+  - mkdir ~/bin
+  - sudo unzip -f -o terraform_0.6.6_linux_amd64.zip -d ~/bin 
+  - rm terraform_0.6.6_linux_amd64.zip
+
+script: 
+  - cd aws
+  - PATH=$PATH:~/bin terraform plan DEPLOY_ENV=travis
+
+
