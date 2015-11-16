@@ -6,18 +6,16 @@ ROOT_PASS_DIR ?= .
 all:
 	$(error Usage: make <aws|gce> DEPLOY_ENV=name)
 
-ifeq "$(DEPLOY_ENV)" "trial"
-    SSL_CERTIFICATES_FILE := cloudfoundry/cf-trial-ssl-certificates.yml
+# Load the variables for this "profile"
+ifeq (,$(wildcard profile.${PROFILE}.mk)) # http://stackoverflow.com/questions/5553352/how-do-i-check-if-file-exists-in-makefile
+    include profile.default.mk
 else
-    SSL_CERTIFICATES_FILE := cloudfoundry/cf-dev-ssl-certificates.yml
+    include profile.${PROFILE}.mk
 endif
 
 check-env-vars:
 ifndef DEPLOY_ENV
     $(error Must pass DEPLOY_ENV=<name>)
-endif
-ifdef WEB_ACCESS_CIDRS
-    WEB_ACCESS_OPTION= -var web_access_cidrs=${WEB_ACCESS_CIDRS}
 endif
 
 set-aws: update-paas-pass
