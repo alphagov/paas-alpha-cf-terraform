@@ -14,9 +14,9 @@ ifdef WEB_ACCESS_CIDRS
     WEB_ACCESS_OPTION= -var web_access_cidrs=${WEB_ACCESS_CIDRS}
 endif
 
-set-aws:
+set-aws: update-paas-pass
 	$(eval dir=aws)
-set-gce:
+set-gce: update-paas-pass
 	$(eval dir=gce)
 	$(eval apply_suffix=-var gce_account_json="`tr -d '\n' < account.json`")
 bastion:
@@ -139,3 +139,6 @@ ssh-aws: set-aws ssh
 ssh-gce: set-gce ssh
 ssh: check-env-vars bastion
 	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} ${CMD}
+
+update-paas-pass:
+	PASSWORD_STORE_DIR=~/.paas-pass pass git pull --rebase
