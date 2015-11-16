@@ -13,12 +13,8 @@ else
 endif
 
 check-env-vars:
-ifndef DEPLOY_ENV
-    $(error Must pass DEPLOY_ENV=<name>)
-endif
-ifdef WEB_ACCESS_CIDRS
-    WEB_ACCESS_OPTION= -var web_access_cidrs=${WEB_ACCESS_CIDRS}
-endif
+	$(if ${DEPLOY_ENV},,$(error Must pass DEPLOY_ENV=<name>))
+	$(if ${WEB_ACCESS_CIDRS},$(eval WEB_ACCESS_OPTION= -var web_access_cidrs=${WEB_ACCESS_CIDRS}))
 
 set-aws: update-paas-pass
 	$(eval dir=aws)
