@@ -1,4 +1,5 @@
 language: bash
+sudo: false
 
 before_install:
   - wget https://releases.hashicorp.com/terraform/0.6.6/terraform_0.6.6_linux_amd64.zip
