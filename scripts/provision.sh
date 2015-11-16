@@ -39,14 +39,14 @@ CF_RELEASE_REVISION=gds-paas
 # Releases to upload
 BOSH_RELEASES="
 cf,$CF_RELEASE,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
-elasticsearch,0.1.0,https://github.com/hybris/elasticsearch-boshrelease/releases/download/v0.1.0/elasticsearch-0.1.0.tgz
 graphite,0d79bf5aa5f2cf29195bff725d7dee55dea1aedc,https://github.com/CloudCredo/graphite-statsd-boshrelease.git,create
 collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/collectd-graphite-boshrelease.git,create
 grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
 logsearch,23.0.0,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=23.0.0
 logsearch-for-cloudfoundry,7,https://logsearch-for-cloudfoundry-boshrelease.s3.amazonaws.com/boshrelease-logsearch-for-cloudfoundry-7.tgz
 redis,420,https://bosh.io/d/github.com/pivotal-cf/cf-redis-release?v=420
-nginx,667cc1a0f9117bdb4b217ee2b76dc20e61371c02,https://s3.amazonaws.com/nginx-release/nginx-2.tgz
+nginx,2,https://s3.amazonaws.com/nginx-release/nginx-2.tgz
+docker,23,https://bosh.io/d/github.com/cf-platform-eng/docker-boshrelease?v=23
 "
 
 # Dependencies versions

@@ -22,8 +22,8 @@ set-gce:
 bastion:
 	$(eval bastion=$(shell DEPLOY_ENV=${DEPLOY_ENV} ./scripts/get_bastion_host.sh ${dir}))
 
-aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch deploy-redis
-gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis
+aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch deploy-redis deploy-docker
+gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis deploy-docker
 
 apply-aws: set-aws apply
 apply-gce: set-gce apply
@@ -47,6 +47,7 @@ prepare-provision: bastion
 	    manifests/generate_bosh_manifest.sh \
 	    manifests/generate_deployment_manifest.sh \
 	    manifests/generate_logsearch_manifest.sh \
+	    manifests/generate_docker_manifest.sh \
 	    manifests/generate_redis_manifest.sh \
 	    ubuntu@${bastion}:
 	scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
@@ -88,6 +89,11 @@ deploy-redis-aws: set-aws deploy-redis
 deploy-redis-gce: set-gce deploy-redis
 deploy-redis: check-env-vars bastion
 	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_redis.sh ${dir}'
+
+deploy-docker-aws: set-aws deploy-docker
+deploy-docker-gce: set-gce deploy-docker
+deploy-docker: check-env-vars bastion
+	@ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_docker.sh ${dir}'
 
 confirm-execution:
 	@if test "${SKIP_CONFIRM}" = "" ; then \

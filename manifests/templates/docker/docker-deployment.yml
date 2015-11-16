@@ -1,0 +1,47 @@
+---
+terraform_outputs: (( merge ))
+meta:
+  <<: (( merge ))
+  environment: ~
+  default_env:
+    # Default vcap & root password on deployed VMs (ie c1oudc0w)
+    # Generated using mkpasswd -m sha-512
+    bosh:
+      password: (( merge || "$6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0" ))
+  stemcell: (( merge ))
+
+name: (( "docker-broker-" terraform_outputs.environment ))
+director_uuid: (( merge ))
+
+releases:
+  - name: docker
+    version: latest
+
+compilation:
+  workers: 4
+  network: default
+  reuse_compilation_vms: true
+  cloud_properties: ~
+
+update:
+  canaries: 1
+  canary_watch_time: 30000-180000
+  update_watch_time: 30000-180000
+  max_in_flight: 4
+
+properties: (( merge ))
+jobs: (( merge ))
+networks: (( merge ))
+
+resource_pools:
+- name: docker
+  network: default
+  stemcell: (( meta.stemcell ))
+  cloud_properties: ~
+  env: (( merge || meta.default_env ))
+
+- name: errand
+  network: default
+  stemcell: (( meta.stemcell ))
+  cloud_properties: ~
+  env: (( merge || meta.default_env ))

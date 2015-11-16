@@ -1,0 +1,62 @@
+---
+terraform_outputs: (( merge ))
+meta:
+  zones:
+    z1: (( terraform_outputs.zone0 ))
+    z2: (( terraform_outputs.zone1 ))
+
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+
+  environment: (( terraform_outputs.environment ))
+
+jobs:
+- name: docker-broker
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.40.71
+
+properties:
+  <<: (( merge ))
+  nats:
+    machines:
+    - 10.0.10.11
+    - 10.0.11.11
+  docker:
+    tcp_address: 10.0.40.71
+
+  fetch_containers_images:
+    docker_url: tcp://10.0.40.71:4243
+
+compilation:
+  cloud_properties:
+    instance_type: c3.large
+    availability_zone: (( meta.zones.z1 ))
+
+resource_pools:
+- name: docker
+  cloud_properties:
+    instance_type: r3.large
+    availability_zone: (( meta.zones.z1 ))
+- name: errand
+  cloud_properties:
+    instance_type: t2.micro
+    availability_zone: (( meta.zones.z1 ))
+    ephemeral_disk:
+      size: 10_240
+      type: gp2
+
+networks:
+- name: default
+  subnets:
+    - range: 10.0.40.0/24
+      gateway: 10.0.40.1
+      dns: [10.0.0.2]
+      reserved:
+      - 10.0.40.2 - 10.0.40.70
+      static:
+      - 10.0.40.71 - 10.0.40.80
+      cloud_properties:
+        subnet: (( terraform_outputs.logsearch1_subnet_id ))
