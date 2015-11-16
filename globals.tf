@@ -7,7 +7,7 @@ variable "office_cidrs" {
   default     = "80.194.77.90/32,80.194.77.100/32"
 }
 
-variable "web_access_cidrs" {
+variable "WEB_ACCESS_CIDRS" {
   description = "CSV of CIDR addresses for which we allow web access"
   default     = "80.194.77.90/32,80.194.77.100/32"
 }
