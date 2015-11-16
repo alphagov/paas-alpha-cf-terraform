@@ -11,3 +11,5 @@ aws/.terraform
 *smoke_test*.json
 manifests/templates/outputs/terraform-outputs-*.yml
 scripts/terraform-outputs-*.sh
+manifests/templates/cf-secrets.yml
+manifests/templates/cf-ssl-certificates.yml

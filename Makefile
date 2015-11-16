@@ -6,6 +6,12 @@ ROOT_PASS_DIR ?= .
 all:
 	$(error Usage: make <aws|gce> DEPLOY_ENV=name)
 
+ifeq "$(DEPLOY_ENV)" "trial"
+    SSL_CERTIFICATES_FILE := cloudfoundry/cf-trial-ssl-certificates.yml
+else
+    SSL_CERTIFICATES_FILE := cloudfoundry/cf-dev-ssl-certificates.yml
+endif
+
 check-env-vars:
 ifndef DEPLOY_ENV
     $(error Must pass DEPLOY_ENV=<name>)
@@ -55,6 +61,8 @@ prepare-provision: bastion
 	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
 	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | \
 	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/${SSL_CERTIFICATES_FILE} | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-ssl-certificates.yml'
 
 test-aws: set-aws test
 test-gce: set-gce test
