@@ -9,6 +9,6 @@ before_install:
 
 script: 
   - cd aws
-  - PATH=$PATH:~/bin terraform plan DEPLOY_ENV=travis
+  - PATH=$PATH:~/bin terraform plan -var env=travis
 
 
