@@ -6,24 +6,26 @@ ROOT_PASS_DIR ?= .
 all:
 	$(error Usage: make <aws|gce> DEPLOY_ENV=name)
 
+ifeq "$(DEPLOY_ENV)" "trial"
+    SSL_CERTIFICATES_FILE := cloudfoundry/cf-trial-ssl-certificates.yml
+else
+    SSL_CERTIFICATES_FILE := cloudfoundry/cf-dev-ssl-certificates.yml
+endif
+
 check-env-vars:
-ifndef DEPLOY_ENV
-    $(error Must pass DEPLOY_ENV=<name>)
-endif
-ifdef WEB_ACCESS_CIDRS
-    WEB_ACCESS_OPTION= -var web_access_cidrs=${WEB_ACCESS_CIDRS}
-endif
+	$(if ${DEPLOY_ENV},,$(error Must pass DEPLOY_ENV=<name>))
+	$(if ${WEB_ACCESS_CIDRS},$(eval WEB_ACCESS_OPTION= -var web_access_cidrs=${WEB_ACCESS_CIDRS}))
 
 set-aws: update-paas-pass
 	$(eval dir=aws)
 set-gce: update-paas-pass
 	$(eval dir=gce)
 	$(eval apply_suffix=-var gce_account_json="`tr -d '\n' < account.json`")
-bastion:
+bastion: check-env-vars
 	$(eval bastion=$(shell DEPLOY_ENV=${DEPLOY_ENV} ./scripts/get_bastion_host.sh ${dir}))
 
-aws: set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch deploy-redis deploy-docker
-gce: set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis deploy-docker
+aws: check-env-vars set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch deploy-redis deploy-docker
+gce: check-env-vars set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis deploy-docker
 
 apply-aws: set-aws apply
 apply-gce: set-gce apply
@@ -31,18 +33,18 @@ apply: check-env-vars
 	cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix} \
 		|| terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix}
 
-manifests/templates/outputs/terraform-outputs-aws.yml: aws/${DEPLOY_ENV}.tfstate
+manifests/templates/outputs/terraform-outputs-aws.yml: check-env-vars aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
-manifests/templates/outputs/terraform-outputs-gce.yml: gce/${DEPLOY_ENV}.tfstate
+manifests/templates/outputs/terraform-outputs-gce.yml: check-env-vars gce/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < gce/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-gce.yml
-scripts/terraform-outputs-aws.sh: aws/${DEPLOY_ENV}.tfstate
+scripts/terraform-outputs-aws.sh: check-env-vars aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_sh.rb < aws/${DEPLOY_ENV}.tfstate > scripts/terraform-outputs-aws.sh
-scripts/terraform-outputs-gce.sh: gce/${DEPLOY_ENV}.tfstate
+scripts/terraform-outputs-gce.sh: check-env-vars gce/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_sh.rb < gce/${DEPLOY_ENV}.tfstate > scripts/terraform-outputs-gce.sh
 
 prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws.yml scripts/terraform-outputs-aws.sh prepare-provision
 prepare-provision-gce: set-gce manifests/templates/outputs/terraform-outputs-gce.yml scripts/terraform-outputs-gce.sh prepare-provision
-prepare-provision: bastion
+prepare-provision: check-env-vars bastion
 	scp -r -oStrictHostKeyChecking=no manifests/templates \
 	    manifests/generate_bosh_manifest.sh \
 	    manifests/generate_deployment_manifest.sh \
@@ -55,10 +57,12 @@ prepare-provision: bastion
 	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-secrets.yml'
 	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | \
 	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/${SSL_CERTIFICATES_FILE} | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/cf-ssl-certificates.yml'
 
 test-aws: set-aws test
 test-gce: set-gce test
-test: bastion
+test: check-env-vars bastion
 	$(eval domain=$(shell terraform output -state=${dir}/${DEPLOY_ENV}.tfstate dns_zone_name))
 	smoke_test/smoke_test.json.sh \
 	    ${DEPLOY_ENV} ${domain} \
@@ -102,24 +106,24 @@ confirm-execution:
 
 delete-deployments-aws: set-aws delete-deployments
 delete-deployments-gce: set-gce delete-deployments
-delete-deployments: confirm-execution bastion
+delete-deployments: check-env-vars confirm-execution bastion
 	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} './scripts/bosh_delete_deployments.rb -y'
 
 delete-release-aws: set-aws delete-release
 delete-release-gce: set-gce delete-release
-delete-release: bastion
+delete-release: check-env-vars bastion
 	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 	    'for release in $$(bosh releases | grep "|" | cut -f 2 -d "|" | grep -v -e "Name") ; do bosh -n delete release $$release --force ; done'
 
 delete-stemcell-aws: set-aws delete-stemcell
 delete-stemcell-gce: set-gce delete-stemcell
-delete-stemcell: bastion
+delete-stemcell: check-env-vars bastion
 	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} \
 			'bosh stemcells | grep -v -e + | grep -v -e Name -e "Stemcells total" -e "Currently in-use" | cut -d "|" -f 2,4 | tr "|" " " | grep -v ^$$ | while read -r stemcell; do bosh -n delete stemcell $$stemcell --force; done'
 
 destroy-terraform-aws: confirm-execution set-aws destroy-terraform
 destroy-terraform-gce: confirm-execution set-gce destroy-terraform
-destroy-terraform:
+destroy-terraform: check-env-vars
 	cd ${dir} && terraform destroy -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix} -force
 
 bosh-delete-aws: set-aws delete-deployments delete-release delete-stemcell bosh-delete
@@ -132,7 +136,7 @@ destroy-gce: confirm-execution set-gce delete-deployments bosh-delete-gce destro
 
 show-aws: set-aws show
 show-gce: set-gce show
-show:
+show: check-env-vars
 	cd ${dir} && terraform show ${DEPLOY_ENV}.tfstate
 
 ssh-aws: set-aws ssh
