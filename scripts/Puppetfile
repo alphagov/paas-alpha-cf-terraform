@@ -1,0 +1,7 @@
+forge "https://forgeapi.puppetlabs.com"
+mod 'maestrodev-wget'
+mod 'puppetlabs-ruby'
+mod 'ploperations-bundler'
+mod 'dsestero-download_uncompress'
+
+
