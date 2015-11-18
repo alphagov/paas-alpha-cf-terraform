@@ -1,6 +1,9 @@
 #! /bin/bash
 
-git -c http.sslVerify=false clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
+env GIT_SSL_NO_VERIFY=true git clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
+for i in ~/.*-pass; do
+  [ -e $i/.load.bash ] && . $i/.load.bash
+done
 DIR=$(dirname $0)
 cd $DIR
 echo $DIR
