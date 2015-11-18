@@ -77,6 +77,7 @@ test: check-env-vars bastion
 provision-aws: set-aws prepare-provision-aws provision
 provision-gce: set-gce prepare-provision-gce provision
 provision: check-env-vars bastion
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/puppet_provision.sh ${dir}'
 	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/provision.sh ${dir}'
 
 deploy-cf-aws: set-aws prepare-provision-aws deploy-cf

@@ -49,76 +49,13 @@ nginx,2,https://s3.amazonaws.com/nginx-release/nginx-2.tgz
 docker,23,https://bosh.io/d/github.com/cf-platform-eng/docker-boshrelease?v=23
 "
 
-# Dependencies versions
-BOSH_INIT_VERSION=0.0.72
-BOSH_INIT_URL=https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${BOSH_INIT_VERSION}-linux-amd64
-SPIFF_VERSION=v1.0.7
-SPIFF_URL=https://github.com/cloudfoundry-incubator/spiff/releases/download/${SPIFF_VERSION}/spiff_linux_amd64.zip
-BOSH_CLI_VERSION=1.3056.0
-CF_CLI_VERSION=6.12.3
-
 # Constants
 BOSH_MANIFEST=~/bosh-manifest.yml
 
-export BUNDLE_GEMFILE=$SCRIPT_DIR/Gemfile
-BOSH_CLI="bundle exec bosh"
+BOSH_CLI="bosh"
 
 # Other config
 export PATH=$PATH:/usr/local/bin
-
-# Preinstallation of packages
-install_dependencies() {
-  PACKAGES="
-    build-essential
-    git
-    zlibc
-    zlib1g-dev
-    ruby
-    ruby-dev openssl
-    libxslt1-dev
-    libxml2-dev
-    libssl-dev
-    libreadline6
-    libreadline6-dev
-    libyaml-dev
-    libsqlite3-dev
-    sqlite3
-    dstat
-    unzip
-    bundler
-    jq
-  "
-
-  echo "Installing system packages..."
-  if dpkg-query -W -f='${Package} ${Status}\n' $PACKAGES 2>&1 | grep -v 'ok installed' | grep  '^..*$'; then
-    sudo apt-get -y update
-    sudo apt-get install -y $PACKAGES
-  fi
-
-  echo "Installing gem packages..."
-  bundle install --quiet
-
-  echo "Installing binaries: bosh-init, spiff, cf..."
-  if [ ! -x /usr/local/bin/bosh-init ]; then
-    sudo wget -q $BOSH_INIT_URL -O /usr/local/bin/bosh-init
-    sudo chmod +x /usr/local/bin/bosh-init
-  fi
-
-  if [ ! -x /usr/local/bin/spiff ]; then
-    wget -q $SPIFF_URL -O spiff_linux_amd64.zip
-    sudo unzip -qo spiff_linux_amd64.zip -d /usr/local/bin
-    sudo chmod +x /usr/local/bin/spiff
-    rm spiff_linux_amd64.zip
-  fi
-
-  if ! cf_version_orig=`dpkg-query -W cf-cli 2>/dev/null` || [[ "${cf_version_orig}" != *"${CF_CLI_VERSION}"* ]]; then
-    sudo dpkg -r cf-cli 2>/dev/null
-    wget -q -O /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb "https://cli.run.pivotal.io/stable?release=debian64&version=${CF_CLI_VERSION}&source=github-rel"
-    sudo dpkg -i /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb > /dev/null
-    rm /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb
-  fi
-
-}
 
 # Bosh
 bosh_login() {
@@ -249,6 +186,5 @@ cf_prepare_deployment() {
   upload_releases
 }
 
-install_dependencies
 deploy_and_login_bosh
 cf_prepare_deployment
