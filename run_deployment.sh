@@ -4,9 +4,10 @@ git -c http.sslVerify=false clone https://github.gds/multicloudpaas/credentials 
 DIR=$(dirname $0)
 cd $DIR
 echo $DIR
-env
+
 
 echo Setting up ssh-agent and cleanup trap
+echo $SSH_KEY
 echo $SSH_KEY > ~/.ssh/insecure-deployer
 chmod 400 ~/.ssh/insecure-deployer
 eval $(ssh-agent) && ssh-add ~/.ssh/insecure-deployer
