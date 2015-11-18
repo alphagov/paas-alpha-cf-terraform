@@ -1,6 +1,6 @@
 #! /bin/bash
 
-env 
+cat /etc/resolv.conf 
 
 DIR=$(dirname $0)
 cd $DIR
