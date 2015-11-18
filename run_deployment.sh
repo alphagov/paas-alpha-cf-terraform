@@ -4,7 +4,8 @@ env
 
 DIR=$(dirname $0)
 cd $DIR
-
+echo $DIR
+ 
 echo Setting up ssh-agent and cleanup trap
 echo $SSH_KEY > ~/.ssh/insecure-deployer
 chmod 400 ~/.ssh/insecure-deployer
