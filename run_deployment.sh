@@ -11,6 +11,7 @@ echo $DIR
 
 echo Setting up ssh-agent and cleanup trap
 echo $SSH_KEY
+mkdir -p ~/.ssh/
 echo $SSH_KEY > ~/.ssh/insecure-deployer
 chmod 400 ~/.ssh/insecure-deployer
 eval $(ssh-agent) && ssh-add ~/.ssh/insecure-deployer
