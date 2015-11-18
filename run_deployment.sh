@@ -1,7 +1,7 @@
 #! /bin/bash
 
 cat /etc/resolv.conf 
-
+nslookup github.gds
 DIR=$(dirname $0)
 cd $DIR
 echo $DIR
