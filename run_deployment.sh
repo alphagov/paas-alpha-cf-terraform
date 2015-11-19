@@ -7,7 +7,7 @@ echo "$JENKINS_SSH_KEY" > ~/.ssh/id_rsa.pub
 echo "$JENKINS_PRIVATE_SSH_KEY" > ~/.ssh/id_rsa
 echo "$INSECURE_DEPLOYER_SSH_KEY" > ~/.ssh/insecure-deployer.pub
 echo "$INSECURE_DEPLOYER_PRIVATE_SSH_KEY" > ~/.ssh/insecure-deployer
-echo "$JENKINS_GPG_KEY" > ~/.gnupg/multicloud-deploy.key
+echo "$JENKINS_GPG_SECURE_KEY" > ~/.gnupg/multicloud-deploy.key
 gpg --batch --yes --allow-secret-key-import --import ~/.gnupg/multicloud-deploy.key
 echo "github.gds,192.168.9.110 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLN3zohMrxpugJsxfy7Js+e75jVAm1xhiHTD7+GUaLMxGbp9oDxxvctS0xY+hvi7PWU/SUnU2AaShZf21HXARXE=" >> ~/.ssh/known_hosts
 chmod 400 ~/.ssh/id_rsa.pub ~/.ssh/id_rsa ~/.ssh/insecure-deployer.pub ~/.ssh/insecure-deployer
