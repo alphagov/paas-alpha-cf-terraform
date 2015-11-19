@@ -1,7 +1,7 @@
 #! /bin/bash
 
 #env GIT_SSL_NO_VERIFY=true git clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
-echo "nameserver 192.168.19.254" > /etc/resolv.conf
+sudo bash -c 'echo "nameserver 192.168.19.254" > /etc/resolv.conf'
 mkdir -p ~/.ssh/
 chmod 600 ~/.ssh
 echo $JENKINS_SSH_KEY > ~/.ssh/id_rsa.pub
