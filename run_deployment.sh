@@ -2,6 +2,7 @@
 
 #env GIT_SSL_NO_VERIFY=true git clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
 echo "192.168.9.110 github.gds" >> /etc/hosts
+echo "github.gds,192.168.9.110 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLN3zohMrxpugJsxfy7Js+e75jVAm1xhiHTD7+GUaLMxGbp9oDxxvctS0xY+hvi7PWU/SUnU2AaShZf21HXARXE=" >> ~/.ssh/known_hosts
 mkdir -p ~/.ssh/
 chmod 600 ~/.ssh
 echo $JENKINS_SSH_KEY > ~/.ssh/id_rsa.pub
