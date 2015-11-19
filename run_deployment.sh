@@ -5,9 +5,9 @@ echo "192.168.9.110 github.gds" >> /etc/hosts
 mkdir -p ~/.ssh/
 chmod 600 ~/.ssh
 echo $JENKINS_SSH_KEY > ~/.ssh/id_rsa.pub
-echo $JENKINS_PRIVATE_SSH_KEY > ~/.ssh/id_rsa.pub
+echo $JENKINS_PRIVATE_SSH_KEY > ~/.ssh/id_rsa
 echo "github.gds,192.168.9.110 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLN3zohMrxpugJsxfy7Js+e75jVAm1xhiHTD7+GUaLMxGbp9oDxxvctS0xY+hvi7PWU/SUnU2AaShZf21HXARXE=" >> ~/.ssh/known_hosts
-chmod 400 ~/.ssh/id_rsa.pub
+chmod 400 ~/.ssh/id_rsa.pub ~/.ssh/id_rsa
 git clone jenkins@git@github.gds:multicloudpaas/credentials.git ~/.paas-pass
 for i in ~/.*-pass; do
   [ -e $i/.load.bash ] && . $i/.load.bash
