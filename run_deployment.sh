@@ -1,6 +1,7 @@
 #! /bin/bash
 
 #env GIT_SSL_NO_VERIFY=true git clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
+env
 echo "192.168.9.110 github.gds" >> /etc/hosts
 mkdir -p ~/.ssh/
 chmod 600 ~/.ssh
