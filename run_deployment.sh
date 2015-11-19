@@ -24,4 +24,4 @@ mkdir -p aws/ssh
 cp ~/.ssh/* aws/ssh
 make aws DEPLOY_ENV=piotr ${EXTRA_OPTIONS} ROOT_PASS_DIR=jenkins
 set -e
-trap "cd aws;terraform destroy -state=piotr.tfstate -var env=piotr -var force_destroy=true >/dev/null 2>&1 " ERR
+trap "cd aws;terraform destroy -state=piotr.tfstate -var env=piotr -var force_destroy=true >/tmp/terraform 2>&1 " ERR
