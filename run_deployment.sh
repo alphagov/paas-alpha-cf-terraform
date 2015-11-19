@@ -1,7 +1,5 @@
 #! /bin/bash
 
-#env GIT_SSL_NO_VERIFY=true git clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
-env
 echo "192.168.9.110 github.gds" >> /etc/hosts
 mkdir -p ~/.ssh/
 chmod 600 ~/.ssh
@@ -22,5 +20,6 @@ chmod 400 ~/.ssh/insecure-deployer
 eval $(ssh-agent) && ssh-add ~/.ssh/insecure-deployer
 set -e
 trap "kill ${SSH_AGENT_PID}" ERR
-
+mkdir -p aws/ssh
+cp ~/.ssh/* aws/ssh
 make aws DEPLOY_ENV=piotr ${EXTRA_OPTIONS}
