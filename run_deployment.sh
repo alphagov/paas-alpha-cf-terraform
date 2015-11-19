@@ -1,13 +1,14 @@
 #! /bin/bash
 
-env GIT_SSL_NO_VERIFY=true git clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
+#env GIT_SSL_NO_VERIFY=true git clone https://github.gds/multicloudpaas/credentials ~/.paas-pass
+echo $JENKINS_SSH_KEY > ~/.ssh/id_rsa.pub
+chmod 400 ~/.ssh/id_rsa.pub
+git clone git@github.gds:multicloudpaas/credentials.git ~/.paas-pass
 for i in ~/.*-pass; do
   [ -e $i/.load.bash ] && . $i/.load.bash
 done
 DIR=$(dirname $0)
 cd $DIR
-echo $DIR
-
 
 echo Setting up ssh-agent and cleanup trap
 echo $SSH_KEY
