@@ -18,8 +18,8 @@ cd $DIR
 
 echo Setting up ssh-agent and cleanup trap
 eval $(ssh-agent) && ssh-add ~/.ssh/insecure-deployer
-set -e
-trap "kill ${SSH_AGENT_PID}" ERR
 mkdir -p aws/ssh
 cp ~/.ssh/* aws/ssh
 make aws DEPLOY_ENV=piotr ${EXTRA_OPTIONS}
+set -e
+trap "cd aws;terraform destroy -state=piotr.tfstate -var env=piotr -var force_destroy=true >/dev/null 2>&1 " ERR
