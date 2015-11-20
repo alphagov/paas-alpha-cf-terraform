@@ -1,5 +1,5 @@
 {
-  "id": 1,
+  "id": 4,
   "title": "CF combined",
   "originalTitle": "CF combined",
   "tags": [],
@@ -52,9 +52,10 @@
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
+          "rightYAxisLabel": "",
           "seriesOverrides": [
             {
-              "alias": "warden response time",
+              "alias": "/warden/",
               "yaxis": 2
             }
           ],
@@ -63,25 +64,30 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "alias(averageSeries(nonNegativeDerivative(cloudfoundry-*.DEA.*.*.total_warden_response_time_in_ms)), 'warden response time')",
+              "target": "alias(averageSeries(nonNegativeDerivative(cloudfoundry-*.DEA.*.*.total_warden_response_time_in_ms)), 'warden ms')",
               "textEditor": false
             },
             {
-              "target": "aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_starting),-1)"
+              "target": "aliasSub(aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_starting), -1), 'dea_(.*)', '\\1')",
+              "textEditor": true
             },
             {
               "hide": false,
-              "target": "aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_running),-1)"
+              "target": "aliasSub(aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_running),-1), 'dea_(.*)', '\\1')",
+              "textEditor": true
             },
             {
               "hide": false,
-              "target": "aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_stopping),-1)"
+              "target": "aliasSub(aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_stopped),-1), 'dea_(.*)', '\\1')",
+              "textEditor": true
             },
             {
-              "target": "aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_stopping),-1)"
+              "target": "aliasSub(aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_crashed),-1), 'dea_(.*)', '\\1')",
+              "textEditor": true
             },
             {
-              "target": "aliasByNode(sumSeries(cloudfoundry-*.DEA.*.*.dea_registry_stopping),-1)"
+              "target": "aliasSub(aliasByNode(stats.gauges.cfstats.runner*.0.ops.dea_logging_agent.totalApps, 3), \"(.*)\", \"\\1 apps\")",
+              "textEditor": false
             }
           ],
           "timeFrom": null,
@@ -110,10 +116,10 @@
           "grid": {
             "leftLogBase": 1,
             "leftMax": null,
-            "leftMin": null,
+            "leftMin": 0,
             "rightLogBase": 1,
             "rightMax": null,
-            "rightMin": null,
+            "rightMin": 0,
             "threshold1": null,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
             "threshold2": null,
@@ -138,21 +144,36 @@
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [],
+          "seriesOverrides": [
+            {
+              "alias": "/load/",
+              "yaxis": 2
+            }
+          ],
           "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "target": "alias(cloudfoundry-*.CloudController.*.*.cc.job_queue_length.total, 'Cloud Controller Job Queue Total')"
+              "target": "alias(cloudfoundry-*.CloudController.*.*.cc.job_queue_length.total, 'Job Queue Total')"
             },
             {
-              "target": "alias(cloudfoundry-*.CloudController.*.*.cc.requests.outstanding, 'Cloud Controller Outstanding requests')"
+              "hide": false,
+              "target": "alias(scaleToSeconds(derivative(cloudfoundry-*.CloudController.*.*.cc.failed_job_count.total), 1), 'Failed jobs')",
+              "textEditor": false
+            },
+            {
+              "target": "aliasSub(aliasByNode(stats.gauges.cfstats.api_*.*.ops.cc.vitals.cpu_load_avg, 3), '(.*)', '\\1 load')",
+              "textEditor": true
+            },
+            {
+              "target": "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(cloudfoundry-*.Router.*.*.router.requests.CloudController)), 1), 'Cloud controller requests')",
+              "textEditor": false
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Cloud Controller metrics",
+          "title": "Cloud Controller",
           "tooltip": {
             "shared": true,
             "value_type": "cumulative"
@@ -174,6 +195,83 @@
       "editable": true,
       "height": "250px",
       "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": null,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": 0,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": 0,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "250",
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "/iowait/",
+              "yaxis": 2
+            }
+          ],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "target": "aliasSub(aliasByNode(servers.runner_*.load.load.shortterm, 1), '(.*)', '\\1 load')",
+              "textEditor": true
+            },
+            {
+              "target": "aliasSub(scaleToSeconds(derivative(groupByNode(servers.runner_*.cpu.*.cpu.wait, 1, 'sumSeries')), 1), '.*(runner_[^\\)]*).*', '\\1 iowait %')",
+              "textEditor": true
+            },
+            {
+              "target": "aliasSub(aliasByNode(servers.router_*.load.load.shortterm, 1), '(.*)', '\\1 load')",
+              "textEditor": true
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CPU load",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "transparent": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "percent"
+          ]
+        },
         {
           "aliasColors": {},
           "bars": false,
@@ -227,27 +325,40 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfAppsWithAllInstancesReporting, 'HM900 Apps with all instances')"
+              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfAppsWithMissingInstances, 'Apps w missing instances')",
+              "textEditor": false
             },
             {
-              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfAppsWithMissingInstances, 'HM900 Apps with missing instances')"
+              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfDesiredApps, 'Desired')",
+              "textEditor": false
             },
             {
-              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfDesiredApps, 'HM900 Desired apps')"
+              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfDesiredAppsPendingStaging, 'Desired pending staging')"
             },
             {
-              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfDesiredAppsPendingStaging, 'Desired Apps pending staging')"
+              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfUndesiredRunningApps, 'Undesired')",
+              "textEditor": false
             },
             {
-              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfUndesiredRunningApps, 'Undesired apps')"
+              "target": "alias(nonNegativeDerivative(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.ReceivedHeartbeats), 'Heartbeats')",
+              "textEditor": false
             },
             {
-              "target": "alias(nonNegativeDerivative(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.ReceivedHeartbeats), 'Received Heartbeats')"
+              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfCrashedInstances, 'Crashed instances')",
+              "textEditor": false
+            },
+            {
+              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfDesiredInstances, 'Desired instances')",
+              "textEditor": false
+            },
+            {
+              "target": "alias(cloudfoundry-*.HM9000.*.*.HM9000.HM9000.NumberOfRunningInstances, 'Running instances')",
+              "textEditor": false
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "HM9000 metrics",
+          "title": "App metrics",
           "tooltip": {
             "shared": true,
             "value_type": "cumulative"
@@ -260,78 +371,14 @@
             "short",
             "short"
           ]
-        },
-        {
-          "title": "All CPU load",
-          "error": false,
-          "span": 6,
-          "editable": true,
-          "type": "graph",
-          "id": 6,
-          "datasource": null,
-          "renderer": "flot",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null,
-            "rightLogBase": 1,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "shared": true
-          },
-          "timeFrom": null,
-          "timeShift": null,
-          "targets": [
-            {
-              "target": "aliasByNode(cloudfoundry-*.DEA.*.*.cpu_load_avg, -2)",
-              "textEditor": true
-            }
-          ],
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "links": [],
-          "height": "250"
         }
       ],
       "title": "New row"
     },
     {
-      "title": "New row",
-      "height": "250px",
-      "editable": true,
       "collapse": false,
+      "editable": true,
+      "height": "250px",
       "panels": [
         {
           "aliasColors": {},
@@ -342,18 +389,18 @@
           "fill": 1,
           "grid": {
             "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
+            "leftMax": 16000000000,
+            "leftMin": 0,
             "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
+            "rightMax": 100,
+            "rightMin": 0,
             "threshold1": null,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
             "threshold2": null,
             "threshold2Color": "rgba(234, 112, 112, 0.22)"
           },
           "height": "250",
-          "id": 4,
+          "id": 7,
           "legend": {
             "avg": false,
             "current": false,
@@ -373,11 +420,7 @@
           "renderer": "flot",
           "seriesOverrides": [
             {
-              "alias": "Cloud Controller Job Queue Total",
-              "yaxis": 1
-            },
-            {
-              "alias": "Received Heartbeats",
+              "alias": "/.*available.*/",
               "yaxis": 2
             }
           ],
@@ -386,10 +429,98 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(cloudfoundry-*.Router.*.*.router.requests.app)), 1), 'App requests')"
+              "target": "aliasByNode(cloudfoundry-*.DEA.*.*.mem_used_bytes, -2)",
+              "textEditor": true
             },
             {
-              "target": "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(cloudfoundry-*.Router.*.*.router.requests.CloudController)), 1), 'Cloud controller requests')"
+              "target": "aliasSub(aliasByNode(scale(cloudfoundry-*.DEA.*.*.available_memory_ratio, 100), -2), '(.*)', '\\1 available %')",
+              "textEditor": false
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "DEA Memory Used",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "transparent": true,
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "bytes",
+            "percent"
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": null,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": 0,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": 0,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "250",
+          "id": 4,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "rightYAxisLabel": "",
+          "seriesOverrides": [
+            {
+              "alias": "/.*_z?/",
+              "yaxis": 2
+            }
+          ],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "target": "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(cloudfoundry-*.Router.*.*.router.requests.app)), 1), 'Combined')"
+            },
+            {
+              "target": "aliasSub(aliasByNode(stats.timers.cfstats.*.*.http.responsetimes.routing-api_service_cf_internal.mean, 3), '(.*)', '\\1 ms')",
+              "textEditor": false
+            },
+            {
+              "target": "alias(sumSeries(scaleToSeconds(nonNegativeDerivative(cloudfoundry-*.Router.*.*.router.responses.app.2xx), 1)), '2xx')",
+              "textEditor": false
+            },
+            {
+              "target": "alias(sumSeries(scaleToSeconds(nonNegativeDerivative(cloudfoundry-*.Router.*.*.router.responses.app.4xx), 1)), '4xx')",
+              "textEditor": false
+            },
+            {
+              "target": "alias(sumSeries(scaleToSeconds(nonNegativeDerivative(cloudfoundry-*.Router.*.*.router.responses.app.5xx), 1)), '5xx')",
+              "textEditor": false
             }
           ],
           "timeFrom": null,
@@ -405,9 +536,17 @@
           "y-axis": true,
           "y_formats": [
             "short",
-            "short"
+            "ms"
           ]
-        },
+        }
+      ],
+      "title": "New row"
+    },
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "250px",
+      "panels": [
         {
           "aliasColors": {},
           "bars": false,
@@ -418,7 +557,7 @@
           "grid": {
             "leftLogBase": 1,
             "leftMax": null,
-            "leftMin": null,
+            "leftMin": 0,
             "rightLogBase": 1,
             "rightMax": null,
             "rightMin": null,
@@ -427,7 +566,8 @@
             "threshold2": null,
             "threshold2Color": "rgba(234, 112, 112, 0.22)"
           },
-          "id": 5,
+          "height": "250",
+          "id": 8,
           "legend": {
             "avg": false,
             "current": false,
@@ -447,11 +587,11 @@
           "renderer": "flot",
           "seriesOverrides": [
             {
-              "alias": "Cloud Controller Job Queue Total",
-              "yaxis": 1
+              "alias": "/.*reads/",
+              "yaxis": 2
             },
             {
-              "alias": "Received Heartbeats",
+              "alias": "/.*writes/",
               "yaxis": 2
             }
           ],
@@ -460,170 +600,117 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "aliasByNode(scaleToSeconds(nonNegativeDerivative(cloudfoundry-*.MetronAgent.*.*.MetronAgent.DropsondeUnmarshaller.logMessageTotal), 1), 3)"
+              "hide": true,
+              "target": "aliasSub(aliasByNode(asPercent(cloudfoundry-*.DEA.*.*.available_disk_ratio, 1), -2), '(.*)', '\\1 free %')",
+              "textEditor": false
+            },
+            {
+              "target": "aliasSub(aliasByNode(scaleToSeconds(derivative(servers.runner*.disk.xvdb.disk_ops.write), 1), 1), '(.*)', '\\1 writes')",
+              "textEditor": false
+            },
+            {
+              "target": "aliasSub(aliasByNode(servers.runner*.df.var-vcap-data.df_complex.free, 1), '(.*)', '\\1 free')",
+              "textEditor": false
+            },
+            {
+              "target": "aliasSub(aliasByNode(scaleToSeconds(derivative(servers.runner*.disk.xvdb.disk_ops.read), 1), 1), '(.*)', '\\1 reads')",
+              "textEditor": true
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Metron Logs received",
+          "title": "DEA disk",
           "tooltip": {
             "shared": true,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "x-axis": true,
           "y-axis": true,
           "y_formats": [
-            "short",
+            "bytes",
             "short"
-          ],
-          "height": "250",
-          "transparent": true
-        }
-      ]
-    },
-    {
-      "title": "New row",
-      "height": "250px",
-      "editable": true,
-      "collapse": false,
-      "panels": [
-        {
-          "title": "All Nodes Memory Used",
-          "error": false,
-          "span": 6,
-          "editable": true,
-          "type": "graph",
-          "id": 7,
-          "datasource": null,
-          "renderer": "flot",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null,
-            "rightLogBase": 1,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "shared": true
-          },
-          "timeFrom": null,
-          "timeShift": null,
-          "targets": [
-            {
-              "target": "aliasByNode(cloudfoundry-*.DEA.*.*.mem_used_bytes, -2)",
-              "textEditor": true
-            }
-          ],
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "links": [],
-          "height": "250",
-          "transparent": true
+          ]
         },
         {
-          "title": "All Disk space free",
-          "error": false,
-          "span": 6,
-          "editable": true,
-          "type": "graph",
-          "id": 8,
+          "aliasColors": {},
+          "bars": false,
           "datasource": null,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": 0,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": 0,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "height": "250",
+          "id": 9,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
           "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "hide": true,
+              "target": "alias(integral(integral(integral(integral(transformNull(offset(carbon.agents.829c50fb-6dbd-45f2-9325-df6abc50d5d0-a.errors, 1), 1))))), 'Total customer satisfaction')",
+              "textEditor": false
+            },
+            {
+              "target": "aliasByNode(scaleToSeconds(nonNegativeDerivative(cloudfoundry-*.MetronAgent.*.*.MetronAgent.DropsondeUnmarshaller.logMessageTotal), 1), 3)",
+              "textEditor": true
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Metron logs received",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "transparent": true,
+          "type": "graph",
           "x-axis": true,
           "y-axis": true,
           "y_formats": [
             "short",
             "short"
-          ],
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null,
-            "rightLogBase": 1,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "shared": true
-          },
-          "timeFrom": null,
-          "timeShift": null,
-          "targets": [
-            {
-              "target": "aliasByNode(asPercent(cloudfoundry-*.DEA.*.*.available_disk_ratio, 1), -2)",
-              "textEditor": true
-            }
-          ],
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "links": [],
-          "height": "250",
-          "transparent": true
+          ]
         }
-      ]
+      ],
+      "title": "New row"
     },
     {
-      "title": "New row",
-      "height": "250px",
-      "editable": true,
       "collapse": false,
-      "panels": []
+      "editable": true,
+      "height": "250px",
+      "panels": [],
+      "title": "New row"
     }
   ],
   "nav": [
@@ -671,6 +758,6 @@
   },
   "refresh": "30s",
   "schemaVersion": 6,
-  "version": 6,
+  "version": 4,
   "links": []
 }
