@@ -23,4 +23,4 @@ echo Setting up ssh-agent and cleanup trap
 eval $(ssh-agent) && ssh-add ~/.ssh/insecure-deployer
 mkdir -p aws/ssh
 cp ~/.ssh/* aws/ssh
-make aws DEPLOY_ENV=piotr ${EXTRA_OPTIONS} ROOT_PASS_DIR=jenkins
+make test-aws DEPLOY_ENV=piotr ${EXTRA_OPTIONS} ROOT_PASS_DIR=jenkins
