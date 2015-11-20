@@ -15,6 +15,7 @@ git clone git@github.gds:multicloudpaas/credentials.git ~/.paas-pass
 for i in ~/.*-pass; do
   [ -e $i/.load.bash ] && . $i/.load.bash
 done
+#ln -s ./state-file/piotr.tfstate cf-terraform/aws/piotr.tfstate
 DIR=$(dirname $0)
 cd $DIR
 
