@@ -24,7 +24,7 @@ set-gce: update-paas-pass
 bastion: check-env-vars
 	$(eval bastion=$(shell DEPLOY_ENV=${DEPLOY_ENV} ./scripts/get_bastion_host.sh ${dir}))
 
-aws: check-env-vars set-aws apply prepare-provision-aws provision deploy-cf deploy-logsearch deploy-redis deploy-docker
+aws: check-env-vars set-aws apply prepare-provision-aws 
 gce: check-env-vars set-gce apply prepare-provision-gce provision deploy-cf deploy-logsearch deploy-redis deploy-docker
 
 apply-aws: set-aws apply
