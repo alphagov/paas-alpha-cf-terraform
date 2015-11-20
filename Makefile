@@ -30,8 +30,8 @@ gce: check-env-vars set-gce apply prepare-provision-gce provision deploy-cf depl
 apply-aws: set-aws apply
 apply-gce: set-gce apply
 apply: check-env-vars
-	cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix} \
-		|| terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix}
+	cd ${dir} && terraform get && terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix} -target=aws_instance.bastion \
+		|| terraform apply -state=${DEPLOY_ENV}.tfstate -var env=${DEPLOY_ENV} ${WEB_ACCESS_OPTION} ${apply_suffix} -target=aws_instance.bastion
 
 manifests/templates/outputs/terraform-outputs-aws.yml: check-env-vars aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
