@@ -4,6 +4,12 @@ meta:
     z1: (( terraform_outputs.zone0 ))
     z2: (( terraform_outputs.zone1 ))
 
+disk_pools:
+  - name: graphite_data
+    disk_size: 204800
+    cloud_properties: {type: gp2}
+
+
 resource_pools:
   - name: graphite_z1
     cloud_properties:
@@ -18,7 +24,7 @@ resource_pools:
 jobs:
   - name: graphite
     instances: 1
-    persistent_disk: 204800
+    persistent_disk_pool: graphite_data
     networks:
     - name: cf1
       static_ips: [ 10.0.10.40 ]
