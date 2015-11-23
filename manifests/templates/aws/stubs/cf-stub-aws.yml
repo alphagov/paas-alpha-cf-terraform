@@ -44,6 +44,10 @@ resource_pools:
       - (( terraform_outputs.elb_name ))
 
 properties:
+  doppler:
+    port: 443
+  logger_endpoint:
+    port: 443
   graphite:
     server: 10.0.10.40
   domain: (( terraform_outputs.environment ".cf.paas.alphagov.co.uk" ))

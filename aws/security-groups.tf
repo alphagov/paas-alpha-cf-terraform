@@ -176,20 +176,6 @@ resource "aws_security_group" "web" {
     ]
   }
 
-  ingress {
-    from_port = 4443
-    to_port   = 4443
-    protocol  = "tcp"
-    cidr_blocks = [
-      "${split(",", var.web_access_cidrs)}",
-      "${aws_instance.bastion.public_ip}/32",
-      "${var.jenkins_elastic}"
-    ]
-    security_groups = [
-      "${aws_security_group.bosh_vm.id}"
-    ]
-  }
-
   tags {
     Name = "${var.env}-cf-web"
   }
