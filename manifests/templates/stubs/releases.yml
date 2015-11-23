@@ -2,7 +2,7 @@ releases:
 - name: cf
   version: 215
 - name: graphite
-  version: latest
+  version: 31bd59e43fc542ee3087be54e76567e36f6b191b
 - name: grafana
   version: latest
 - name: collectd
