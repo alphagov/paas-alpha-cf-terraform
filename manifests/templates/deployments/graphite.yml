@@ -43,7 +43,7 @@ jobs:
   - name: cf1
     static_ips: ~
   networks: (( merge || default_networks ))
-  persistent_disk: (( merge || 2048 ))
+  persistent_disk_pool: (( merge ))
   properties:
     metron_agent:
       zone: z1
