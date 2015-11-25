@@ -42,7 +42,7 @@ properties:
     #
     # But it is not the case, so lets use the public one
     #
-    api_access_security_group: "public"
+    api_access_security_group: "public_networks"
   nats:
     user: nats_user
     password: (( secrets.nats_password ))
