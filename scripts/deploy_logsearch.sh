@@ -93,5 +93,7 @@ if [ "$TARGET_PLATFORM" == gce ]; then
   logsearch_compile_manifest
   logsearch_deploy
 fi
-kibana_deploy
+
+# Disabled until we can fix the excessive disk reads issue
+#kibana_deploy
 
