@@ -2,10 +2,10 @@ releases:
 - name: cf
   version: 215
 - name: graphite
-  version: latest
+  version: 31bd59e43fc542ee3087be54e76567e36f6b191b
 - name: grafana
-  version: latest
+  version: 44564533c9d4d656bdcd5633b808f0bf6fb177ae
 - name: collectd
-  version: latest
+  version: ec9de5dc63715237688c3b27154c86a0c22b3aef
 - name: nginx
-  version: latest
+  version: 2
