@@ -4,19 +4,13 @@ set -e # fail on error
 
 SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
-get_cf_secret() { ${SCRIPT_DIR}/val_from_yaml.rb templates/cf-secrets.yml $1; }
 get_bosh_secret() { ${SCRIPT_DIR}/val_from_yaml.rb templates/bosh-secrets.yml $1; }
-get_output() { ${SCRIPT_DIR}/val_from_yaml.rb templates/outputs/terraform-outputs-${TARGET_PLATFORM}.yml $1; }
 
-# Read the platform configuration
 TARGET_PLATFORM=$1
 case $TARGET_PLATFORM in
   aws)
-    STEMCELL=light-bosh-stemcell-3074-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
     ;;
   gce)
-    STEMCELL=light-bosh-stemcell-3074-google-kvm-ubuntu-trusty-go_agent.tgz
-    STEMCELL_URL=http://storage.googleapis.com/gce-bosh-stemcells/$STEMCELL
     ;;
   *)
     echo "Must specify the target platform: gce|aws"
@@ -31,31 +25,12 @@ BOSH_ADMIN_USER=${BOSH_ADMIN_USER:-admin}
 BOSH_IP=${BOSH_IP:-$terraform_output_bosh_ip}
 BOSH_PORT=${BOSH_PORT:-25555}
 
-# Git cf-release to clone
-CF_RELEASE=215
-CF_RELEASE_GIT_URL=https://github.com/alphagov/cf-release.git
-CF_RELEASE_REVISION=gds-paas
-
-# Releases to upload
-BOSH_RELEASES="
-cf,$CF_RELEASE,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
-graphite,31bd59e43fc542ee3087be54e76567e36f6b191b,https://github.com/alphagov/graphite-statsd-boshrelease.git,create
-collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/collectd-graphite-boshrelease.git,create
-grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
-logsearch,23.0.0,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=23.0.0
-logsearch-for-cloudfoundry,7,https://logsearch-for-cloudfoundry-boshrelease.s3.amazonaws.com/boshrelease-logsearch-for-cloudfoundry-7.tgz
-redis,420,https://bosh.io/d/github.com/pivotal-cf/cf-redis-release?v=420
-nginx,2,https://s3.amazonaws.com/nginx-release/nginx-2.tgz
-docker,23,https://bosh.io/d/github.com/cf-platform-eng/docker-boshrelease?v=23
-"
-
 # Dependencies versions
 BOSH_INIT_VERSION=0.0.72
 BOSH_INIT_URL=https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${BOSH_INIT_VERSION}-linux-amd64
 SPIFF_VERSION=v1.0.7
 SPIFF_URL=https://github.com/cloudfoundry-incubator/spiff/releases/download/${SPIFF_VERSION}/spiff_linux_amd64.zip
 BOSH_CLI_VERSION=1.3056.0
-CF_CLI_VERSION=6.12.3
 
 # Constants
 BOSH_MANIFEST=~/bosh-manifest.yml
@@ -110,14 +85,6 @@ install_dependencies() {
     sudo chmod +x /usr/local/bin/spiff
     rm spiff_linux_amd64.zip
   fi
-
-  if ! cf_version_orig=`dpkg-query -W cf-cli 2>/dev/null` || [[ "${cf_version_orig}" != *"${CF_CLI_VERSION}"* ]]; then
-    sudo dpkg -r cf-cli 2>/dev/null
-    wget -q -O /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb "https://cli.run.pivotal.io/stable?release=debian64&version=${CF_CLI_VERSION}&source=github-rel"
-    sudo dpkg -i /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb > /dev/null
-    rm /tmp/cf-cli_${CF_CLI_VERSION}_amd64.deb
-  fi
-
 }
 
 # Bosh
@@ -156,99 +123,7 @@ deploy_and_login_bosh() {
     echo "Failed to contact BOSH node $BOSH_IP:$BOSH_PORT after provisioning"
     return 1
   fi
-
-}
-
-git_clone() {
-  local url=$1
-  local revision=$2
-  path=$(echo ${url} | sed "s|.*/||;s|.git||")
-
-  if [ ! -d ~/${path}/.git ]; then
-    rm -rf ~/${path}
-    git clone -q ${url} ~/${path}
-  else
-    cd ~/${path}
-    git remote set-url origin ${url}
-    git fetch -q
-  fi
-
-  cd ~/${path}
-  git checkout -q ${revision}
-}
-
-clone_and_update_cf_release() {
-  # Git clone and upload release
-  echo "Updating ~/cf-release from $CF_RELEASE_GIT_URL:$CF_RELEASE_REVISION"
-  git_clone $CF_RELEASE_GIT_URL $CF_RELEASE_REVISION
-
-  ./update  >> update.log 2>&1
-  if [ $? != 0 ]; then
-    echo "Update failed, check ~/cf-release/update.log for details: "
-    tail update.log
-  fi
-}
-
-upload_stemcell() {
-  # Download the stemcell if it is not locally
-  cd ~
-  if [ ! -f $STEMCELL ]; then
-    echo "Downloading stemcell $STEMCELL"
-    if [ "$STEMCELL_URL" ]; then
-      wget $STEMCELL_URL
-    else
-      time $BOSH_CLI download public stemcell $STEMCELL
-    fi
-  fi
-
-  # Extract stemcell version and name info
-  mkdir -p /tmp/{$STEMCELL}.d
-  tar -xzf $STEMCELL -C /tmp/{$STEMCELL}.d stemcell.MF
-  stemcell_name=$(cat /tmp/{$STEMCELL}.d/stemcell.MF | awk '/^name:/ { print $2 }')
-  stemcell_version=$(cat /tmp/{$STEMCELL}.d/stemcell.MF | awk '/^version:/ { print $2 }' | tr -d "'")
-
-  # Upload stemcell if it is not uploaded
-  if bundle exec $SCRIPT_DIR/bosh_list_stemcells.rb | grep -q -e "$stemcell_name/$stemcell_version"; then
-    echo "Stemcell $stemcell_name/$stemcell_version already uploaded, skipping"
-  else
-    time $BOSH_CLI upload stemcell $STEMCELL --skip-if-exists
-  fi
-}
-
-upload_releases() {
-  for r in $BOSH_RELEASES; do
-    local name=$(echo $r | cut -f 1 -d ,)
-    local version=$(echo $r | cut -f 2 -d ,)
-    local url=$(echo $r | cut -f 3 -d ,)
-    local action=$(echo $r | cut -f 4 -d ,)
-    local directory=$(echo $r | awk -F"/" '{print $NF}' | cut -d"." -f 1)
-
-    if bundle exec $SCRIPT_DIR/bosh_list_releases.rb | grep -q "$name/$version"; then
-      echo "Release $name version $version already uploaded, skipping"
-      continue
-    else
-      if [[ ${action} == "create" ]] ; then
-         git_clone ${url} ${version}
-         if [[ $(grep -R ${version} ~/${directory}/dev_releases/) == "" ]]; then
-           $BOSH_CLI create release --name ${name} --version ${version}
-         fi
-         url=""
-      fi
-
-      $BOSH_CLI upload release $url 2>&1 | tee /tmp/upload_release.log
-      if [ $PIPESTATUS != 0 ] && ! grep -q -e 'Release.*already exists' /tmp/upload_release.log;  then
-        return 1
-      fi
-    fi
-  done
-}
-
-cf_prepare_deployment() {
-  clone_and_update_cf_release
-  upload_stemcell
-  upload_releases
 }
 
 install_dependencies
 deploy_and_login_bosh
-cf_prepare_deployment
