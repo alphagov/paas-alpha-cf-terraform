@@ -17,6 +17,8 @@ properties:
     user: (( merge ))
     port: (( merge || 4222 ))
     machines: (( merge ))
+  kibana:
+    elasticsearch: (( meta.elasticsearch_master_host ":9200" ))
   curator:
     <<: (( merge ))
     elasticsearch_host: (( meta.elasticsearch_master_host ))
@@ -69,6 +71,7 @@ jobs:
   - { release: logsearch, name: parser }
   - { release: logsearch, name: ingestor_syslog }
   - { release: logsearch, name: ingestor_relp }
+  - { release: logsearch, name: kibana }
   - { release: logsearch-for-cloudfoundry, name: ingestor_cloudfoundry-firehose }
   - { release: cf, name: collector }
   instances: 1

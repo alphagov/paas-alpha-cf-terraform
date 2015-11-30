@@ -87,6 +87,7 @@ install_dependencies() {
     unzip
     bundler
     jq
+    apache2-utils
   "
 
   echo "Installing system packages..."

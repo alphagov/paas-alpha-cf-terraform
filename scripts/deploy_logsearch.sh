@@ -3,7 +3,7 @@
 set -e # fail on error
 
 SCRIPT_DIR=$(cd $(dirname $0) && pwd)
-
+get_cf_secret() { ${SCRIPT_DIR}/val_from_yaml.rb templates/cf-secrets.yml $1; }
 
 # Read the platform configuration
 TARGET_PLATFORM=$1
@@ -96,4 +96,9 @@ fi
 
 # Disabled until we can fix the excessive disk reads issue
 #kibana_deploy
+
+# Deploy kibana proxy that gives access via usual CF domain and provides basic auth
+time bash $SCRIPT_DIR/deploy_kibana_proxy.sh admin \
+  $(get_cf_secret secrets/uaa_admin_password) \
+  $(get_cf_secret secrets/kibana_oauth2_client_secret)
 
