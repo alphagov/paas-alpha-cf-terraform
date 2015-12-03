@@ -43,8 +43,8 @@ properties:
     user: nats_user
     password: (( secrets.nats_password ))
   dea_next:
-    disk_mb: 10240
-    memory_mb: 4096
+    disk_mb: 60240
+    memory_mb: 8192
   router:
     enable_ssl: true
     port: 8090 # We bind router on port 8090 as it's not wanted, but we can't disable it
