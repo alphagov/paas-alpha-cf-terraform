@@ -87,4 +87,11 @@ RSpec.describe "generic manifest validations" do
       end
     end
   end
+
+  describe "terraform outputs" do
+    specify "aws_access_key exists" do
+      expect(manifest["properties"]["cc"]["buildpacks"]["fog_connection"]["aws_access_key_id"]).to equal('awskey')
+    end
+  end
+
 end

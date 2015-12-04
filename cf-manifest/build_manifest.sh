@@ -5,4 +5,5 @@ cd $(dirname $0)
 
 spruce merge \
   deployments/*.yml \
-  deployments/aws/*.yml
+  deployments/aws/*.yml \
+  "$@"
