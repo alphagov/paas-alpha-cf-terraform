@@ -10,3 +10,16 @@ properties:
             subnet_ids:
                 cf1: (( grab terraform_outputs.cf1_subnet_id ))
                 cf2: (( grab terraform_outputs.cf2_subnet_id ))
+
+    domain: (( grab terraform_outputs.dns_zone_name ))
+    system_domain: (( grab terraform_outputs.dns_zone_name ))
+    system_domain_organization: gds
+    app_domains: 
+    - (( grab terraform_outputs.dns_zone_name ))
+
+    cc:
+        buildpacks:
+            buildpack_directory_key: (( grab terraform_outputs.environment ))-cf-buildpacks
+
+meta:
+    environment: (( grab terraform_outputs.environment ))
