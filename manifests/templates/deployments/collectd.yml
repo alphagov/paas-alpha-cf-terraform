@@ -156,13 +156,6 @@ jobs:
   - name: smoke_tests
     <<: (( merge ))
 
-  # Can't deploy to graphite due to package name conflict ('python')
-  - name: postgres
-    <<: (( merge ))
-    templates:
-      - <<: (( merge ))
-      - (( collectd ))
-
 properties:
   <<: (( merge ))
   collectd:

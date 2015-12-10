@@ -49,10 +49,9 @@ cf_deploy() {
 }
 
 cf_post_deploy() {
-  # Deploy psql broker
-  time bash $SCRIPT_DIR/deploy_psql_broker.sh \
-    admin $(get_cf_secret secrets/uaa_admin_password) \
-    admin $(get_cf_secret secrets/postgres_password)
+  # Purge old postgreSQL service
+  time bash $SCRIPT_DIR/purge_psql_service.sh \
+    admin $(get_cf_secret secrets/uaa_admin_password)
   # Deploy graphite nozzle
   time bash $SCRIPT_DIR/deploy_graphite_nozzle.sh \
     admin $(get_cf_secret secrets/uaa_admin_password) \
