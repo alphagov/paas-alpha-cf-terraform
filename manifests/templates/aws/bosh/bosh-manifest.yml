@@ -7,8 +7,7 @@ meta:
   bosh_service_ip: (( bosh_private_ip ))
 
   aws:
-    access_key_id: (( terraform_outputs.aws_access_key_id ))
-    secret_access_key: (( terraform_outputs.aws_secret_access_key ))
+    credentials_source: env_or_profile
     default_key_name: (( terraform_outputs.key_pair_name ))
     default_security_groups:
     - (( terraform_outputs.default_security_group ))
@@ -40,6 +39,7 @@ resource_pools:
     instance_type: t2.medium
     ephemeral_disk: {size: 40_000, type: gp2}
     availability_zone: (( terraform_outputs.zone0 ))
+    iam_instance_profile: bosh-director
 
 disk_pools:
 - name: disks
