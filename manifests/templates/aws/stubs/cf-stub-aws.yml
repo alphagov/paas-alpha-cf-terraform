@@ -65,8 +65,7 @@ properties:
       app_package_directory_key: (( terraform_outputs.environment "-cf-packages" ))
   template_only:
     aws:
-      access_key_id: (( terraform_outputs.aws_access_key_id ))
-      secret_access_key: (( terraform_outputs.aws_secret_access_key ))
+      use_iam_profile: true
       availability_zone: (( terraform_outputs.zone0 ))
       availability_zone2: (( terraform_outputs.zone1 ))
   databases:
@@ -77,6 +76,12 @@ properties:
     transport: relp
 
 jobs:
+  - name: api_z1
+    resource_pool: api_z1
+
+  - name: api_z2
+    resource_pool: api_z2
+
   - name: postgres_z1
     instances: 1
     networks:
