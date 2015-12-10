@@ -16,12 +16,12 @@ meta:
 
   cpi-release:
     name: bosh-aws-cpi
-    url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=28
-    sha1: c7ce03393ebedd87a860dc609758ddb9654360fa
+    url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=36
+    sha1: db2a6c6cdd5ff9f77bf083e10118fa72e1f5e181
 
   specific_bosh_job_templates:
     - {name: registry, release: bosh}
-    - {name: cpi, release: bosh-aws-cpi}
+    - {name: aws_cpi, release: bosh-aws-cpi}
 
   ntp:
   - 0.pool.ntp.org
@@ -73,7 +73,7 @@ jobs:
 
 cloud_provider:
   template:
-    name: cpi
+    name: aws_cpi
     release: bosh-aws-cpi
 
   properties:
