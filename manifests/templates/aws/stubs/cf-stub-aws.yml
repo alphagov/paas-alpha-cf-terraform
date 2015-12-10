@@ -7,6 +7,8 @@ meta:
     z1: (( terraform_outputs.zone0 ))
     z2: (( terraform_outputs.zone1 ))
   fog_config:
+    use_iam_profile: true
+    provider: AWS
     region: (( terraform_outputs.region ))
 
 networks:
@@ -65,7 +67,6 @@ properties:
       app_package_directory_key: (( terraform_outputs.environment "-cf-packages" ))
   template_only:
     aws:
-      use_iam_profile: true
       availability_zone: (( terraform_outputs.zone0 ))
       availability_zone2: (( terraform_outputs.zone1 ))
   databases:
