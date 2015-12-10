@@ -36,8 +36,11 @@ cd ~
 $BOSH_CLI deployment ~/docker-manifest.yml
 time $BOSH_CLI -n deploy
 
-# Register broker (if not done yet)
-cf service-brokers | grep -q ^cf-containers-broker || time $BOSH_CLI -n run errand broker-registrar
+# Register broker if any of the services provided is not available in marketpace
+services="$(python -c 'import yaml; print "\n".join([s["name"] for s in yaml.load(file("docker-manifest.yml"))["properties"]["broker"]["services"]])'| sort)"
+marketplace_services="$(cf m | tail -n+5 | head -n-2 | awk '{print $1}' | sort)"
+diff="$(comm -23 <(echo "$services") <(echo "$marketplace_services") | head)"
+[[ -n "$diff" ]] && echo "Registering additional services: $diff" && time $BOSH_CLI -n run errand broker-registrar
 
 # Cofigure security
 DOCKER_IP=$(/usr/local/bin/bosh vms 2>&1 | awk  '$2 ~ /docker-broker\/0/ {print $8}')

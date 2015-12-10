@@ -1,6 +1,1 @@
-jobs:
-- name: postgres
-  instances: 1
-  networks:
-  - name: cf1
-    static_ips: null
+---
