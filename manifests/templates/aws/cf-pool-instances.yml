@@ -32,6 +32,16 @@ resource_pools:
   - name: large_z2
     cloud_properties: (( meta.resource_pools.large.cloud_properties ))
 
+  - name: api_z1
+    cloud_properties:
+      instance_type: (( meta.resource_pools.large.cloud_properties.instance_type ))
+      iam_instance_profile: cf-cloudcontroller
+
+  - name: api_z2
+    cloud_properties:
+      instance_type: (( meta.resource_pools.large.cloud_properties.instance_type ))
+      iam_instance_profile: cf-cloudcontroller
+
   - name: runner_z1
     cloud_properties: (( meta.resource_pools.runner.cloud_properties ))
 

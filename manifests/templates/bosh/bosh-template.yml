@@ -47,8 +47,8 @@ name: (( merge ))
 
 releases:
 - name: bosh
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=207
-  sha1: 5f835bad5fc46230cd2fa823c0a52a94829ee044
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=208
+  sha1: 0c84b104d9252295597a9fbcabdf432b6f1bd226
 - (( meta.cpi-release ))
 
 resource_pools: (( merge ))
@@ -80,8 +80,7 @@ jobs:
     compiled_package_cache:
       provider: s3
       options:
-        access_key_id: (( terraform_outputs.compiled_cache_bucket_access_key_id ))
-        secret_access_key: (( terraform_outputs.compiled_cache_bucket_secret_access_key ))
+        credentials_source: env_or_profile
         bucket_name: shared-cf-bosh-blobstore
         host: (( terraform_outputs.compiled_cache_bucket_host ))
 
@@ -115,7 +114,7 @@ jobs:
       address: 127.0.0.1
       name: my-bosh
       db: (( meta.postgres ))
-      cpi_job: cpi
+      cpi_job: (( cloud_provider.template.name || "cpi" ))
       ignore_missing_gateway: "false"
       user_management:
         provider: local

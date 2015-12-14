@@ -7,8 +7,7 @@ meta:
   bosh_service_ip: (( bosh_private_ip ))
 
   aws:
-    access_key_id: (( terraform_outputs.aws_access_key_id ))
-    secret_access_key: (( terraform_outputs.aws_secret_access_key ))
+    credentials_source: env_or_profile
     default_key_name: (( terraform_outputs.key_pair_name ))
     default_security_groups:
     - (( terraform_outputs.default_security_group ))
@@ -16,12 +15,12 @@ meta:
 
   cpi-release:
     name: bosh-aws-cpi
-    url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=28
-    sha1: c7ce03393ebedd87a860dc609758ddb9654360fa
+    url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=36
+    sha1: db2a6c6cdd5ff9f77bf083e10118fa72e1f5e181
 
   specific_bosh_job_templates:
     - {name: registry, release: bosh}
-    - {name: cpi, release: bosh-aws-cpi}
+    - {name: aws_cpi, release: bosh-aws-cpi}
 
   ntp:
   - 0.pool.ntp.org
@@ -40,6 +39,7 @@ resource_pools:
     instance_type: t2.medium
     ephemeral_disk: {size: 40_000, type: gp2}
     availability_zone: (( terraform_outputs.zone0 ))
+    iam_instance_profile: bosh-director
 
 disk_pools:
 - name: disks
@@ -73,7 +73,7 @@ jobs:
 
 cloud_provider:
   template:
-    name: cpi
+    name: aws_cpi
     release: bosh-aws-cpi
 
   properties:
