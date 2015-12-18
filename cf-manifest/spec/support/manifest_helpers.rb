@@ -20,10 +20,11 @@ module ManifestHelpers
         "TERRAFORM_OUTPUTS" => File.expand_path("../../fixtures/terraform-outputs.yml", __FILE__),
         "SECRETS"           => File.expand_path("../../fixtures/cf-secrets.yml", __FILE__),
         "SSL_CERTS"         => File.expand_path("../../fixtures/cf-ssl-certificates.yml", __FILE__),
+        "DIRECTOR_UUID"     => File.expand_path("../../fixtures/director-uuid.yml", __FILE__),
       },
-      File.expand_path("../../../build_manifest.sh", __FILE__),
+      File.expand_path("../../../scripts/generate_cf_manifest.sh", __FILE__),
     )
-    expect(status).to be_success, "build_manifest.sh exited #{status.exitstatus}, stderr:\n#{error}"
+    expect(status).to be_success, "generate_cf_manifest.sh exited #{status.exitstatus}, stderr:\n#{error}"
 
     # Deep freeze the object so that it's safe to use across multiple examples
     # without risk of state leaking.

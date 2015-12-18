@@ -1,0 +1,160 @@
+---
+meta:
+  cpi-release: 
+
+  bosh_private_ip:
+
+  bosh_public_ip: 
+
+  bosh_service_ip: 
+
+  ntp: 
+
+  default_bosh_private_static_ips:
+    - (( grab meta.bosh_private_ip ))
+  default_bosh_public_static_ips:
+    - (( grab meta.bosh_public_ip ))
+
+  default_bosh_job_templates:
+    - {name: nats, release: bosh}
+    - {name: redis, release: bosh}
+    - {name: postgres, release: bosh}
+    - {name: blobstore, release: bosh}
+    - {name: director, release: bosh}
+    - {name: health_monitor, release: bosh}
+
+  specific_bosh_job_templates: 
+
+  postgres:
+    host: 127.0.0.1
+    user: postgres
+    password: (( grab secrets.bosh_postgres_password ))
+    database: bosh
+    adapter: postgres
+
+  default_dns:
+    address: (( grab meta.bosh_public_ip ))
+    domain_name: microbosh
+    db: (( grab meta.postgres ))
+    recursor: 8.8.8.8
+
+  default_agent:
+    mbus: (( concat "nats://nats:" secrets.bosh_nats_password "@" meta.bosh_service_ip ":4222" ))
+
+name: 
+
+releases:
+- name: bosh
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=207
+  sha1: 5f835bad5fc46230cd2fa823c0a52a94829ee044
+- (( grab meta.cpi-release ))
+
+resource_pools: 
+
+disk_pools:
+- name: disks
+  disk_size: 32_768
+  cloud_properties: 
+
+networks: 
+
+jobs:
+- name: bosh
+  instances: 1
+
+  templates: (( grab meta.default_bosh_job_templates meta.specific_bosh_job_templates ))
+
+  resource_pool: vms
+  persistent_disk_pool: disks
+
+  networks:
+  - name: private
+    static_ips: (( grab meta.default_bosh_private_static_ips ))
+    default: [dns, gateway]
+  - name: public
+    static_ips: (( grab meta.default_bosh_public_static_ips ))
+
+  properties:
+    compiled_package_cache:
+      provider: s3
+      options:
+        access_key_id: (( grab terraform_outputs.compiled_cache_bucket_access_key_id ))
+        secret_access_key: (( grab terraform_outputs.compiled_cache_bucket_secret_access_key ))
+        bucket_name: shared-cf-bosh-blobstore
+        host: (( grab terraform_outputs.compiled_cache_bucket_host ))
+
+    nats:
+      address: 127.0.0.1
+      user: nats
+      password: (( grab secrets.bosh_nats_password ))
+
+    redis:
+      listen_address: 127.0.0.1
+      address: 127.0.0.1
+      password: (( grab secrets.bosh_redis_password ))
+
+    postgres: (( grab meta.postgres ))
+
+    blobstore:
+      address: (( grab meta.bosh_service_ip ))
+      provider: dav
+      director:
+        user: director
+        password: (( grab secrets.bosh_blobstore_director_password ))
+      agent:
+        user: agent
+        password: (( grab secrets.bosh_agent_password ))
+      options:
+        endpoint: (( concat "http://" meta.bosh_public_ip ":25250" ))
+        user: agent
+        password: (( grab secrets.bosh_agent_password ))
+
+    director:
+      address: 127.0.0.1
+      name: my-bosh
+      db: (( grab meta.postgres ))
+      cpi_job: cpi
+      ignore_missing_gateway: "false"
+      user_management:
+        provider: local
+        local:
+          users:
+            - { name: admin, password: (( grab secrets.bosh_admin_password )) }
+
+    hm:
+      director_account:
+        user: admin
+        password: (( grab secrets.bosh_hm_director_password ))
+      resurrector_enabled: "true"
+
+    ntp: (( grab meta.ntp ))
+
+    agent: (( grab meta.default_agent ))
+
+    registry:
+      host: (( grab meta.bosh_service_ip ))
+      db: (( grab meta.postgres ))
+      http:
+        # Variables used by official job release
+        user: admin
+        password: (( grab secrets.bosh_registry_password ))
+      # Variables used by Google job release
+      username: admin
+      password: (( grab secrets.bosh_registry_password ))
+
+    dns: (( grab meta.default_dns ))
+
+properties:
+
+cloud_provider:
+  template: 
+
+  ssh_tunnel:
+    host: (( grab meta.bosh_service_ip ))
+    port: 22
+    user: vcap
+    private_key: .ssh/id_rsa
+
+  mbus: (( concat "https://mbus:mbus@" meta.bosh_service_ip  ":6868" ))
+
+  properties: 

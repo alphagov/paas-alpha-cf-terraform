@@ -13,3 +13,12 @@ terraform_outputs:
   zone1: sealand-1b
   postgres_rds_address: 127.0.0.1
   postgres_rds_port: 5432
+  key_pair_name: example_keypair
+  default_security_group: example_security_group
+  microbosh_static_private_ip: 10.0.0.10
+  microbosh_static_public_ip: 10.0.0.10
+  bosh_security_group: example_bosh_security_group
+  bosh_subnet_id: 0
+  compiled_cache_bucket_host: disney.com
+  compiled_cache_bucket_access_key_id: ABCD
+  compiled_cache_bucket_secret_access_key: 1234
