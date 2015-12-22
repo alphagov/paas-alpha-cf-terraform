@@ -62,6 +62,15 @@ resource "aws_security_group" "director" {
   }
 
   ingress {
+    from_port = 8443
+    to_port   = 8443
+    protocol  = "tcp"
+    security_groups = [
+      "${aws_security_group.bastion.id}",
+    ]
+  }
+
+  ingress {
     from_port = 4222
     to_port   = 4222
     protocol  = "tcp"
