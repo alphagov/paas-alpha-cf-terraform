@@ -1,0 +1,3708 @@
+---
+all_keys:
+  consul.agent.mode: exists
+  consul.agent.servers.lan: exists
+  consul.agent.servers.wan: exists
+  consul.agent.log_level: exists
+  consul.agent.datacenter: exists
+  consul.agent.services: exists
+  consul.agent.protocol_version: exists
+  consul.agent.sync_timeout_in_seconds: exists
+  consul.require_ssl: exists
+  consul.ca_cert: exists
+  consul.server_cert: exists
+  consul.server_key: exists
+  consul.agent_cert: exists
+  consul.agent_key: exists
+  consul.encrypt_keys: exists
+  etcd.heartbeat_interval_in_milliseconds: exists
+  etcd.election_timeout_in_milliseconds: exists
+  etcd.machines: exists
+  etcd.cluster: exists
+  etcd.log_sync_timeout_in_seconds: exists
+  etcd.require_ssl: exists
+  etcd.ca_cert: exists
+  etcd.server_cert: exists
+  etcd.server_key: exists
+  etcd.client_cert: exists
+  etcd.client_key: exists
+  etcd.peer_require_ssl: exists
+  etcd.peer_ca_cert: exists
+  etcd.peer_cert: exists
+  etcd.peer_key: exists
+  etcd_metrics_server.etcd.machine: exists
+  etcd_metrics_server.etcd.port: exists
+  etcd_metrics_server.nats.machines: exists
+  etcd_metrics_server.nats.port: exists
+  etcd_metrics_server.nats.username: exists
+  etcd_metrics_server.nats.password: exists
+  etcd_metrics_server.status.port: exists
+  etcd_metrics_server.status.username: exists
+  etcd_metrics_server.status.password: exists
+  statsd_injector.metron_port: exists
+  statsd_injector.statsd_port: exists
+  statsd_injector.log_level: exists
+  doppler.zone: exists
+  doppler.debug: exists
+  doppler.maxRetainedLogMessages: exists
+  doppler.incoming_port: exists
+  doppler.dropsonde_incoming_port: exists
+  doppler.outgoing_port: exists
+  doppler.blacklisted_syslog_ranges: exists
+  doppler.container_metric_ttl_seconds: exists
+  doppler.unmarshaller_count: exists
+  doppler.sink_inactivity_timeout_seconds: exists
+  doppler.sink_dial_timeout_seconds: exists
+  doppler.sink_io_timeout_seconds: exists
+  doppler_endpoint.shared_secret: exists
+  doppler.message_drain_buffer_size: exists
+  doppler.enable_tls_transport: exists
+  doppler.tls_server.port: exists
+  doppler.tls_server.cert: exists
+  doppler.tls_server.key: exists
+  doppler.syslog_skip_cert_verify: exists
+  loggregator.tls.ca: exists
+  loggregator.etcd.machines: exists
+  metron_endpoint.host: exists
+  metron_endpoint.dropsonde_port: exists
+  traffic_controller.zone: exists
+  traffic_controller.debug: exists
+  loggregator.outgoing_dropsonde_port: exists
+  loggregator.doppler_port: exists
+  traffic_controller.outgoing_port: exists
+  doppler.uaa_client_id: exists
+  uaa.clients.doppler.secret: exists
+  uaa.url: exists
+  uaa.no_ssl: exists
+  loggregator.etcd.maxconcurrentrequests: exists
+  system_domain: exists
+  ssl.skip_cert_verify: exists
+  cc.srv_api_uri: exists
+  syslog_daemon_config.address: exists
+  syslog_daemon_config.port: exists
+  syslog_daemon_config.transport: exists
+  syslog_daemon_config.fallback_addresses: exists
+  syslog_daemon_config.custom_rule: exists
+  syslog_daemon_config.max_message_size: exists
+  metron_agent.dropsonde_incoming_port: exists
+  metron_endpoint.shared_secret: exists
+  metron_agent.preferred_protocol: exists
+  metron_agent.tls_client.cert: exists
+  metron_agent.tls_client.key: exists
+  metron_agent.debug: exists
+  metron_agent.zone: exists
+  metron_agent.deployment: exists
+  metron_agent.logrotate.freq_min: exists
+  metron_agent.logrotate.rotate: exists
+  metron_agent.logrotate.size: exists
+  loggregator.dropsonde_incoming_port: exists
+  syslog_drain_binder.drain_url_ttl_seconds: exists
+  syslog_drain_binder.update_interval_seconds: exists
+  syslog_drain_binder.polling_batch_size: exists
+  syslog_drain_binder.debug: exists
+  cc.bulk_api_password: exists
+  dea_logging_agent.debug: exists
+  loggregator_endpoint.shared_secret: exists
+  loggregator_acceptance_tests.login_required: exists
+  loggregator_acceptance_tests.admin_user: exists
+  loggregator_acceptance_tests.admin_password: exists
+  router.acceptance_tests.nodes: exists
+  router.acceptance_tests.verbose: exists
+  router.acceptance_tests.router_api_addresses: exists
+  router.acceptance_tests.router_api_port: exists
+  router.acceptance_tests.bbs.api_location: exists
+  router.acceptance_tests.bbs.ca_cert: exists
+  router.acceptance_tests.bbs.client_cert: exists
+  router.acceptance_tests.bbs.client_key: exists
+  router.acceptance_tests.bbs.require_ssl: exists
+  router.acceptance_tests.gorouter_secret: exists
+  router.acceptance_tests.uaa_port: exists
+  router.acceptance_tests.elb_address: exists
+  routing-api.max_ttl: exists
+  routing-api.port: exists
+  routing-api.auth_disabled: exists
+  routing-api.metrics_reporting_interval: exists
+  routing-api.statsd_endpoint: exists
+  routing-api.debug_address: exists
+  routing-api.max_concurrent_etcd_requests: exists
+  routing-api.statsd_client_flush_interval: exists
+  uaa.jwt.verification_key: exists
+  router.haproxy.request_timeout_in_seconds: exists
+  router.haproxy.health_check_port: exists
+  router.tcp_emitter.debug_addr: exists
+  router.tcp_emitter.log_level: exists
+  router.tcp_emitter.bbs.api_location: exists
+  router.tcp_emitter.bbs.ca_cert: exists
+  router.tcp_emitter.bbs.client_cert: exists
+  router.tcp_emitter.bbs.client_key: exists
+  router.tcp_emitter.bbs.require_ssl: exists
+  router.tcp_emitter.routing_api_port: exists
+  router.tcp_emitter.routing_api_auth_disabled: exists
+  router.tcp_emitter.gorouter_secret: exists
+  router.tcp_emitter.uaa_port: exists
+  router.tcp_emitter.consul_cluster: exists
+  router.tcp_emitter.lock_ttl: exists
+  router.tcp_emitter.lock_retry_interval: exists
+  router.tcp_emitter.session_name: exists
+  router.router_configurer.debug_addr: exists
+  router.router_configurer.log_level: exists
+  router.router_configurer.tcp_config_file_template: exists
+  router.router_configurer.tcp_config_file: exists
+  router.router_configurer.routing_api_port: exists
+  router.router_configurer.routing_api_auth_disabled: exists
+  router.router_configurer.gorouter_secret: exists
+  router.router_configurer.uaa_port: exists
+  nfs_server.no_root_squash: exists
+  nfs_server.allow_from_entries: exists
+  nfs_server.idmapd_domain: exists
+  nfs_server.pipefs_directory: exists
+  nfs_server.address: exists
+  nfs_server.share: exists
+  nfs_server.nfsv4: exists
+  nfs_server.share_path: exists
+  collector.aws.access_key_id: exists
+  collector.aws.secret_access_key: exists
+  collector.datadog.api_key: exists
+  collector.datadog.application_key: exists
+  collector.deployment_name: exists
+  collector.logging_level: exists
+  collector.intervals.discover: exists
+  collector.intervals.healthz: exists
+  collector.intervals.local_metrics: exists
+  collector.intervals.nats_ping: exists
+  collector.intervals.prune: exists
+  collector.intervals.varz: exists
+  collector.use_aws_cloudwatch: exists
+  collector.use_datadog: exists
+  collector.use_tsdb: exists
+  collector.opentsdb.address: exists
+  collector.opentsdb.port: exists
+  collector.use_graphite: exists
+  collector.graphite.address: exists
+  collector.graphite.port: exists
+  collector.memory_threshold: exists
+  nats.machines: exists
+  nats.password: exists
+  nats.port: exists
+  nats.user: exists
+  name: exists
+  build: exists
+  version: exists
+  support_address: exists
+  description: exists
+  domain: exists
+  system_domain_organization: exists
+  app_domains: exists
+  request_timeout_in_seconds: exists
+  cc.external_port: exists
+  cc.jobs.global.timeout_in_seconds: exists
+  cc.jobs.app_bits_packer.timeout_in_seconds: exists
+  cc.jobs.app_events_cleanup.timeout_in_seconds: exists
+  cc.jobs.app_usage_events_cleanup.timeout_in_seconds: exists
+  cc.jobs.blobstore_delete.timeout_in_seconds: exists
+  cc.jobs.blobstore_upload.timeout_in_seconds: exists
+  cc.jobs.droplet_deletion.timeout_in_seconds: exists
+  cc.jobs.droplet_upload.timeout_in_seconds: exists
+  cc.app_events.cutoff_age_in_days: exists
+  cc.app_usage_events.cutoff_age_in_days: exists
+  cc.service_usage_events.cutoff_age_in_days: exists
+  cc.audit_events.cutoff_age_in_days: exists
+  cc.failed_jobs.cutoff_age_in_days: exists
+  cc.pending_packages.frequency_in_seconds: exists
+  cc.pending_packages.expiration_in_seconds: exists
+  cc.info.name: exists
+  cc.info.build: exists
+  cc.info.version: exists
+  cc.info.description: exists
+  cc.info.custom: exists
+  cc.external_protocol: exists
+  cc.external_host: exists
+  cc.cc_partition: exists
+  cc.bulk_api_user: exists
+  cc.internal_api_user: exists
+  cc.internal_api_password: exists
+  cc.diego.nsync_url: exists
+  cc.diego.stager_url: exists
+  cc.diego.tps_url: exists
+  cc.uaa_resource_id: exists
+  cc.db_logging_level: exists
+  cc.logging_level: exists
+  cc.logging_max_retries: exists
+  cc.staging_timeout_in_seconds: exists
+  cc.default_health_check_timeout: exists
+  cc.maximum_health_check_timeout: exists
+  cc.stacks: exists
+  cc.default_stack: exists
+  cc.staging_upload_user: exists
+  cc.staging_upload_password: exists
+  cc.quota_definitions: exists
+  cc.default_quota_definition: exists
+  cc.default_fog_connection.provider: exists
+  cc.default_fog_connection.local_root: exists
+  cc.resource_pool.minimum_size: exists
+  cc.resource_pool.maximum_size: exists
+  cc.resource_pool.resource_directory_key: exists
+  cc.resource_pool.fog_connection: exists
+  cc.resource_pool.cdn.uri: exists
+  cc.resource_pool.cdn.private_key: exists
+  cc.resource_pool.cdn.key_pair_id: exists
+  cc.packages.app_package_directory_key: exists
+  cc.packages.max_package_size: exists
+  cc.packages.fog_connection: exists
+  cc.packages.cdn.uri: exists
+  cc.packages.cdn.private_key: exists
+  cc.packages.cdn.key_pair_id: exists
+  cc.droplets.droplet_directory_key: exists
+  cc.droplets.fog_connection: exists
+  cc.droplets.cdn.uri: exists
+  cc.droplets.cdn.private_key: exists
+  cc.droplets.cdn.key_pair_id: exists
+  cc.buildpacks.buildpack_directory_key: exists
+  cc.buildpacks.fog_connection: exists
+  cc.buildpacks.cdn.uri: exists
+  cc.buildpacks.cdn.private_key: exists
+  cc.buildpacks.cdn.key_pair_id: exists
+  ccdb.databases: exists
+  ccdb.roles: exists
+  ccdb.db_scheme: exists
+  ccdb.address: exists
+  ccdb.port: exists
+  ccdb.max_connections: exists
+  ccdb.pool_timeout: exists
+  uaa.cc.token_secret: exists
+  login.url: exists
+  hm9000.url: exists
+  login.enabled: exists
+  metron_endpoint.port: exists
+  logger_endpoint.use_ssl: exists
+  logger_endpoint.port: exists
+  cc.db_encryption_key: exists
+  cc.default_app_memory: exists
+  cc.default_app_disk_in_mb: exists
+  cc.maximum_app_disk_in_mb: exists
+  cc.users_can_select_backend: exists
+  cc.default_to_diego_backend: exists
+  cc.allow_app_ssh_access: exists
+  cc.flapping_crash_count_threshold: exists
+  cc.client_max_body_size: exists
+  cc.disable_custom_buildpacks: exists
+  cc.broker_client_timeout_seconds: exists
+  cc.development_mode: exists
+  cc.newrelic.license_key: exists
+  cc.newrelic.environment_name: exists
+  cc.newrelic.developer_mode: exists
+  cc.newrelic.monitor_mode: exists
+  cc.newrelic.log_file_path: exists
+  cc.newrelic.capture_params: exists
+  cc.newrelic.transaction_tracer.enabled: exists
+  cc.newrelic.transaction_tracer.record_sql: exists
+  dea_next.staging_memory_limit_mb: exists
+  dea_next.staging_disk_limit_mb: exists
+  cc.staging_file_descriptor_limit: exists
+  cc.renderer.max_results_per_page: exists
+  cc.renderer.default_results_per_page: exists
+  cc.renderer.max_inline_relations_depth: exists
+  cc.app_bits_upload_grace_period_in_seconds: exists
+  uaa.clients.cc_service_broker_client.secret: exists
+  uaa.clients.cc_service_broker_client.scope: exists
+  uaa.clients.cc-service-dashboards.secret: exists
+  uaa.clients.cc-service-dashboards.scope: exists
+  cc.install_buildpacks: exists
+  cc.security_group_definitions: exists
+  cc.default_running_security_groups: exists
+  cc.default_staging_security_groups: exists
+  cc.thresholds.api.alert_if_above_mb: exists
+  cc.thresholds.api.restart_if_consistently_above_mb: exists
+  cc.thresholds.api.restart_if_above_mb: exists
+  cc.instance_file_descriptor_limit: exists
+  router.port: exists
+  router.status.port: exists
+  router.status.user: exists
+  router.status.password: exists
+  router.requested_route_registration_interval_in_seconds: exists
+  router.number_of_cpus: exists
+  router.debug_addr: exists
+  router.secure_cookies: exists
+  router.enable_ssl: exists
+  router.enable_routing_api: exists
+  router.ssl_cert: exists
+  router.ssl_key: exists
+  router.ssl_skip_validation: exists
+  router.cipher_suites: exists
+  router.route_services_secret: exists
+  router.route_services_secret_decrypt_only: exists
+  router.route_service_timeout: exists
+  router.logrotate.freq_min: exists
+  router.logrotate.rotate: exists
+  router.logrotate.size: exists
+  router.extra_headers_to_log: exists
+  router.logging_level: exists
+  router.offset: exists
+  router.trace_key: exists
+  dropsonde.enabled: exists
+  uaa.clients.gorouter.secret: exists
+  uaa.port: exists
+  nats.authorization_timeout: exists
+  nats.debug: exists
+  nats.trace: exists
+  nats.monitor_port: exists
+  nats.prof_port: exists
+  smoke_tests.suite_name: exists
+  smoke_tests.api: exists
+  smoke_tests.apps_domain: exists
+  smoke_tests.user: exists
+  smoke_tests.password: exists
+  smoke_tests.org: exists
+  smoke_tests.space: exists
+  smoke_tests.use_existing_org: exists
+  smoke_tests.use_existing_space: exists
+  smoke_tests.logging_app: exists
+  smoke_tests.runtime_app: exists
+  smoke_tests.skip_ssl_validation: exists
+  smoke_tests.ginkgo_opts: exists
+  route_registrar.routes: exists
+  route_registrar.update_frequency_in_seconds: exists
+  cc.jobs.generic.number_of_workers: exists
+  cc.thresholds.worker.alert_if_above_mb: exists
+  cc.thresholds.worker.restart_if_consistently_above_mb: exists
+  cc.thresholds.worker.restart_if_above_mb: exists
+  cc.broker_client_default_async_poll_interval_seconds: exists
+  cc.broker_client_max_async_poll_duration_minutes: exists
+  dea_next.allow_networks: exists
+  dea_next.allow_host_access: exists
+  dea_next.deny_networks: exists
+  dea_next.disk_mb: exists
+  dea_next.disk_overcommit_factor: exists
+  dea_next.logging_level: exists
+  dea_next.max_staging_duration: exists
+  dea_next.default_health_check_timeout: exists
+  dea_next.memory_mb: exists
+  dea_next.memory_overcommit_factor: exists
+  dea_next.streaming_timeout: exists
+  dea_next.crash_lifetime_secs: exists
+  dea_next.staging_cpu_limit_shares: exists
+  dea_next.instance_memory_to_cpu_share_ratio: exists
+  dea_next.instance_min_cpu_share_limit: exists
+  dea_next.instance_max_cpu_share_limit: exists
+  dea_next.staging_disk_inode_limit: exists
+  dea_next.instance_disk_inode_limit: exists
+  dea_next.staging_bandwidth_limit.rate: exists
+  dea_next.staging_bandwidth_limit.burst: exists
+  dea_next.instance_bandwidth_limit.rate: exists
+  dea_next.instance_bandwidth_limit.burst: exists
+  dea_next.directory_server_protocol: exists
+  dea_next.kernel_network_tuning_enabled: exists
+  dea_next.mtu: exists
+  dea_next.evacuation_bail_out_time_in_seconds: exists
+  dea_next.advertise_interval_in_seconds: exists
+  dea_next.heartbeat_interval_in_seconds: exists
+  dea_next.zone: exists
+  dea_next.rlimit_core: exists
+  dea_next.stacks: exists
+  disk_quota_enabled: exists
+  ha_proxy.ssl_pem: exists
+  ha_proxy.disable_http: exists
+  ha_proxy.ssl_ciphers: exists
+  ha_proxy.log_to_file: exists
+  ha_proxy.dontlognull: exists
+  ha_proxy.buffer_size_bytes: exists
+  ha_proxy.enable_stats_socket: exists
+  router.servers.z1: exists
+  router.servers.z2: exists
+  app_ssh.port: exists
+  uaa.admin.client_secret: exists
+  uaa.authentication.policy.lockoutAfterFailures: exists
+  uaa.authentication.policy.countFailuresWithinSeconds: exists
+  uaa.authentication.policy.lockoutPeriodSeconds: exists
+  uaa.disableInternalAuth: exists
+  uaa.disableInternalUserManagement: exists
+  uaa.password.policy.minLength: exists
+  uaa.password.policy.maxLength: exists
+  uaa.password.policy.requireUpperCaseCharacter: exists
+  uaa.password.policy.requireLowerCaseCharacter: exists
+  uaa.password.policy.requireDigit: exists
+  uaa.password.policy.requireSpecialCharacter: exists
+  uaa.password.policy.expirePasswordInMonths: exists
+  uaa.catalina_opts: exists
+  uaa.cc.client_secret: exists
+  uaa.client.autoapprove: exists
+  uaa.user.authorities: exists
+  uaa.clients: exists
+  uaa.jwt.policy.accessTokenValiditySeconds: exists
+  uaa.jwt.policy.refreshTokenValiditySeconds: exists
+  uaa.jwt.policy.keys: exists
+  uaa.jwt.policy.global.accessTokenValiditySeconds: exists
+  uaa.jwt.policy.global.refreshTokenValiditySeconds: exists
+  uaa.jwt.signing_key: exists
+  uaa.jwt.claims.exclude: exists
+  uaa.scim.user: exists
+  uaa.scim.user.override: exists
+  uaa.scim.userids_enabled: exists
+  uaa.scim.users: exists
+  uaa.scim.external_groups: exists
+  uaa.scim.groups: exists
+  env.http_proxy: exists
+  env.https_proxy: exists
+  env.no_proxy: exists
+  uaadb.address: exists
+  uaadb.databases: exists
+  uaadb.db_scheme: exists
+  uaadb.port: exists
+  uaadb.roles: exists
+  uaa.database.max_connections: exists
+  uaa.database.max_idle_connections: exists
+  uaa.database.remove_abandoned: exists
+  uaa.database.abandoned_timeout: exists
+  uaa.database.log_abandoned: exists
+  uaa.database.case_insensitive: exists
+  uaa.issuer: exists
+  uaa.dump_requests: exists
+  uaa.login.client_secret: exists
+  uaa.clients.login.secret: exists
+  uaa.require_https: exists
+  uaa.spring_profiles: exists
+  uaa.ldap.enabled: exists
+  uaa.ldap.profile_type: exists
+  uaa.ldap.url: exists
+  uaa.ldap.userDNPattern: exists
+  uaa.ldap.userDNPatternDelimiter: exists
+  uaa.ldap.userDN: exists
+  uaa.ldap.userPassword: exists
+  uaa.ldap.searchBase: exists
+  uaa.ldap.searchFilter: exists
+  uaa.ldap.passwordAttributeName: exists
+  uaa.ldap.localPasswordCompare: exists
+  uaa.ldap.passwordEncoder: exists
+  uaa.ldap.sslCertificate: exists
+  uaa.ldap.sslCertificateAlias: exists
+  uaa.ldap.mailAttributeName: exists
+  uaa.ldap.mailSubstitute: exists
+  uaa.ldap.mailSubstituteOverridesLdap: exists
+  uaa.ldap.groups.profile_type: exists
+  uaa.ldap.groups.autoAdd: exists
+  uaa.ldap.groups.searchBase: exists
+  uaa.ldap.groups.groupRoleAttribute: exists
+  uaa.ldap.groups.groupSearchFilter: exists
+  uaa.ldap.groups.searchSubtree: exists
+  uaa.ldap.groups.maxSearchDepth: exists
+  uaa.ldap.emailDomain: exists
+  uaa.ldap.attributeMappings: exists
+  uaa.ldap.externalGroupsWhitelist: exists
+  uaa.zones.internal.hostnames: exists
+  uaa.newrelic: exists
+  uaa.logging_level: exists
+  uaa.logging_use_rfc3339: exists
+  uaa.id_token.disable: exists
+  login.protocol: exists
+  login.ldap.profile_type: exists
+  login.ldap.url: exists
+  login.ldap.userDNPattern: exists
+  login.ldap.userDN: exists
+  login.ldap.userPassword: exists
+  login.ldap.searchBase: exists
+  login.ldap.searchFilter: exists
+  login.ldap.passwordAttributeName: exists
+  login.ldap.localPasswordCompare: exists
+  login.ldap.passwordEncoder: exists
+  login.ldap.sslCertificate: exists
+  login.ldap.sslCertificateAlias: exists
+  login.spring_profiles: exists
+  uaa.restricted_ips_regex: exists
+  uaa.proxy_ips_regex: exists
+  uaa.proxy.servers: exists
+  login.brand: exists
+  login.asset_base_url: exists
+  login.uaa_certificate: exists
+  login.catalina_opts: exists
+  login.notifications.url: exists
+  login.prompt.username.text: exists
+  login.prompt.password.text: exists
+  login.smtp: exists
+  login.smtp.host: exists
+  login.smtp.port: exists
+  login.smtp.user: exists
+  login.smtp.password: exists
+  login.links: exists
+  login.links.passwd: exists
+  login.links.signup: exists
+  login.tiles: exists
+  login.port: exists
+  login.uaa_base: exists
+  login.self_service_links_enabled: exists
+  login.signups_enabled: exists
+  login.invitations_enabled: exists
+  login.saml.idpMetadataURL: exists
+  login.saml.idp_metadata_file: exists
+  login.saml.entityid: exists
+  login.saml.entity_base_url: exists
+  login.saml.idpEntityAlias: exists
+  login.entity_id: exists
+  login.saml.keystore_name: exists
+  login.saml.keystore_key: exists
+  login.saml.keystore_password: exists
+  login.saml.serviceProviderKey: exists
+  login.saml.serviceProviderKeyPassword: exists
+  login.saml.serviceProviderCertificate: exists
+  login.saml.assertion_consumer_index: exists
+  login.saml.nameidFormat: exists
+  login.saml.metadataTrustCheck: exists
+  login.saml.providers: exists
+  login.saml.socket.connectionManagerTimeout: exists
+  login.saml.socket.soTimeout: exists
+  login.saml.signMetaData: exists
+  login.saml.signRequest: exists
+  login.analytics.code: exists
+  login.analytics.domain: exists
+  login.messages: exists
+  login.logout.redirect.url: exists
+  login.logout.redirect.parameter.disable: exists
+  login.logout.redirect.parameter.whitelist: exists
+  hm9000.desired_state_batch_size: exists
+  hm9000.fetcher_network_timeout_in_seconds: exists
+  hm9000.sender_message_limit: exists
+  app_ssh.host_key_fingerprint: exists
+  app_ssh.oauth_client_id: exists
+  cc.directories.tmpdir: exists
+  cc.directories.diagnostics: exists
+  cc.min_cli_version: exists
+  cc.min_recommended_cli_version: exists
+  cc.packages.max_valid_packages_stored: exists
+  cc.droplets.max_staged_droplets_stored: exists
+  doppler.enabled: exists
+  doppler.use_ssl: exists
+  doppler.port: exists
+  cc.app_bits_max_body_size: exists
+  cc.nginx_access_log_destination: exists
+  cc.nginx_access_log_format: exists
+  cc.nginx_error_log_destination: exists
+  cc.nginx_error_log_level: exists
+  cc.jobs.local.number_of_workers: exists
+  uaa.clients.cloud_controller_username_lookup.secret: exists
+  uaa.clients.cc_routing.secret: exists
+  cc.feature_disabled_message: exists
+  cc.allowed_cors_domains: exists
+  cc.statsd_host: exists
+  cc.statsd_port: exists
+  cc.placement_top_stager_percentage: exists
+  databases.db_scheme: exists
+  databases.port: exists
+  databases.address: exists
+  databases.databases: exists
+  databases.roles: exists
+  databases.max_connections: exists
+  databases.log_line_prefix: exists
+  databases.collect_statement_statistics: exists
+  databases.additional_config: exists
+  acceptance_tests.api: exists
+  acceptance_tests.apps_domain: exists
+  acceptance_tests.admin_user: exists
+  acceptance_tests.admin_password: exists
+  acceptance_tests.skip_ssl_validation: exists
+  acceptance_tests.system_domain: exists
+  acceptance_tests.client_secret: exists
+  acceptance_tests.nodes: exists
+  acceptance_tests.verbose: exists
+  acceptance_tests.include_sso: exists
+  acceptance_tests.include_operator: exists
+  acceptance_tests.include_logging: exists
+  acceptance_tests.include_security_groups: exists
+  acceptance_tests.include_internet_dependent: exists
+  acceptance_tests.include_services: exists
+  acceptance_tests.include_v3: exists
+  acceptance_tests.include_routing: exists
+  acceptance_tests.include_route_services: exists
+  acceptance_tests.use_diego: exists
+  acceptance_tests.use_http: exists
+  acceptance_tests.skip_regex: exists
+  acceptance_tests.skip_diego_unsupported_tests: exists
+  acceptance_tests.default_timeout: exists
+  acceptance_tests.cf_push_timeout: exists
+  acceptance_tests.long_curl_timeout: exists
+  acceptance_tests.broker_start_timeout: exists
+  acceptance_tests.enable_color: exists
+  acceptance_tests.existing_user: exists
+  acceptance_tests.existing_user_password: exists
+  acceptance_tests.staticfile_buildpack_name: exists
+  acceptance_tests.java_buildpack_name: exists
+  acceptance_tests.ruby_buildpack_name: exists
+  acceptance_tests.nodejs_buildpack_name: exists
+  acceptance_tests.go_buildpack_name: exists
+  acceptance_tests.python_buildpack_name: exists
+  acceptance_tests.php_buildpack_name: exists
+  acceptance_tests.binary_buildpack_name: exists
+consul_agent.properties:
+  consul.agent.mode:
+    description: Mode to run the agent in. (client or server)
+    default: client
+  consul.agent.servers.lan:
+    description: LAN server addresses to join on start.
+    default: []
+  consul.agent.servers.wan:
+    description: WAN server addresses to join.
+    default: []
+  consul.agent.log_level:
+    description: Agent log level.
+    default: info
+  consul.agent.datacenter:
+    description: Name of the agent's datacenter.
+    default: dc1
+  consul.agent.services:
+    description: Map of consul service definitions.
+    default: {}
+  consul.agent.protocol_version:
+    description: The Consul protocol to use.
+    default: 2
+  consul.agent.sync_timeout_in_seconds:
+    description: Time to wait for a consul node to finish syncing with the cluster
+      in seconds
+    default: 60
+  consul.require_ssl:
+    description: enable ssl for all communication with consul
+    default: true
+  consul.ca_cert:
+    description: PEM-encoded CA certificate
+  consul.server_cert:
+    description: PEM-encoded server certificate
+  consul.server_key:
+    description: PEM-encoded server key
+  consul.agent_cert:
+    description: PEM-encoded agent certificate
+  consul.agent_key:
+    description: PEM-encoded client key
+  consul.encrypt_keys:
+    description: A list of passphrases that will be converted into encryption keys,
+      the first key in the list is the active one
+etcd.properties:
+  etcd.heartbeat_interval_in_milliseconds:
+    description: Interval between heartbeats in milliseconds. See https://coreos.com/docs/cluster-management/debugging/etcd-tuning
+    default: 50
+  etcd.election_timeout_in_milliseconds:
+    description: Time without recieving a heartbeat before peer should attempt to
+      become leader in milliseconds. See https://coreos.com/docs/cluster-management/debugging/etcd-tuning
+    default: 1000
+  etcd.machines:
+    description: Addresses of etcd machines
+  etcd.cluster:
+    description: Information about etcd cluster
+  etcd.log_sync_timeout_in_seconds:
+    description: Time to wait for a joining node to finish syncing logs with the existing
+      cluster in seconds
+    default: 30
+  etcd.require_ssl:
+    description: enable ssl for all communication with etcd
+    default: true
+  etcd.ca_cert:
+    description: PEM-encoded CA certificate
+  etcd.server_cert:
+    description: PEM-encoded server certificate
+  etcd.server_key:
+    description: PEM-encoded server key
+  etcd.client_cert:
+    description: PEM-encoded client certificate
+  etcd.client_key:
+    description: PEM-encoded client key
+  etcd.peer_require_ssl:
+    description: enable ssl between etcd peers
+    default: true
+  etcd.peer_ca_cert:
+    description: PEM-encoded peer CA certificate
+  etcd.peer_cert:
+    description: PEM-encoded peer certificate
+  etcd.peer_key:
+    description: PEM-encoded peer key
+etcd_metrics_server.properties:
+  etcd_metrics_server.etcd.machine:
+    description: address of ETCD server to instrument
+    default: 127.0.0.1
+  etcd_metrics_server.etcd.port:
+    description: port of ETCD server to instrument
+    default: 4001
+  etcd_metrics_server.nats.machines:
+    description: array of NATS addresses
+  etcd_metrics_server.nats.port:
+    description: NATS server port
+    default: 4222
+  etcd_metrics_server.nats.username:
+    description: NATS server username
+  etcd_metrics_server.nats.password:
+    description: NATS server password
+  etcd_metrics_server.status.port:
+    description: listening port for metrics server
+    default: 5678
+  etcd_metrics_server.status.username:
+    description: basic auth username for metrics server (leave empty for generated)
+    default: ''
+  etcd_metrics_server.status.password:
+    description: basic auth password for metrics server (leave empty for generated)
+    default: ''
+statsd-injector.properties:
+  statsd_injector.metron_port:
+    description: The port on which metron is running
+    default: 3457
+  statsd_injector.statsd_port:
+    description: The port on which the injector should listen for statsd messages
+    default: 8125
+  statsd_injector.log_level:
+    description: The log level for the statsd injector
+    default: info
+doppler.properties:
+  doppler.zone:
+    description: Zone of the doppler server
+  doppler.debug:
+    description: boolean value to turn on verbose logging for doppler system (dea
+      agent & doppler server)
+    default: false
+  doppler.maxRetainedLogMessages:
+    description: number of log messages to retain per application
+    default: 100
+  doppler.incoming_port:
+    description: Port for incoming log messages in the legacy format
+    default: 3456
+  doppler.dropsonde_incoming_port:
+    description: Port for incoming messages in the dropsonde format
+    default: 3457
+  doppler.outgoing_port:
+    description: Port for outgoing log messages
+    default: 8081
+  doppler.blacklisted_syslog_ranges:
+    description: Blacklist for IPs that should not be used as syslog drains, e.g.
+      internal ip addresses.
+  doppler.container_metric_ttl_seconds:
+    description: TTL (in seconds) for container usage metrics
+    default: 120
+  doppler.unmarshaller_count:
+    description: Number of parallel unmarshallers to run within Doppler
+    default: 5
+  doppler.sink_inactivity_timeout_seconds:
+    description: Interval before removing a sink due to inactivity
+    default: 3600
+  doppler.sink_dial_timeout_seconds:
+    description: Dial timeout for sinks
+    default: 1
+  doppler.sink_io_timeout_seconds:
+    description: I/O Timeout on sinks
+    default: 0
+  doppler_endpoint.shared_secret:
+    description: Shared secret used to verify cryptographically signed dropsonde messages
+  doppler.message_drain_buffer_size:
+    description: Size of the internal buffer used by doppler to store messages. If
+      the buffer gets full doppler will drop the messages.
+    default: 100
+  doppler.enable_tls_transport:
+    description: Enable TLS listener on doppler so that it can receive dropsonde envelopes
+      over TLS transport. If enabled, Cert and Key files must be specified.
+    default: false
+  doppler.tls_server.port:
+    description: Port for incoming messages in the dropsonde format over tls listener
+    default: 3458
+  doppler.tls_server.cert:
+    description: TLS server certificate
+    default: ''
+  doppler.tls_server.key:
+    description: TLS server key
+    default: ''
+  doppler.syslog_skip_cert_verify:
+    description: When connecting over TLS, don't verify certificates for syslog sink
+    default: true
+  loggregator.tls.ca:
+    description: CA root required for key/cert verification
+    default: ''
+  loggregator.etcd.machines:
+    description: IPs pointing to the ETCD cluster
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent
+    default: 127.0.0.1
+  metron_endpoint.dropsonde_port:
+    description: The port used to emit dropsonde messages to the Metron agent
+    default: 3457
+loggregator_trafficcontroller.properties:
+  traffic_controller.zone:
+    description: Zone of the loggregator_trafficcontroller
+  traffic_controller.debug:
+    description: boolean value to turn on verbose logging for loggregator system (dea
+      agent & loggregator server)
+    default: false
+  loggregator.outgoing_dropsonde_port:
+    description: Port for outgoing dropsonde messages
+    default: 8081
+  loggregator.doppler_port:
+    description: Port for outgoing doppler messages
+    default: 8081
+  traffic_controller.outgoing_port:
+    description: Port on which the traffic controller listens to for requests
+    default: 8080
+  doppler.uaa_client_id:
+    description: Doppler's client id to connect to UAA
+    default: doppler
+  uaa.clients.doppler.secret:
+    description: Doppler's client secret to connect to UAA
+  uaa.url:
+    description: URL of UAA
+  uaa.no_ssl:
+    description: Do not use SSL to connect to UAA (used in case uaa.url is not set)
+    default: false
+  metron_endpoint.dropsonde_port:
+    description: The port used to emit dropsonde messages to the Metron agent
+    default: 3457
+  loggregator.etcd.machines:
+    description: IPs pointing to the ETCD cluster
+  loggregator.etcd.maxconcurrentrequests:
+    description: Number of concurrent requests to ETCD
+    default: 10
+  system_domain:
+    description: Domain reserved for CF operator, base URL where the login, uaa, and
+      other non-user apps listen
+  ssl.skip_cert_verify:
+    description: when connecting over https, ignore bad ssl certificates
+    default: false
+  cc.srv_api_uri:
+    description: API URI of cloud controller
+metron_agent.properties:
+  syslog_daemon_config.address:
+    description: IP address for syslog aggregator
+  syslog_daemon_config.port:
+    description: TCP port of syslog aggregator
+  syslog_daemon_config.transport:
+    description: Transport to be used when forwarding logs (tcp|udp|relp).
+    default: tcp
+  syslog_daemon_config.fallback_addresses:
+    description: ! 'Addresses of fallback servers to be used if the primary syslog
+      server is down. Only tcp or relp are supported. Each list entry should consist
+      of "address", "transport" and "port" keys. '
+    default: []
+  syslog_daemon_config.custom_rule:
+    description: Custom rule for syslog forward daemon
+    default: ''
+  syslog_daemon_config.max_message_size:
+    description: maximum message size to be sent
+    default: 4k
+  metron_agent.dropsonde_incoming_port:
+    description: Incoming port for dropsonde log messages
+    default: 3457
+  metron_endpoint.shared_secret:
+    description: Shared secret used to verify cryptographically signed dropsonde messages
+  metron_agent.preferred_protocol:
+    description: Preferred protocol to droppler (udp|tls)
+    default: udp
+  metron_agent.tls_client.cert:
+    description: TLS client certificate
+    default: ''
+  metron_agent.tls_client.key:
+    description: TLS client key
+    default: ''
+  loggregator.tls.ca:
+    description: CA root required for key/cert verification
+    default: ''
+  metron_agent.debug:
+    description: boolean value to turn on verbose mode
+    default: false
+  metron_agent.zone:
+    description: Availability zone where this agent is running
+  metron_agent.deployment:
+    description: Name of deployment (added as tag on all outgoing metrics)
+  metron_agent.logrotate.freq_min:
+    description: The frequency in minutes which logrotate will rotate VM logs
+    default: 5
+  metron_agent.logrotate.rotate:
+    description: The number of files that logrotate will keep around on the VM
+    default: 7
+  metron_agent.logrotate.size:
+    description: The size at which logrotate will decide to rotate the log file
+    default: 50M
+  loggregator.dropsonde_incoming_port:
+    description: Port where loggregator listens for dropsonde log messages
+    default: 3457
+  loggregator.etcd.machines:
+    description: IPs pointing to the ETCD cluster
+  loggregator.etcd.maxconcurrentrequests:
+    description: Number of concurrent requests to ETCD
+    default: 10
+syslog_drain_binder.properties:
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent
+    default: 127.0.0.1
+  metron_endpoint.dropsonde_port:
+    description: The port used to emit dropsonde messages to the Metron agent
+    default: 3457
+  loggregator.etcd.machines:
+    description: IPs pointing to the ETCD cluster
+  loggregator.etcd.maxconcurrentrequests:
+    description: Number of concurrent requests to ETCD
+    default: 10
+  system_domain:
+    description: Domain reserved for CF operator, base URL where the login, uaa, and
+      other non-user apps listen
+  syslog_drain_binder.drain_url_ttl_seconds:
+    description: Time to live for drain urls in seconds
+    default: 60
+  syslog_drain_binder.update_interval_seconds:
+    description: Interval on which to poll cloud controller in seconds
+    default: 15
+  syslog_drain_binder.polling_batch_size:
+    description: Batch size for the poll from cloud controller
+    default: 1000
+  syslog_drain_binder.debug:
+    description: boolean value to turn on verbose logging for syslog_drain_binder
+    default: false
+  cc.bulk_api_password:
+    description: password for the bulk api
+  cc.srv_api_uri:
+    description: API URI of cloud controller
+  ssl.skip_cert_verify:
+    description: when connecting over https, ignore bad ssl certificates
+    default: false
+dea_logging_agent.properties:
+  dea_logging_agent.debug:
+    description: boolean value to turn on verbose mode
+    default: false
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent
+    default: 127.0.0.1
+  metron_endpoint.dropsonde_port:
+    description: The port used to emit dropsonde messages to the Metron agent
+    default: 3457
+loggregator-acceptance-tests.properties:
+  loggregator.etcd.machines:
+    description: IPs pointing to the ETCD cluster
+  system_domain:
+    description: for computing the Traffic Controller URL
+  ssl.skip_cert_verify:
+    description: ''
+  metron_agent.dropsonde_incoming_port:
+    description: port for tests to send metrics to metron
+  loggregator_endpoint.shared_secret:
+    description: ''
+  loggregator_acceptance_tests.login_required:
+    description: ''
+  loggregator_acceptance_tests.admin_user:
+    description: ''
+  loggregator_acceptance_tests.admin_password:
+    description: ''
+acceptance_tests.properties:
+  router.acceptance_tests.nodes:
+    default: 4
+    description: The number of parallel test executors to spawn. The larger the number
+      the higher the stress on the system.
+  router.acceptance_tests.verbose:
+    default: false
+    description: Whether to pass the -v flag to router acceptance tests
+  router.acceptance_tests.router_api_addresses:
+    default:
+    - 10.244.8.2
+    description: Router API IP Address
+  router.acceptance_tests.router_api_port:
+    default: 9999
+    description: Router API IP Port
+  router.acceptance_tests.bbs.api_location:
+    description: Diego BBS Server endpoint url
+    default: https://bbs.service.cf.internal:8889
+  router.acceptance_tests.bbs.ca_cert:
+    description: PEM-encoded CA certificate
+  router.acceptance_tests.bbs.client_cert:
+    description: PEM-encoded client certificate
+  router.acceptance_tests.bbs.client_key:
+    description: PEM-encoded client key
+  router.acceptance_tests.bbs.require_ssl:
+    description: enable ssl for all communication with the bbs
+    default: true
+  router.acceptance_tests.gorouter_secret:
+    description: Password for UAA client for the gorouter.
+  router.acceptance_tests.uaa_port:
+    description: Port on which UAA is running.
+    default: '8080'
+  router.acceptance_tests.elb_address:
+    description: (Optional) ELB Address to check connectivity through load balancer
+    default: ''
+routing-api.properties:
+  routing-api.max_ttl:
+    description: The maximum ttl
+    default: 60
+  routing-api.port:
+    description: The port to run the routing api on
+    default: 3000
+  routing-api.auth_disabled:
+    description: Disables UAA authentication
+    default: false
+  routing-api.metrics_reporting_interval:
+    description: ! 'String representing interval for reporting metrics. Units: ms,
+      s, m h'
+    default: 30s
+  routing-api.statsd_endpoint:
+    description: The endpoint for the statsd server, defaults to the local metron
+      agent
+    default: localhost:8125
+  routing-api.debug_address:
+    description: Address at which to serve debug info
+    default: 0.0.0.0:17002
+  routing-api.max_concurrent_etcd_requests:
+    description: Maximum number of concurrent ETCD requests
+    default: 25
+  routing-api.statsd_client_flush_interval:
+    description: Buffered statsd client flush interval
+    default: 300ms
+  etcd.machines:
+    description: The IPs of etcd hosts
+  uaa.jwt.verification_key:
+    description: The verification key for UAA
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent.
+    default: 127.0.0.1
+  metron_endpoint.dropsonde_port:
+    description: The port used to emit dropsonde messages to the Metron agent.
+    default: 3457
+  system_domain:
+    description: Domain reserved for CF operator; base URL where the UAA, Cloud Controller,
+      and other non-user apps listen
+haproxy.properties:
+  ha_proxy.ssl_pem:
+    description: SSL certificate (PEM file)
+    default: 
+  ha_proxy.disable_http:
+    description: Disable port 80 traffic
+    default: false
+  ha_proxy.ssl_ciphers:
+    default: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-CBC-SHA256:ECDHE-RSA-AES256-CBC-SHA384:ECDHE-RSA-AES128-CBC-SHA:ECDHE-RSA-AES256-CBC-SHA:AES128-SHA256:AES128-SHA
+    description: List of SSL Ciphers that are passed to HAProxy
+  ha_proxy.log_to_file:
+    description: Whether to send logs to a file instead of the default syslog
+    default: false
+  ha_proxy.dontlognull:
+    description: Whether to disable logging of requests with no traffic (usually load-balancer
+      TCP checks)
+    default: false
+  ha_proxy.buffer_size_bytes:
+    description: Buffer size to use for requests, any requests larger than this (large
+      cookies or query strings) will result in a gateway error
+    default: 16384
+  ha_proxy.enable_stats_socket:
+    description: Whether to enable a socket that can be used to query errors and status
+    default: false
+  request_timeout_in_seconds:
+    description: Server and client timeouts in seconds
+    default: 900
+  router.servers.z1:
+    description: Array of the router IPs acting as the first group of HTTP/TCP backends
+    default: []
+  router.servers.z2:
+    description: Array of the router IPs acting as the second group of HTTP/TCP backends
+    default: []
+  router.port:
+    description: Listening port for Router
+    default: 80
+  cc.allow_app_ssh_access:
+    default: true
+    description: Allow users to change the value of the app-level allow_ssh attribute
+  app_ssh.port:
+    description: External port for SSH access to application instances
+    default: 2222
+tcp_emitter.properties:
+  router.tcp_emitter.debug_addr:
+    description: Address at which to serve debug info
+    default: 0.0.0.0:17016
+  router.tcp_emitter.log_level:
+    description: Log level
+    default: info
+  router.tcp_emitter.bbs.api_location:
+    description: Diego BBS Server endpoint url
+    default: http://bbs.service.cf.internal:8889
+  router.tcp_emitter.bbs.ca_cert:
+    description: PEM-encoded CA certificate
+  router.tcp_emitter.bbs.client_cert:
+    description: PEM-encoded client certificate
+  router.tcp_emitter.bbs.client_key:
+    description: PEM-encoded client key
+  router.tcp_emitter.bbs.require_ssl:
+    description: enable ssl for all communication with the bbs
+    default: true
+  router.tcp_emitter.routing_api_port:
+    description: Port of routing api
+    default: '3000'
+  router.tcp_emitter.routing_api_auth_disabled:
+    description: auth disabled setting of routing api
+    default: false
+  router.tcp_emitter.gorouter_secret:
+    description: Password for UAA client for the gorouter.
+  router.tcp_emitter.uaa_port:
+    description: Port on which UAA is running.
+    default: '8080'
+  router.tcp_emitter.consul_cluster:
+    description: comma-separated list of consul server URLs (scheme://ip:port)
+    default: http://127.0.0.1:8500
+  router.tcp_emitter.lock_ttl:
+    description: TTL for service lock
+    default: 10s
+  router.tcp_emitter.lock_retry_interval:
+    description: interval to wait before retrying a failed lock acquisition
+    default: 5s
+  router.tcp_emitter.session_name:
+    description: consul session name
+    default: tcp-emitter
+router_configurer.properties:
+  router.router_configurer.debug_addr:
+    description: Address at which to serve debug info
+    default: 0.0.0.0:17014
+  router.router_configurer.log_level:
+    description: Log level
+    default: info
+  router.router_configurer.tcp_config_file_template:
+    description: Base Config file of underlying tcp proxy
+    default: /var/vcap/jobs/haproxy/config/haproxy.conf.template
+  router.router_configurer.tcp_config_file:
+    description: Config file of underlying tcp proxy
+    default: /var/vcap/jobs/haproxy/config/haproxy.conf
+  router.router_configurer.routing_api_port:
+    description: Port of routing api
+    default: '3000'
+  router.router_configurer.routing_api_auth_disabled:
+    description: auth disabled setting of routing api
+    default: false
+  router.router_configurer.gorouter_secret:
+    description: Password for UAA client for the gorouter.
+  router.router_configurer.uaa_port:
+    description: Port on which UAA is running.
+    default: '8080'
+debian_nfs_server.properties:
+  nfs_server.no_root_squash:
+    description: Exports /var/vcap/store with no_root_squash when set to true
+    default: false
+  nfs_server.allow_from_entries:
+    description: An array of Hosts, Domains, Wildcard Domains, CIDR Networks and/or
+      IPs from which /var/vcap/store is accessible
+  nfs_server.idmapd_domain:
+    description: Domain name for NFS idmapd
+    default: localdomain
+  nfs_server.pipefs_directory:
+    description: Pipefs directory for NFS idmapd
+    default: /var/lib/nfs/rpc_pipef
+nfs_mounter.properties:
+  nfs_server.address:
+    description: NFS server for droplets and apps (not used in an AWS deploy, use
+      s3 instead)
+  nfs_server.share:
+    description: Path to share from the remote NFS server (not used in an AWS deploy,
+      use s3 instead)
+  nfs_server.nfsv4:
+    description: bool to use NFS4 (not used in an AWS deploy, use s3 instead)
+  nfs_server.idmapd_domain:
+    description: Domain name for NFS idmapd
+    default: localdomain
+  nfs_server.pipefs_directory:
+    description: Pipefs directory for NFS idmapd
+    default: /var/lib/nfs/rpc_pipefs
+  nfs_server.share_path:
+    description: Location to mount the nfs share
+    default: /var/vcap/nfs
+collector.properties:
+  collector.aws.access_key_id:
+    description: AWS access key for CloudWatch access
+  collector.aws.secret_access_key:
+    description: AWS secret for CloudWatch access
+  collector.datadog.api_key:
+    description: Datadog API key
+  collector.datadog.application_key:
+    description: Datadog application key
+  collector.deployment_name:
+    description: name for this bosh deployment. All metrics will be tagged with deployment:XXX
+      when sending them to CloudWatch, Datadog and Graphite
+  collector.logging_level:
+    description: the logging level for the collector
+    default: info
+  collector.intervals.discover:
+    description: the interval in seconds that the collector attempts to discover components
+    default: 60
+  collector.intervals.healthz:
+    description: the interval in seconds that healthz is checked
+    default: 30
+  collector.intervals.local_metrics:
+    description: the interval in seconds that local_metrics are checked
+    default: 30
+  collector.intervals.nats_ping:
+    description: the interval in seconds that the collector pings nats to record latency
+    default: 30
+  collector.intervals.prune:
+    description: the interval in seconds that the collector attempts to prune unresponsive
+      components
+    default: 300
+  collector.intervals.varz:
+    description: the interval in seconds that varz is checked
+    default: 30
+  collector.use_aws_cloudwatch:
+    description: enable CloudWatch plugin
+    default: false
+  collector.use_datadog:
+    description: enable Datadog plugin
+    default: false
+  collector.use_tsdb:
+    description: enable OpenTsdb plugin
+    default: false
+  collector.opentsdb.address:
+    description: IP address of OpenTsdb
+  collector.opentsdb.port:
+    description: TCP port of OpenTsdb
+  collector.use_graphite:
+    description: enable Graphite plugin
+    default: false
+  collector.graphite.address:
+    description: IP address of Graphite
+  collector.graphite.port:
+    description: TCP port of Graphite
+  collector.memory_threshold:
+    description: Memory threshold for collector restart (Mb)
+    default: 800
+  nats.machines:
+    description: IP of each NATS cluster member.
+  nats.password:
+    description: NATS password
+  nats.port:
+    description: NATS TCP port
+  nats.user:
+    description: NATS user
+cloud_controller_clock.properties:
+  ssl.skip_cert_verify:
+    description: specifies that the job is allowed to skip ssl cert verification
+    default: false
+  name:
+    default: vcap
+    description: 
+  build:
+    default: '2222'
+    description: 
+  version:
+    default: '2'
+    description: 
+  support_address:
+    default: http://support.cloudfoundry.com
+    description: 
+  description:
+    default: Cloud Foundry sponsored by Pivotal
+    description: 
+  domain:
+    description: domain where cloud_controller will listen (api.domain) often the
+      same as the system domain
+  system_domain:
+    description: Domain reserved for CF operator, base URL where the login, uaa, and
+      other non-user apps listen
+  system_domain_organization:
+    description: The User Org that owns the system_domain, required if system_domain
+      is defined
+    default: ''
+  app_domains:
+    description: ! 'Array of domains for user apps (example: ''user.app.space.foo'',
+      a user app called ''neat'' will listen at ''http://neat.user.app.space.foo'')'
+  nats.user:
+    description: Username for cc client to connect to NATS
+  nats.password:
+    description: Password for cc client to connect to NATS
+  nats.port:
+    description: IP port of Cloud Foundry NATS server
+  nats.machines:
+    description: IP of each NATS cluster member.
+  request_timeout_in_seconds:
+    description: Timeout for requests in seconds.
+    default: 900
+  cc.external_port:
+    description: External Cloud Controller port
+    default: 9022
+  cc.jobs.global.timeout_in_seconds:
+    description: The longest any job can take before it is cancelled unless overriden
+      per job
+    default: 14400
+  cc.jobs.app_bits_packer.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.app_events_cleanup.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.app_usage_events_cleanup.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.blobstore_delete.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.blobstore_upload.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.droplet_deletion.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.droplet_upload.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.app_events.cutoff_age_in_days:
+    description: How old an app event should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.app_usage_events.cutoff_age_in_days:
+    description: How old an app usage event should stay in cloud controller database
+      before being cleaned up
+    default: 31
+  cc.service_usage_events.cutoff_age_in_days:
+    description: How old a service usage event should stay in cloud controller database
+      before being cleaned up
+    default: 31
+  cc.audit_events.cutoff_age_in_days:
+    description: How old an audit event should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.failed_jobs.cutoff_age_in_days:
+    description: How old a failed job should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.pending_packages.frequency_in_seconds:
+    description: How often the package pending cleanup job runs
+    default: 300
+  cc.pending_packages.expiration_in_seconds:
+    description: How long packages can remain in pending state before being cleaned
+      up
+    default: 1200
+  cc.info.name:
+    description: name attribute in the /info endpoint
+  cc.info.build:
+    description: build attribute in the /info endpoint
+  cc.info.version:
+    description: version attribute in the /info endpoint
+  cc.info.description:
+    description: free form description for attribute in the /info endpoint
+  cc.info.custom:
+    description: Custom values for /v2/info endpoint
+  cc.external_protocol:
+    default: https
+    description: The protocol used to access the CC API from an external entity
+  cc.external_host:
+    default: api
+    description: Host part of the cloud_controller api URI, will be joined with value
+      of 'domain'
+  cc.cc_partition:
+    default: default
+    description: Deprecated. Defines a 'partition' for the health_manager job
+  cc.bulk_api_user:
+    default: bulk_api
+    description: User used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.bulk_api_password:
+    description: Password used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.internal_api_user:
+    default: internal_user
+    description: User name used by Diego to access internal endpoints
+  cc.internal_api_password:
+    description: Password used by Diego to access internal endpoints
+  cc.diego.nsync_url:
+    default: http://nsync.service.cf.internal:8787
+    description: URL of the Diego nsync service
+  cc.diego.stager_url:
+    default: http://stager.service.cf.internal:8888
+    description: URL of the Diego stager service
+  cc.diego.tps_url:
+    default: http://tps.service.cf.internal:1518
+    description: URL of the Diego tps service
+  cc.uaa_resource_id:
+    default: cloud_controller,cloud_controller_service_permissions
+    description: Name of service to register to UAA
+  cc.db_logging_level:
+    default: debug2
+    description: Log level for cc database operations
+  cc.logging_level:
+    default: debug2
+    description: Log level for cc
+  cc.logging_max_retries:
+    default: 1
+    description: Passthru value for Steno logger
+  cc.staging_timeout_in_seconds:
+    default: 900
+    description: Timeout for staging a droplet
+  cc.default_health_check_timeout:
+    default: 60
+    description: Default health check timeout (in seconds) that can be set for the
+      app
+  cc.maximum_health_check_timeout:
+    default: 180
+    description: Maximum health check timeout (in seconds) that can be set for the
+      app
+  cc.stacks:
+    default:
+    - name: cflinuxfs2
+      description: Cloud Foundry Linux-based filesystem
+    description: Tag used by the DEA to describe capabilities (i.e. 'Windows7', 'python-linux').
+      DEA and CC must agree.
+  cc.default_stack:
+    default: cflinuxfs2
+    description: The default stack to use if no custom stack is specified by an app.
+  cc.staging_upload_user:
+    default: ''
+    description: User name used to access internal endpoints of Cloud Controller to
+      upload files when staging
+  cc.staging_upload_password:
+    default: ''
+    description: User's password used to access internal endpoints of Cloud Controller
+      to upload files when staging
+  cc.quota_definitions:
+    description: Hash of default quota definitions. Overriden by custom quota definitions.
+  cc.default_quota_definition:
+    default: default
+    description: Local to use a local (NFS) file system.  AWS to use AWS.
+  cc.default_fog_connection.provider:
+    description: Local fog provider (should always be 'Local'), used if fog_connection
+      hash is not provided in the manifest
+    default: Local
+  cc.default_fog_connection.local_root:
+    description: Local root when fog provider is not overridden (should be an NFS
+      mount if using more than one cloud controller)
+    default: /var/vcap/nfs/shared
+  cc.resource_pool.minimum_size:
+    description: Minimum size of a resource to add to the pool
+    default: 65536
+  cc.resource_pool.maximum_size:
+    description: Maximum size of a resource to add to the pool
+    default: 536870912
+  cc.resource_pool.resource_directory_key:
+    description: Directory (bucket) used store app resources.  It does not have be
+      pre-created.
+    default: cc-resources
+  cc.resource_pool.fog_connection:
+    description: Fog connection hash
+  cc.resource_pool.cdn.uri:
+    description: URI for a CDN to used for resource pool downloads
+    default: ''
+  cc.resource_pool.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.resource_pool.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.packages.app_package_directory_key:
+    description: Directory (bucket) used store app packages.  It does not have be
+      pre-created.
+    default: cc-packages
+  cc.packages.max_package_size:
+    description: Maximum size of application package
+    default: 1073741824
+  cc.packages.fog_connection:
+    description: Fog connection hash
+  cc.packages.cdn.uri:
+    description: URI for a CDN to used for app package downloads
+    default: ''
+  cc.packages.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.packages.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.droplets.droplet_directory_key:
+    description: Directory (bucket) used store droplets.  It does not have be pre-created.
+    default: cc-droplets
+  cc.droplets.fog_connection:
+    description: Fog connection hash
+  cc.droplets.cdn.uri:
+    description: URI for a CDN to used for droplet downloads
+    default: ''
+  cc.droplets.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.droplets.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.buildpacks.buildpack_directory_key:
+    description: Directory (bucket) used store buildpacks.  It does not have be pre-created.
+    default: cc-buildpacks
+  cc.buildpacks.fog_connection:
+    description: Fog connection hash
+  cc.buildpacks.cdn.uri:
+    description: URI for a CDN to used for buildpack downloads
+    default: ''
+  cc.buildpacks.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.buildpacks.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  ccdb.databases:
+    description: 
+  ccdb.roles:
+    description: 
+  ccdb.db_scheme:
+    description: 
+    default: postgres
+  ccdb.address:
+    description: 
+  ccdb.port:
+    description: 
+  ccdb.max_connections:
+    default: 25
+    description: Maximum connections for Sequel
+  ccdb.pool_timeout:
+    default: 10
+    description: 
+  uaa.cc.token_secret:
+    description: 
+  uaa.no_ssl:
+    description: when true, uaa uses http, otherwise it uses https
+    default: false
+  uaa.url:
+    description: 
+  login.url:
+    description: 
+  hm9000.url:
+    description: 
+  uaa.jwt.verification_key:
+    default: ''
+    description: ssl cert defined in the manifest by the UAA, required by the cc to
+      communicate with UAA
+  login.enabled:
+    default: true
+    description: whether use login as the authorization endpoint or not
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent
+    default: 127.0.0.1
+  metron_endpoint.port:
+    description: The port used to emit messages to the Metron agent
+    default: 3457
+  logger_endpoint.use_ssl:
+    description: Whether to use ssl for logger endpoint listed at /v2/info
+    default: true
+  logger_endpoint.port:
+    description: Port for logger endpoint listed at /v2/info
+    default: 443
+  cc.db_encryption_key:
+    default: ''
+    description: key for encrypting sensitive values in the CC database
+  cc.default_app_memory:
+    default: 1024
+    description: How much memory given to an app if not specified
+  cc.default_app_disk_in_mb:
+    default: 1024
+    description: The default disk space an app gets
+  cc.maximum_app_disk_in_mb:
+    default: 2048
+    description: The maximum amount of disk a user can request
+  cc.users_can_select_backend:
+    default: true
+    description: Allow non-admin users to switch their apps between DEA and Diego
+      backends
+  cc.default_to_diego_backend:
+    default: false
+    description: Use Diego backend by default for new apps
+  cc.allow_app_ssh_access:
+    default: true
+    description: Allow users to change the value of the app-level allow_ssh attribute
+  cc.flapping_crash_count_threshold:
+    default: 3
+    description: The threshold of crashes after which the app is marked as flapping
+  cc.client_max_body_size:
+    default: 1536M
+    description: Maximum body size for nginx
+  cc.disable_custom_buildpacks:
+    default: false
+    description: Disable external (i.e. git) buildpacks? (Admin buildpacks and system
+      buildpacks only.)
+  cc.broker_client_timeout_seconds:
+    default: 60
+    description: For requests to service brokers, this is the HTTP (open and read)
+      timeout setting.
+  cc.development_mode:
+    default: false
+    description: Enable development features for monitoring and insight
+  cc.newrelic.license_key:
+    default: 
+    description: The api key for NewRelic
+  cc.newrelic.environment_name:
+    default: development
+    description: The environment name used by NewRelic
+  cc.newrelic.developer_mode:
+    default: false
+    description: Activate NewRelic developer mode
+  cc.newrelic.monitor_mode:
+    default: false
+    description: Activate NewRelic monitor mode
+  cc.newrelic.log_file_path:
+    default: /var/vcap/sys/log/cloud_controller_ng/newrelic
+    description: The location for NewRelic to log to
+  cc.newrelic.capture_params:
+    default: false
+    description: Capture and send query params to NewRelic
+  cc.newrelic.transaction_tracer.enabled:
+    default: false
+    description: Enable transaction tracing in NewRelic
+  cc.newrelic.transaction_tracer.record_sql:
+    default: 'off'
+    description: ! 'NewRelic''s SQL statement recording mode: [off | obfuscated |
+      raw]'
+  dea_next.staging_memory_limit_mb:
+    description: Memory limit in mb for staging tasks
+    default: 1024
+  dea_next.staging_disk_limit_mb:
+    description: Disk limit in mb for staging tasks
+    default: 6144
+  cc.staging_file_descriptor_limit:
+    description: File descriptor limit for staging tasks
+    default: 16384
+  cc.renderer.max_results_per_page:
+    description: Maximum number of results returned per page
+    default: 100
+  cc.renderer.default_results_per_page:
+    description: Default number of results returned per page if user does not specify
+    default: 50
+  cc.renderer.max_inline_relations_depth:
+    description: Maximum depth of inlined relationships in the result
+    default: 2
+  cc.app_bits_upload_grace_period_in_seconds:
+    description: Extra token expiry time while uploading big apps.
+    default: 1200
+  uaa.clients.cc_service_broker_client.secret:
+    description: (DEPRECATED) - Used for generating SSO clients for service brokers.
+  uaa.clients.cc_service_broker_client.scope:
+    description: (DEPRECATED) - Used to grant scope for SSO clients for service brokers
+    default: openid,cloud_controller_service_permissions.read
+  uaa.clients.cc-service-dashboards.secret:
+    description: Used for generating SSO clients for service brokers.
+  uaa.clients.cc-service-dashboards.scope:
+    description: Used to grant scope for SSO clients for service brokers
+    default: openid,cloud_controller_service_permissions.read
+  cc.install_buildpacks:
+    description: Set of buildpacks to install during deploy
+  cc.security_group_definitions:
+    description: Array of security groups that will be seeded into CloudController.
+  cc.default_running_security_groups:
+    description: The default running security groups that will be seeded in CloudController.
+  cc.default_staging_security_groups:
+    description: The default staging security groups that will be seeded in CloudController.
+  cc.thresholds.api.alert_if_above_mb:
+    description: The cc will alert if memory remains above this threshold for 3 monit
+      cycles
+    default: 2250
+  cc.thresholds.api.restart_if_consistently_above_mb:
+    description: The cc will restart if memory remains above this threshold for 15
+      monit cycles
+    default: 2250
+  cc.thresholds.api.restart_if_above_mb:
+    description: The cc will restart if memory remains above this threshold for 3
+      monit cycles
+    default: 2450
+  cc.instance_file_descriptor_limit:
+    description: The file descriptors made available to each app instance
+    default: 16384
+gorouter.properties:
+  router.port:
+    description: Listening Port for Router.
+    default: 80
+  router.status.port:
+    description: Port for the Router varz/status endpoint.
+    default: 8080
+  router.status.user:
+    description: Username for HTTP basic auth to the varz/status endpoint.
+  router.status.password:
+    description: Password for HTTP basic auth to the varz/status endpoint.
+  router.requested_route_registration_interval_in_seconds:
+    description: Interval at which the router requests routes to be registered.
+    default: 20
+  router.number_of_cpus:
+    description: Number of CPUs to utilize, the default (-1) will equal the number
+      of available CPUs
+    default: -1
+  router.debug_addr:
+    description: Address at which to serve debug info
+    default: 0.0.0.0:17001
+  router.secure_cookies:
+    description: Set secure flag on http cookies
+    default: false
+  router.enable_ssl:
+    description: Enable ssl termination on the router
+    default: false
+  router.enable_routing_api:
+    description: Enable the GoRouter to receive routes from the Routing API
+    default: true
+  router.ssl_cert:
+    description: The public ssl cert for ssl termination
+    default: ''
+  router.ssl_key:
+    description: The private ssl key for ssl termination
+    default: ''
+  router.ssl_skip_validation:
+    description: Skip SSL client cert validation
+    default: false
+  router.cipher_suites:
+    description: An ordered list of supported SSL cipher suites containing golang
+      tls constants separated by colons The cipher suite will be chosen according
+      to this order during SSL handshake For example, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+    default: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA:TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA:TLS_RSA_WITH_AES_128_CBC_SHA:TLS_RSA_WITH_AES_256_CBC_SHA
+  router.route_services_secret:
+    description: Support for route services is disabled when no value is configured.
+    default: ''
+  router.route_services_secret_decrypt_only:
+    description: To rotate keys, add your new key here and deploy. Then swap this
+      key with the value of route_services_secret and deploy again.
+    default: ''
+  router.route_service_timeout:
+    description: Expiry time of a route service signature in seconds
+    default: 60
+  router.logrotate.freq_min:
+    description: The frequency in minutes which logrotate will rotate VM logs
+    default: 5
+  router.logrotate.rotate:
+    description: The number of files that logrotate will keep around on the VM
+    default: 7
+  router.logrotate.size:
+    description: The size at which logrotate will decide to rotate the log file
+    default: 2M
+  router.extra_headers_to_log:
+    description: A list of headers that log events will be annotated with
+    default: []
+  router.logging_level:
+    description: Log level for router
+    default: info
+  nats.user:
+    description: 
+  nats.password:
+    description: 
+  nats.port:
+    description: 
+  nats.machines:
+    description: IP of each NATS cluster member.
+  router.offset:
+    description: 
+    default: 0
+  router.trace_key:
+    description: If the X-Vcap-Trace request header is set and has this value, trace
+      headers are added to the response.
+    default: 22
+  request_timeout_in_seconds:
+    description: Timeout in seconds for Router -> Endpoint roundtrip.
+    default: 900
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent.
+    default: 127.0.0.1
+  metron_endpoint.dropsonde_port:
+    description: The port used to emit dropsonde messages to the Metron agent.
+    default: 3457
+  metron_endpoint.port:
+    description: The port used to emit legacy messages to the Metron agent.
+    default: 3456
+  dropsonde.enabled:
+    default: false
+    description: Enable the dropsonde emitter library
+  uaa.clients.gorouter.secret:
+    description: Password for UAA client for the gorouter.
+  uaa.port:
+    description: Port on which UAA is running.
+    default: 8080
+  routing-api.port:
+    description: Port on which routing-api is running.
+    default: 3000
+  routing-api.auth_disabled:
+    description: Disables UAA authentication
+    default: false
+nats.properties:
+  nats.user:
+    description: Username for server authentication.
+  nats.password:
+    description: Password for server authentication.
+  nats.port:
+    description: The port for the NATS server to listen on.
+  nats.authorization_timeout:
+    description: After accepting a connection, wait up to this many seconds for credentials.
+    default: 15
+  nats.machines:
+    description: IP of each NATS cluster member.
+  nats.debug:
+    description: Enable debug logging output.
+    default: false
+  nats.trace:
+    description: Enable trace logging output.
+    default: false
+  nats.monitor_port:
+    description: Port for varz and connz monitoring. 0 means disabled.
+    default: 0
+  nats.prof_port:
+    description: Port for pprof. 0 means disabled.
+    default: 0
+smoke-tests.properties:
+  smoke_tests.suite_name:
+    default: CF_SMOKE_TESTS
+    description: A token used by the tests when creating Apps / Spaces
+  smoke_tests.api:
+    description: The Elastic Runtime API endpoint URL
+  smoke_tests.apps_domain:
+    description: The Elastic Runtime Application Domain
+  smoke_tests.user:
+    description: The Elastic Runtime API user
+  smoke_tests.password:
+    description: The Elastic Runtime API user's password
+  smoke_tests.org:
+    description: The Elastic Runtime organization name to use when running tests
+  smoke_tests.space:
+    description: The Elastic Runtime space name to use when running tests
+  smoke_tests.use_existing_org:
+    default: false
+    description: Toggles setup and cleanup of the Elastic Runtime organization
+  smoke_tests.use_existing_space:
+    default: false
+    description: Toggles setup and cleanup of the Elastic Runtime space
+  smoke_tests.logging_app:
+    default: ''
+    description: The Elastic Runtime app name to use when running logging tests
+  smoke_tests.runtime_app:
+    default: ''
+    description: The Elastic Runtime app name to use when running runtime tests
+  smoke_tests.skip_ssl_validation:
+    default: false
+    description: Toggles cli verification of the Elastic Runtime API SSL certificate
+  smoke_tests.ginkgo_opts:
+    default: ''
+    description: Ginkgo options for the smoke tests
+route_registrar.properties:
+  nats.machines:
+    description: IPs of each NATS cluster member
+    example: ! '- 192.168.50.123
+
+      - 192.168.52.123
+
+'
+  nats.port:
+    description: TCP port of NATS servers
+    example: 4222
+  nats.user:
+    description: User name for NATS authentication
+    example: nats
+  nats.password:
+    description: Password for NATS authentication
+    example: natSpa55w0rd
+  route_registrar.routes:
+    description: ! '* Array of hashes determining which routes will be registered.
+
+      * Each hash should have ''port'', ''uris'', and ''name'' keys.
+
+      * Additionally, the ''tags'' key is optional.
+
+      * ''uris'' is an array of URIs to register for the ''port''.
+
+      * ''tags'' are included in metrics that gorouter emits to support filtering.
+
+'
+    example: ! "- name: my-service\n  port: 12345\n  tags:\n    component: my-service\n
+      \   env: production\n  uris:\n    - my-service.system-domain.com\n    - *.my-service.system-domain.com\n-
+      name: my-debug-endpoint\n  port: 12346\n  uris:\n    - my-service.system-domain.com/debug\n"
+  route_registrar.update_frequency_in_seconds:
+    default: 20
+    description: The delay in seconds between routing updates
+cloud_controller_worker.properties:
+  ssl.skip_cert_verify:
+    description: specifies that the job is allowed to skip ssl cert verification
+    default: false
+  name:
+    default: vcap
+    description: 
+  build:
+    default: '2222'
+    description: 
+  version:
+    default: '2'
+    description: 
+  support_address:
+    default: http://support.cloudfoundry.com
+    description: 
+  description:
+    default: Cloud Foundry sponsored by Pivotal
+    description: 
+  domain:
+    description: domain where cloud_controller will listen (api.domain) often the
+      same as the system domain
+  system_domain:
+    description: Domain reserved for CF operator, base URL where the login, uaa, and
+      other non-user apps listen
+  system_domain_organization:
+    description: The User Org that owns the system_domain, required if system_domain
+      is defined
+    default: ''
+  app_domains:
+    description: ! 'Array of domains for user apps (example: ''user.app.space.foo'',
+      a user app called ''neat'' will listen at ''http://neat.user.app.space.foo'')'
+  nats.user:
+    description: Username for cc client to connect to NATS
+  nats.password:
+    description: Password for cc client to connect to NATS
+  nats.port:
+    description: IP port of Cloud Foundry NATS server
+  nats.machines:
+    description: IP of each NATS cluster member.
+  nfs_server.address:
+    description: NFS server for droplets and apps (not used in an AWS deploy, use
+      s3 instead)
+  nfs_server.share_path:
+    description: The location at which to mount the nfs share
+  request_timeout_in_seconds:
+    description: Timeout for requests in seconds.
+    default: 900
+  cc.external_port:
+    description: External Cloud Controller port
+    default: 9022
+  cc.jobs.global.timeout_in_seconds:
+    description: The longest any job can take before it is cancelled unless overriden
+      per job
+    default: 14400
+  cc.jobs.app_bits_packer.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.app_events_cleanup.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.app_usage_events_cleanup.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.blobstore_delete.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.blobstore_upload.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.droplet_deletion.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.droplet_upload.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.app_events.cutoff_age_in_days:
+    description: How old an app event should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.app_usage_events.cutoff_age_in_days:
+    description: How old an app usage event should stay in cloud controller database
+      before being cleaned up
+    default: 31
+  cc.service_usage_events.cutoff_age_in_days:
+    description: How old a service usage event should stay in cloud controller database
+      before being cleaned up
+    default: 31
+  cc.audit_events.cutoff_age_in_days:
+    description: How old an audit event should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.failed_jobs.cutoff_age_in_days:
+    description: How old a failed job should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.info.name:
+    description: name attribute in the /info endpoint
+  cc.info.build:
+    description: build attribute in the /info endpoint
+  cc.info.version:
+    description: version attribute in the /info endpoint
+  cc.info.description:
+    description: free form description for attribute in the /info endpoint
+  cc.info.custom:
+    description: Custom values for /v2/info endpoint
+  cc.external_protocol:
+    default: https
+    description: The protocol used to access the CC API from an external entity
+  cc.external_host:
+    default: api
+    description: Host part of the cloud_controller api URI, will be joined with value
+      of 'domain'
+  cc.cc_partition:
+    default: default
+    description: Deprecated. Defines a 'partition' for the health_manager job
+  cc.bulk_api_user:
+    default: bulk_api
+    description: User used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.bulk_api_password:
+    description: Password used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.internal_api_user:
+    default: internal_user
+    description: User name used by Diego to access internal endpoints
+  cc.internal_api_password:
+    description: Password used by Diego to access internal endpoints
+  cc.diego.nsync_url:
+    default: http://nsync.service.cf.internal:8787
+    description: URL of the Diego nsync service
+  cc.diego.stager_url:
+    default: http://stager.service.cf.internal:8888
+    description: URL of the Diego stager service
+  cc.diego.tps_url:
+    default: http://tps.service.cf.internal:1518
+    description: URL of the Diego tps service
+  cc.uaa_resource_id:
+    default: cloud_controller,cloud_controller_service_permissions
+    description: Name of service to register to UAA
+  cc.db_logging_level:
+    default: debug2
+    description: Log level for cc database operations
+  cc.logging_level:
+    default: debug2
+    description: Log level for cc
+  cc.logging_max_retries:
+    default: 1
+    description: Passthru value for Steno logger
+  cc.staging_timeout_in_seconds:
+    default: 900
+    description: Timeout for staging a droplet
+  cc.default_health_check_timeout:
+    default: 60
+    description: Default health check timeout (in seconds) that can be set for the
+      app
+  cc.maximum_health_check_timeout:
+    default: 180
+    description: Maximum health check timeout (in seconds) that can be set for the
+      app
+  cc.stacks:
+    default:
+    - name: cflinuxfs2
+      description: Cloud Foundry Linux-based filesystem
+    description: Tag used by the DEA to describe capabilities (i.e. 'Windows7', 'python-linux').
+      DEA and CC must agree.
+  cc.default_stack:
+    default: cflinuxfs2
+    description: The default stack to use if no custom stack is specified by an app.
+  cc.staging_upload_user:
+    default: ''
+    description: User name used to access internal endpoints of Cloud Controller to
+      upload files when staging
+  cc.staging_upload_password:
+    default: ''
+    description: User's password used to access internal endpoints of Cloud Controller
+      to upload files when staging
+  cc.quota_definitions:
+    description: Hash of default quota definitions. Overriden by custom quota definitions.
+  cc.default_quota_definition:
+    default: default
+    description: Local to use a local (NFS) file system.  AWS to use AWS.
+  cc.default_fog_connection.provider:
+    description: Local fog provider (should always be 'Local'), used if fog_connection
+      hash is not provided in the manifest
+    default: Local
+  cc.default_fog_connection.local_root:
+    description: Local root when fog provider is not overridden (should be an NFS
+      mount if using more than one cloud controller)
+    default: /var/vcap/nfs/shared
+  cc.resource_pool.minimum_size:
+    description: Minimum size of a resource to add to the pool
+    default: 65536
+  cc.resource_pool.maximum_size:
+    description: Maximum size of a resource to add to the pool
+    default: 536870912
+  cc.resource_pool.resource_directory_key:
+    description: Directory (bucket) used store app resources.  It does not have be
+      pre-created.
+    default: cc-resources
+  cc.resource_pool.fog_connection:
+    description: Fog connection hash
+  cc.resource_pool.cdn.uri:
+    description: URI for a CDN to used for resource pool downloads
+    default: ''
+  cc.resource_pool.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.resource_pool.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.packages.app_package_directory_key:
+    description: Directory (bucket) used store app packages.  It does not have be
+      pre-created.
+    default: cc-packages
+  cc.packages.max_package_size:
+    description: Maximum size of application package
+    default: 1073741824
+  cc.packages.fog_connection:
+    description: Fog connection hash
+  cc.packages.cdn.uri:
+    description: URI for a CDN to used for app package downloads
+    default: ''
+  cc.packages.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.packages.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.droplets.droplet_directory_key:
+    description: Directory (bucket) used store droplets.  It does not have be pre-created.
+    default: cc-droplets
+  cc.droplets.fog_connection:
+    description: Fog connection hash
+  cc.droplets.cdn.uri:
+    description: URI for a CDN to used for droplet downloads
+    default: ''
+  cc.droplets.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.droplets.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.buildpacks.buildpack_directory_key:
+    description: Directory (bucket) used store buildpacks.  It does not have be pre-created.
+    default: cc-buildpacks
+  cc.buildpacks.fog_connection:
+    description: Fog connection hash
+  cc.buildpacks.cdn.uri:
+    description: URI for a CDN to used for buildpack downloads
+    default: ''
+  cc.buildpacks.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.buildpacks.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  ccdb.databases:
+    description: 
+  ccdb.roles:
+    description: 
+  ccdb.db_scheme:
+    description: 
+    default: postgres
+  ccdb.address:
+    description: 
+  ccdb.port:
+    description: 
+  ccdb.max_connections:
+    default: 25
+    description: Maximum connections for Sequel
+  ccdb.pool_timeout:
+    default: 10
+    description: 
+  uaa.cc.token_secret:
+    description: 
+  uaa.no_ssl:
+    description: when true, uaa uses http, otherwise it uses https
+    default: false
+  uaa.url:
+    description: 
+  login.url:
+    description: 
+  hm9000.url:
+    description: 
+  uaa.jwt.verification_key:
+    default: ''
+    description: ssl cert defined in the manifest by the UAA, required by the cc to
+      communicate with UAA
+  login.enabled:
+    default: true
+    description: whether use login as the authorization endpoint or not
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent
+    default: 127.0.0.1
+  metron_endpoint.port:
+    description: The port used to emit messages to the Metron agent
+    default: 3457
+  logger_endpoint.use_ssl:
+    description: Whether to use ssl for logger endpoint listed at /v2/info
+    default: true
+  logger_endpoint.port:
+    description: Port for logger endpoint listed at /v2/info
+    default: 443
+  cc.db_encryption_key:
+    default: ''
+    description: key for encrypting sensitive values in the CC database
+  cc.default_app_memory:
+    default: 1024
+    description: How much memory given to an app if not specified
+  cc.default_app_disk_in_mb:
+    default: 1024
+    description: The default disk space an app gets
+  cc.maximum_app_disk_in_mb:
+    default: 2048
+    description: The maximum amount of disk a user can request
+  cc.users_can_select_backend:
+    default: true
+    description: Allow non-admin users to switch their apps between DEA and Diego
+      backends
+  cc.default_to_diego_backend:
+    default: false
+    description: Use Diego backend by default for new apps
+  cc.allow_app_ssh_access:
+    default: true
+    description: Allow users to change the value of the app-level allow_ssh attribute
+  cc.flapping_crash_count_threshold:
+    default: 3
+    description: The threshold of crashes after which the app is marked as flapping
+  cc.client_max_body_size:
+    default: 1536M
+    description: Maximum body size for nginx
+  cc.disable_custom_buildpacks:
+    default: false
+    description: Disable external (i.e. git) buildpacks? (Admin buildpacks and system
+      buildpacks only.)
+  cc.broker_client_timeout_seconds:
+    default: 60
+    description: For requests to service brokers, this is the HTTP (open and read)
+      timeout setting.
+  cc.development_mode:
+    default: false
+    description: Enable development features for monitoring and insight
+  cc.newrelic.license_key:
+    default: 
+    description: The api key for NewRelic
+  cc.newrelic.environment_name:
+    default: development
+    description: The environment name used by NewRelic
+  cc.newrelic.developer_mode:
+    default: false
+    description: Activate NewRelic developer mode
+  cc.newrelic.monitor_mode:
+    default: false
+    description: Activate NewRelic monitor mode
+  cc.newrelic.log_file_path:
+    default: /var/vcap/sys/log/cloud_controller_ng/newrelic
+    description: The location for NewRelic to log to
+  cc.newrelic.capture_params:
+    default: false
+    description: Capture and send query params to NewRelic
+  cc.newrelic.transaction_tracer.enabled:
+    default: false
+    description: Enable transaction tracing in NewRelic
+  cc.newrelic.transaction_tracer.record_sql:
+    default: 'off'
+    description: ! 'NewRelic''s SQL statement recording mode: [off | obfuscated |
+      raw]'
+  cc.jobs.generic.number_of_workers:
+    default: 1
+    description: Number of generic cloud_controller_worker workers
+  dea_next.staging_memory_limit_mb:
+    description: Memory limit in mb for staging tasks
+    default: 1024
+  dea_next.staging_disk_limit_mb:
+    description: Disk limit in mb for staging tasks
+    default: 6144
+  cc.staging_file_descriptor_limit:
+    description: File descriptor limit for staging tasks
+    default: 16384
+  cc.renderer.max_results_per_page:
+    description: Maximum number of results returned per page
+    default: 100
+  cc.renderer.default_results_per_page:
+    description: Default number of results returned per page if user does not specify
+    default: 50
+  cc.renderer.max_inline_relations_depth:
+    description: Maximum depth of inlined relationships in the result
+    default: 2
+  cc.app_bits_upload_grace_period_in_seconds:
+    description: Extra token expiry time while uploading big apps.
+    default: 1200
+  uaa.clients.cc_service_broker_client.secret:
+    description: (DEPRECATED) - Used for generating SSO clients for service brokers.
+  uaa.clients.cc_service_broker_client.scope:
+    description: (DEPRECATED) - Used to grant scope for SSO clients for service brokers
+    default: openid,cloud_controller_service_permissions.read
+  uaa.clients.cc-service-dashboards.secret:
+    description: Used for generating SSO clients for service brokers.
+  uaa.clients.cc-service-dashboards.scope:
+    description: Used to grant scope for SSO clients for service brokers
+    default: openid,cloud_controller_service_permissions.read
+  cc.install_buildpacks:
+    description: Set of buildpacks to install during deploy
+  cc.security_group_definitions:
+    description: Array of security groups that will be seeded into CloudController.
+  cc.default_running_security_groups:
+    description: The default running security groups that will be seeded in CloudController.
+  cc.default_staging_security_groups:
+    description: The default staging security groups that will be seeded in CloudController.
+  cc.thresholds.worker.alert_if_above_mb:
+    description: The cc will alert if memory remains above this threshold for 3 monit
+      cycles
+    default: 384
+  cc.thresholds.worker.restart_if_consistently_above_mb:
+    description: The cc will restart if memory remains above this threshold for 15
+      monit cycles
+    default: 384
+  cc.thresholds.worker.restart_if_above_mb:
+    description: The cc will restart if memory remains above this threshold for 3
+      monit cycles
+    default: 512
+  cc.instance_file_descriptor_limit:
+    description: The file descriptors made available to each app instance
+    default: 16384
+  cc.broker_client_default_async_poll_interval_seconds:
+    default: 60
+    description: Specifies interval on which the CC will poll a service broker for
+      asynchronous actions
+  cc.broker_client_max_async_poll_duration_minutes:
+    default: 10080
+    description: The max duration the CC will fetch service instance state from a
+      service broker. Default is 1 week
+dea_next.properties:
+  domain:
+    description: DNS domain name for this Cloud Foundry deployment
+  nats.password:
+    description: password for NATS login
+  nats.port:
+    description: TCP port of NATS server
+  nats.user:
+    description: user name for NATS login
+  nats.machines:
+    description: IP of each NATS cluster member.
+  dea_next.allow_networks:
+    description: 
+  dea_next.allow_host_access:
+    description: Allows warden containers to access the DEA host via its IP
+    default: false
+  dea_next.deny_networks:
+    description: 
+  dea_next.disk_mb:
+    description: 
+    default: 32000
+  dea_next.disk_overcommit_factor:
+    description: 
+    default: 1
+  dea_next.logging_level:
+    description: Log level for DEA.
+    default: debug
+  dea_next.max_staging_duration:
+    description: 
+    default: 900
+  dea_next.default_health_check_timeout:
+    description: Default timeout for application to start
+    default: 60
+  dea_next.memory_mb:
+    description: 
+    default: 8000
+  dea_next.memory_overcommit_factor:
+    description: 
+    default: 1
+  dea_next.streaming_timeout:
+    description: 
+    default: 60
+  dea_next.crash_lifetime_secs:
+    description: Crashed app lifetime in seconds
+    default: 3600
+  dea_next.staging_memory_limit_mb:
+    description: Memory limit in mb for staging tasks
+    default: 1024
+  dea_next.staging_disk_limit_mb:
+    description: Disk limit in mb for staging tasks
+    default: 6144
+  dea_next.staging_cpu_limit_shares:
+    description: CPU limit in shares for staging tasks cgroup
+    default: 512
+  dea_next.instance_memory_to_cpu_share_ratio:
+    description: Controls the relationship between app memory and cpu shares. app_cpu_shares
+      = app_memory / cpu_share_factor
+    default: 8
+  dea_next.instance_min_cpu_share_limit:
+    description: The minimum number of CPU shares that can be given to an app
+    default: 1
+  dea_next.instance_max_cpu_share_limit:
+    description: The maximum number of CPU shares that can be given to an app
+    default: 256
+  dea_next.staging_disk_inode_limit:
+    description: Limit on inodes for a staging container
+    default: 200000
+  dea_next.instance_disk_inode_limit:
+    description: Limit on inodes for an instance container
+    default: 200000
+  dea_next.staging_bandwidth_limit.rate:
+    description: Network bandwidth limit for staging tasks in bytes per second
+  dea_next.staging_bandwidth_limit.burst:
+    description: Network bandwidth burst limit for staging tasks in bytes
+  dea_next.instance_bandwidth_limit.rate:
+    description: Network bandwidth limit for running instances in bytes per second
+  dea_next.instance_bandwidth_limit.burst:
+    description: Network bandwidth burst limit for running instances in bytes
+  dea_next.directory_server_protocol:
+    description: The protocol to use when communicating with the directory server
+      ("http" or "https")
+    default: https
+  dea_next.kernel_network_tuning_enabled:
+    description: with latest kernel version, no kernel network tunings allowed with
+      in warden cpi containers
+    default: true
+  dea_next.mtu:
+    description: Interface MTU size
+    default: 1500
+  dea_next.evacuation_bail_out_time_in_seconds:
+    description: Duration to wait before shutting down, in seconds.
+    default: 115
+  dea_next.advertise_interval_in_seconds:
+    description: frequency of staging & DEA advertisments in seconds.
+    default: 5
+  dea_next.heartbeat_interval_in_seconds:
+    description: frequency of heartbeats in seconds.
+    default: 10
+  dea_next.zone:
+    description: The Availability Zone
+    default: default
+  dea_next.rlimit_core:
+    description: Maximum size of core file in bytes. 0 represents no core dump files
+      can be created, and -1 represents no size limits.
+    default: 0
+  dea_next.stacks:
+    default:
+    - name: cflinuxfs2
+      package_path: /var/vcap/packages/rootfs_cflinuxfs2/rootfs
+    description: An array of stacks, specifying the name and package path.
+  disk_quota_enabled:
+    description: disk quota must be disabled to use warden-inside-warden with the
+      warden cpi
+    default: true
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent
+    default: 127.0.0.1
+  metron_endpoint.port:
+    description: The port used to emit messages to the Metron agent
+    default: 3457
+  router.requested_route_registration_interval_in_seconds:
+    description: Interval at which the router requests routes to be registered.
+    default: 20
+  cc.srv_api_uri:
+    description: API URI of cloud controller
+  cc.internal_api_user:
+    default: internal_user
+    description: User name to access internal endpoints
+  cc.internal_api_password:
+    description: Password to access internal endpoints
+uaa.properties:
+  uaa.admin.client_secret:
+    description: Secret of the admin client - a client named admin with uaa.admin
+      as an authority
+  uaa.authentication.policy.lockoutAfterFailures:
+    description: Number of allowed failures before account is locked
+  uaa.authentication.policy.countFailuresWithinSeconds:
+    description: Number of seconds in which lockoutAfterFailures failures must occur
+      in order for account to be locked
+  uaa.authentication.policy.lockoutPeriodSeconds:
+    description: Number of seconds to lock out an account when lockoutAfterFailures
+      failures is exceeded
+  uaa.disableInternalAuth:
+    description: Disables internal user authentication
+    default: false
+  uaa.disableInternalUserManagement:
+    description: Disables UI and API for internal user management
+    default: false
+  uaa.password.policy.minLength:
+    description: Minimum number of characters required for password to be considered
+      valid
+    default: 0
+  uaa.password.policy.maxLength:
+    description: Maximum number of characters required for password to be considered
+      valid
+    default: 255
+  uaa.password.policy.requireUpperCaseCharacter:
+    description: Minimum number of uppercase characters required for password to be
+      considered valid
+    default: 0
+  uaa.password.policy.requireLowerCaseCharacter:
+    description: Minimum number of lowercase characters required for password to be
+      considered valid
+    default: 0
+  uaa.password.policy.requireDigit:
+    description: Minimum number of digits required for password to be considered valid
+    default: 0
+  uaa.password.policy.requireSpecialCharacter:
+    description: Minimum number of special characters required for password to be
+      considered valid
+    default: 0
+  uaa.password.policy.expirePasswordInMonths:
+    description: Number of months after which current password expires
+    default: 0
+  uaa.catalina_opts:
+    description: 
+    default: -Xmx768m -XX:MaxPermSize=256m
+  uaa.cc.client_secret:
+    description: 
+  uaa.cc.token_secret:
+    description: 
+  uaa.client.autoapprove:
+    description: 
+  uaa.user.authorities:
+    description: Contains a list of the default authorities/scopes assigned to a user.
+    default:
+    - openid
+    - scim.me
+    - cloud_controller.read
+    - cloud_controller.write
+    - cloud_controller_service_permissions.read
+    - password.write
+    - uaa.user
+    - approvals.me
+    - oauth.approvals
+    - notification_preferences.read
+    - notification_preferences.write
+    - profile
+    - roles
+    - user_attributes
+  uaa.clients:
+    description: 
+  uaa.jwt.policy.accessTokenValiditySeconds:
+    default: 43200
+    description: The access token validity for the default zone if nothing is configured
+      on the client. Will override global validity policies for the default zone only.
+  uaa.jwt.policy.refreshTokenValiditySeconds:
+    default: 2592000
+    description: The refresh token validity for the default zone if nothing is configured
+      on the client. Will override global validity policies for the default zone only.
+  uaa.jwt.policy.keys:
+    description: Map of key ids to key pairs (signing and verification keys)
+    example:
+      key-1:
+        signingKey: ! '-----BEGIN RSA PRIVATE KEY-----
+
+          MIICXgIBAAKBgQDfTLadf6QgJeS2XXImEHMsa+1O7MmIt44xaL77N2K+J/JGpfV3
+
+          AnkyB06wFZ02sBLB7hko42LIsVEOyTuUBird/3vlyHFKytG7UEt60Fl88SbAEfsU
+
+          JN1i1aSUlunPS/NCz+BKwwKFP9Ss3rNImE9Uc2LMvGy153LHFVW2zrjhTwIDAQAB
+
+          AoGBAJDh21LRcJITRBQ3CUs9PR1DYZPl+tUkE7RnPBMPWpf6ny3LnDp9dllJeHqz
+
+          a3ACSgleDSEEeCGzOt6XHnrqjYCKa42Z+Opnjx/OOpjyX1NAaswRtnb039jwv4gb
+
+          RlwT49Y17UAQpISOo7JFadCBoMG0ix8xr4ScY+zCSoG5v0BhAkEA8llNsiWBJF5r
+
+          LWQ6uimfdU2y1IPlkcGAvjekYDkdkHiRie725Dn4qRiXyABeaqNm2bpnD620Okwr
+
+          sf7LY+BMdwJBAOvgt/ZGwJrMOe/cHhbujtjBK/1CumJ4n2r5V1zPBFfLNXiKnpJ6
+
+          J/sRwmjgg4u3Anu1ENF3YsxYabflBnvOP+kCQCQ8VBCp6OhOMcpErT8+j/gTGQUL
+
+          f5zOiPhoC2zTvWbnkCNGlqXDQTnPUop1+6gILI2rgFNozoTU9MeVaEXTuLsCQQDC
+
+          AGuNpReYucwVGYet+LuITyjs/krp3qfPhhByhtndk4cBA5H0i4ACodKyC6Zl7Tmf
+
+          oYaZoYWi6DzbQQUaIsKxAkEA2rXQjQFsfnSm+w/9067ChWg46p4lq5Na2NpcpFgH
+
+          waZKhM1W0oB8MX78M+0fG3xGUtywTx0D4N7pr1Tk2GTgNw==
+
+          -----END RSA PRIVATE KEY-----
+
+'
+        verificationKey: ! '-----BEGIN PUBLIC KEY-----
+
+          MIICXgIBAAKBgQDfTLadf6QgJeS2XXImEHMsa+1O7MmIt44xaL77N2K+J/JGpfV3
+
+          AnkyB06wFZ02sBLB7hko42LIsVEOyTuUBird/3vlyHFKytG7UEt60Fl88SbAEfsU
+
+          JN1i1aSU
+
+          -----END PUBLIC KEY-----
+
+'
+  uaa.jwt.policy.global.accessTokenValiditySeconds:
+    default: 43200
+    description: The global access token validity for all zones if nothing is configured
+      on the client
+  uaa.jwt.policy.global.refreshTokenValiditySeconds:
+    default: 2592000
+    description: The global refresh token validity for all zones if nothing is configured
+      on the client
+  uaa.jwt.signing_key:
+    description: 
+  uaa.jwt.verification_key:
+    description: 
+  uaa.jwt.claims.exclude:
+    description: List of claims to exclude from the JWT-based OAuth2 tokens
+  uaa.port:
+    description: Port that uaa will accept connections on
+    default: 8080
+  uaa.scim.user:
+    description: 
+  uaa.scim.user.override:
+    description: 
+    default: true
+  uaa.scim.userids_enabled:
+    description: 
+    default: true
+  uaa.scim.users:
+    description: 
+  uaa.scim.external_groups:
+    description: A list of external group mappings. Pipe delimited. A value may look
+      as '- internal.read|cn=developers,ou=scopes,dc=test,dc=com'
+  uaa.scim.groups:
+    description: Comma separated list of groups that should be added to the UAA db,
+      but not assigned to a user by default.
+  domain:
+    description: The domain name for this CloudFoundry deploy
+  env.http_proxy:
+    description: The http_proxy accross the VMs
+  env.https_proxy:
+    description: The https_proxy accross the VMs
+  env.no_proxy:
+    description: Set No_Proxy accross the VMs
+  nats.password:
+    description: Password for NATS login
+  nats.port:
+    description: TCP port of NATS server
+  nats.user:
+    description: User name for NATS login
+  nats.machines:
+    description: IP of each NATS cluster member.
+  uaadb.address:
+    description: The UAA database IP address
+  uaadb.databases:
+    description: The list of databases used in UAA database including tag/name
+  uaadb.db_scheme:
+    description: Database scheme for UAA DB
+  uaadb.port:
+    description: The UAA database Port
+  uaadb.roles:
+    description: The list of database Roles used in UAA database including tag/name/password
+  uaa.database.max_connections:
+    description: The max number of open connections to the DB from a running UAA instance
+    default: 100
+  uaa.database.max_idle_connections:
+    description: The max number of open idle connections to the DB from a running
+      UAA instance
+    default: 10
+  uaa.database.remove_abandoned:
+    description: True if connections that are left open longer then abandoned_timeout
+      seconds during a session(time between borrow and return from pool)  should be
+      forcibly closed
+    default: false
+  uaa.database.abandoned_timeout:
+    description: Timeout in seconds for the longest running queries. Take into DB
+      migrations for this timeout as they may run during a long period of time.
+    default: 300
+  uaa.database.log_abandoned:
+    description: Should connections that are forcibly closed be logged.
+    default: true
+  uaa.database.case_insensitive:
+    description: Set to true if you don't want to be using LOWER() SQL functions in
+      search queries/filters, because you know that your DB is case insensitive. If
+      this property is null, then it will be set to true if the UAA DB is MySQL and
+      false otherwise, but even on MySQL you can override it by setting it explicitly
+      to false
+  uaa.no_ssl:
+    description: when true, uaa uses http, otherwise it uses https
+    default: false
+  uaa.url:
+    description: 
+  uaa.issuer:
+    description: The url to use as the issuer URI
+  uaa.dump_requests:
+    description: 
+  uaa.login.client_secret:
+    description: Deprecated. Default login client secret if no login client is defined
+  uaa.clients.login.secret:
+    description: Login client secret - overrides uaa.login.client_secret
+  uaa.require_https:
+    description: 
+  uaa.spring_profiles:
+    description: Deprecated. Use 'uaa.ldap.enabled'. Sets the Spring profiles on the
+      UAA web application. This gets combined with the 'uaadb.db_scheme' property
+      if and only if the value is exactly 'ldap' in order to setup the database, for
+      example 'ldap,mysql'. If spring_profiles contains more than just 'ldap' it will
+      be used to overwrite spring_profiles and db_scheme ignored. See uaa.yml.erb.
+  uaa.ldap.enabled:
+    description: Set to true to enable LDAP
+    default: false
+  uaa.ldap.profile_type:
+    description: The file to be used for configuring the LDAP authentication. options
+      are simple-bind, search-and-bind and search-and-compare
+    default: search-and-bind
+  uaa.ldap.url:
+    description: The URL to the ldap server, must start with ldap:// or ldaps://
+  uaa.ldap.userDNPattern:
+    description: Used with simple-bind only. A semi-colon separated lists of DN patterns
+      to construct a DN direct from the user ID without performing a search.
+  uaa.ldap.userDNPatternDelimiter:
+    description: The delimiter character in between user DN patterns for simple bind
+      authentication
+    default: ;
+  uaa.ldap.userDN:
+    description: ! 'Used with search-and-bind and search-and-compare. A valid LDAP
+      ID that has read permissions to perform a search of the LDAP tree for user information. '
+  uaa.ldap.userPassword:
+    description: Used with search-and-bind and search-and-compare. Password for the
+      LDAP ID that performs a search of the LDAP tree for user information.
+  uaa.ldap.searchBase:
+    description: Used with search-and-bind and search-and-compare. Define a base where
+      the search starts at.
+    default: ''
+  uaa.ldap.searchFilter:
+    description: Used with search-and-bind and search-and-compare. Search filter used.
+      Takes one parameter, user ID defined as {0}
+    default: cn={0}
+  uaa.ldap.passwordAttributeName:
+    description: Used with search-and-compare only. The name of the password attribute
+      in the LDAP directory
+    default: userPassword
+  uaa.ldap.localPasswordCompare:
+    description: Used with search-and-compare only. Set to true if passwords are retrieved
+      by the search, and should be compared in the login server.
+    default: 'true'
+  uaa.ldap.passwordEncoder:
+    description: Used with search-and-compare only. The encoder used to properly encode
+      user password to match the one in the LDAP directory.
+    default: org.cloudfoundry.identity.uaa.ldap.DynamicPasswordComparator
+  uaa.ldap.sslCertificate:
+    description: Used with ldaps:// URLs. The certificate, if self signed, to be trusted
+      by this connection.
+  uaa.ldap.sslCertificateAlias:
+    description: Used with ldaps:// URLs. The certificate alias, to be trusted by
+      this connection and stored in the keystore.
+  uaa.ldap.mailAttributeName:
+    description: The name of the LDAP attribute that contains the users email address
+    default: mail
+  uaa.ldap.mailSubstitute:
+    description: Defines an email pattern containing a {0} to generate an email address
+      for an LDAP user during authentication
+    default: ''
+  uaa.ldap.mailSubstituteOverridesLdap:
+    description: Set to true if you wish to override an LDAP user email address with
+      a generated one
+    default: false
+  uaa.ldap.groups.profile_type:
+    description: What type of group integration should be used. Values are no-groups,
+      groups-as-scopes and groups-map-to-scopes
+    default: no-groups
+  uaa.ldap.groups.autoAdd:
+    description: Set to true when profile_type=groups_as_scopes to auto create scopes
+      for a user. Ignored for other profiles.
+    default: 'true'
+  uaa.ldap.groups.searchBase:
+    description: Search start point for a user group membership search
+    default: ''
+  uaa.ldap.groups.groupRoleAttribute:
+    description: Used with groups-as-scopes, defines the attribute that holds the
+      scope name(s).
+  uaa.ldap.groups.groupSearchFilter:
+    description: Search query filter to find groups a user belongs to, or for a nested
+      search, groups that a group belongs to
+    default: member={0}
+  uaa.ldap.groups.searchSubtree:
+    description: Boolean value, set to true to search below the search base
+    default: 'true'
+  uaa.ldap.groups.maxSearchDepth:
+    description: Set to number of levels a nested group search should go. Set to 1
+      to disable nested groups (default)
+    default: '1'
+  uaa.ldap.emailDomain:
+    description: Sets the whitelist of emails domains that the LDAP identity provider
+      handles
+  uaa.ldap.attributeMappings:
+    description: Specifies how UAA user attributes map to LDAP attributes. given_name,
+      family_name, and phone_number are UAA user attributes, while other attributes
+      should be included using the prefix `user.attribute`
+    example:
+      given_name: givenName
+      family_name: sn
+      phone_number: telephoneNumber
+      user.attribute.otherLdapAttributes: <other LDAP attributes>
+  uaa.ldap.externalGroupsWhitelist:
+    description: Whitelist of external groups from LDAP that get added as roles in
+      the ID Token
+    example:
+    - admin
+    - user
+  uaa.zones.internal.hostnames:
+    description: ! "A list of hostnames that are routed to the UAA, specifically the
+      default zone in the UAA. The UAA will reject any Host headers that it doesn't
+      recognize.\nBy default the UAA recognizes\nuaa.<domain> - the default UAA route\nlogin.<domain>
+      - the login-server route that the UAA now also serves.\nlocalhost - in order
+      to accept health checks\nAny hostnames added as a list are additive to the default
+      hostnames allowed.\nExample\nuaa:\n  zones:\n    internal:\n      hostnames:\n
+      \       - hostname1\n        - hostname2.localhost\n        - hostname3.example.com\n"
+    default:
+    - uaa.service.cf.internal
+  uaa.newrelic:
+    description: ! 'To enable newrelic monitoring, the sub element of this property
+      will be placed in
+
+      a configuration file called newrelic.yml in the jobs config directory.
+
+      The syntax that must adhere to documentation in https://docs.newrelic.com/docs/agents/java-agent/configuration/java-agent-configuration-config-file
+
+      The JVM option -javaagent:/path/to/newrelic.jar will be added to Apache Tomcat''s
+      startup script
+
+      The enablement of the NewRelic agent in the UAA is triggered by the property
+      uaa.newrelic.common.license_key
+
+      The property uaa.newrelic.common.license_key must be set!
+
+'
+  uaa.logging_level:
+    description: Set UAA logging level.  (e.g. TRACE, DEBUG, INFO)
+    default: DEBUG
+  uaa.logging_use_rfc3339:
+    description: Sets the time format for log messages to be rfc3339 compatible.
+    default: false
+  uaa.id_token.disable:
+    description: ! 'Deprecated: When set to true, requests to /oauth/authorize will
+      ignore the response_type=id_token parameter'
+    default: false
+  login.protocol:
+    description: Scheme to use for HTTP communication (http/https)
+    default: https
+  login.ldap.profile_type:
+    description: See uaa.ldap.profile_type - login.ldap prefix is used for backwards
+      compatibility to enable ldap from login config
+  login.ldap.url:
+    description: See uaa.ldap.url - login.ldap prefix is used for backwards compatibility
+      to enable ldap from login config
+  login.ldap.userDNPattern:
+    description: See uaa.ldap.userDNPattern - login.ldap prefix is used for backwards
+      compatibility to enable ldap from login config
+  login.ldap.userDN:
+    description: See uaa.ldap.userDN - login.ldap prefix is used for backwards compatibility
+      to enable ldap from login config
+  login.ldap.userPassword:
+    description: See uaa.ldap.userPassword - login.ldap prefix is used for backwards
+      compatibility to enable ldap from login config
+  login.ldap.searchBase:
+    description: See uaa.ldap.searchBase - login.ldap prefix is used for backwards
+      compatibility to enable ldap from login config
+    default: ''
+  login.ldap.searchFilter:
+    description: See uaa.ldap.searchFilter - login.ldap prefix is used for backwards
+      compatibility to enable ldap from login config
+    default: cn={0}
+  login.ldap.passwordAttributeName:
+    description: See uaa.ldap.passwordAttributeName - login.ldap prefix is used for
+      backwards compatibility to enable ldap from login config
+    default: userPassword
+  login.ldap.localPasswordCompare:
+    description: See uaa.ldap.localPasswordCompare - login.ldap prefix is used for
+      backwards compatibility to enable ldap from login config
+    default: 'true'
+  login.ldap.passwordEncoder:
+    description: See uaa.ldap.passwordEncoder - login.ldap prefix is used for backwards
+      compatibility to enable ldap from login config
+    default: org.cloudfoundry.identity.uaa.login.ldap.DynamicPasswordComparator
+  login.ldap.sslCertificate:
+    description: See uaa.ldap.sslCertificate - login.ldap prefix is used for backwards
+      compatibility to enable ldap from login config
+  login.ldap.sslCertificateAlias:
+    description: See uaa.ldap.sslCertificateAlias - login.ldap prefix is used for
+      backwards compatibility to enable ldap from login config
+  login.spring_profiles:
+    description: See uaa.spring_profiles - login.spring_profiles is used for backwards
+      compatibility to enable ldap from login config
+  uaa.restricted_ips_regex:
+    description: ! '[Not Currently Used] A pipe delimited set of regular expressions
+      of IP addresses that can reach the listening HTTP port of the server.'
+    default: 
+  uaa.proxy_ips_regex:
+    description: ! 'A pipe delimited set of regular expressions of IP addresses that
+      are considered reverse proxies.
+
+      When a request from these IP addresses come in, the x-forwarded-for and x-forwarded-proto
+      headers will be respected.
+
+      If the uaa.restricted_ips_regex is set, it will be appended to this list for
+      backwards compatibility purposes
+
+      If spiff has been used and includes templates/cf-jobs.yml to generate the manifest.
+      This list will automatically
+
+      contain the Router IP addresses
+
+'
+    default: 10\.\d{1,3}\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|169\.254\.\d{1,3}\.\d{1,3}|127\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.1[6-9]{1}\.\d{1,3}\.\d{1,3}|172\.2[0-9]{1}\.\d{1,3}\.\d{1,3}|172\.3[0-1]{1}\.\d{1,3}\.\d{1,3}
+  uaa.proxy.servers:
+    description: Array of the router IPs acting as the first group of HTTP/TCP backends.
+      These will be added to the proxy_ips_regex as exact matches. When using spiff,
+      these will be router_z1 and router_z2 static IPs from cf-jobs.yml
+    default: []
+  login.brand:
+    description: The branding style to use with the web interface, account confirmation,
+      and password reset emails.
+    default: oss
+  login.asset_base_url:
+    description: Base url for static assets, allows custom styling of the login server.
+  login.uaa_certificate:
+    description: Certificate to import if the UAA is using self-signed certificates
+  login.catalina_opts:
+    description: 
+  login.notifications.url:
+    description: The url for the notifications service (configure to use Notifications
+      Service instead of SMTP server)
+  login.prompt.username.text:
+    description: The text used to prompt for a username during login
+    default: Email
+  login.prompt.password.text:
+    description: The text used to prompt for a password during login
+    default: Password
+  login.smtp:
+    description: SMTP server configuration, for password reset emails etc.
+  login.smtp.host:
+    description: SMTP server host address
+    default: localhost
+  login.smtp.port:
+    description: SMTP server port
+    default: 2525
+  login.smtp.user:
+    description: SMTP server username
+  login.smtp.password:
+    description: SMTP server password
+  login.links:
+    description: A hash of home/passwd/signup URLS (see commented examples below)
+  login.links.passwd:
+    description: URL for requesting password reset
+  login.links.signup:
+    description: URL for requesting to signup/register for an account
+  login.tiles:
+    description: A list of links to other services to show on the landing page after
+      logging in and/or signing up, depending on whether login-link and/or signup-link
+      is specified.
+  login.port:
+    default: 8080
+    description: 
+  login.uaa_base:
+    description: Location of the UAA.
+  login.self_service_links_enabled:
+    description: Enable self-service account creation and password resets links.
+  login.signups_enabled:
+    description: Enable account creation flow in the login server. Enabled by default.
+  login.invitations_enabled:
+    description: Allows users to send invitations to email addresses outside the system
+      and invite them to create an account. Disabled by default.
+  login.saml.idpMetadataURL:
+    description: ! 'Deprecated: Use login.saml.providers list objects'
+  login.saml.idp_metadata_file:
+    description: ! 'Deprecated: Use login.saml.providers list objects'
+  login.saml.entityid:
+    description: The ID to represent this server
+  login.saml.entity_base_url:
+    description: ! 'The URL for which SAML identity providers will post assertions
+      to. If set it overrides the default of login.<domain>. This URL should NOT have
+      the schema (http:// or https:// prefix in it) instead just the hostname. The
+      schema is derived by login.protocol property. The default value is #{protocol}://login.#{properties.domain}'
+  login.saml.idpEntityAlias:
+    description: ! 'Deprecated: Use login.saml.providers list objects'
+  login.entity_id:
+    description: ! 'Deprecated: Use login.saml.entityid'
+  login.saml.keystore_name:
+    description: Name of the SAML login server keystore.
+    default: samlKeystore.jks
+  login.saml.keystore_key:
+    description: Key name of the SAML login server keystore.
+    default: selfsigned
+  login.saml.keystore_password:
+    description: Key password to the SAML login server keystore.
+    default: password
+  login.saml.serviceProviderKey:
+    description: Private key for the service provider certificate.
+  login.saml.serviceProviderKeyPassword:
+    description: Password to protect the service provider private key.
+  login.saml.serviceProviderCertificate:
+    description: Service provider certificate.
+  login.saml.assertion_consumer_index:
+    description: ! 'Deprecated: Use login.saml.providers list objects'
+    default: 1
+  login.saml.nameidFormat:
+    description: ! 'Deprecated: Use login.saml.providers list objects'
+    default: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+  login.saml.metadataTrustCheck:
+    description: ! 'Deprecated: Use login.saml.providers list objects'
+    default: true
+  login.saml.providers:
+    description: Contains a hash of SAML Identity Providers, the key is the IDP Alias,
+      followed by key/value pairs for idpMetadata, nameID, assertionConsumerIndex,
+      metadataTrustCheck, showSamlLoginLink, linkText, iconUrl
+  login.saml.socket.connectionManagerTimeout:
+    description: Timeout in milliseconds for connection pooling for SAML metadata
+      HTTP requests
+  login.saml.socket.soTimeout:
+    description: Read timeout in milliseconds for SAML metadata HTTP requests
+  login.saml.signMetaData:
+    description: Set to true, if you wish that the UAA signs its SAML metadata
+    default: true
+  login.saml.signRequest:
+    description: Set to true, if you wish the that the UAA signs all its SAML auth
+      requests
+    default: true
+  login.analytics.code:
+    description: Analytics code
+  login.analytics.domain:
+    description: Analytics domain
+  login.messages:
+    description: ! "A nested or flat hash of messages that the login server uses to
+      display UI message\nThis will be flattened into a java.util.Properties file.
+      The example below will lead\nto four properties, where the key is the concatenated
+      value delimited by dot, for example scope.tokens.read=message\nNested example:\nmessages:\n
+      \ scope:\n    tokens:\n      read: View details of your approvals you have granted
+      to this and other applications\n      write: Cancel the approvals like this
+      one that you have granted to this and other applications\n    cloud_controller:\n
+      \     read: View details of your applications and services\n      write: Push
+      applications to your account and create and bind services\nFlat example:\nmessages:\n
+      \ scope.tokens.read: View details of your approvals you have granted to this
+      and other applications\n  scope.tokens.write: Cancel the approvals like this
+      one that you have granted to this and other applications\n  scope.cloud_controller.read:
+      View details of your applications and services\n  scope.cloud_controller.write:
+      Push applications to your account and create and bind services\n"
+  login.logout.redirect.url:
+    description: The Location of the redirect header following a logout of the the
+      UAA (/logout.do). Default value is back to login page (/login)
+  login.logout.redirect.parameter.disable:
+    description: When set to false, this allows an operator to leverage an open redirect
+      on the UAA (/logout.do?redirect=google.com). Default value is true. No open
+      redirect enabled
+  login.logout.redirect.parameter.whitelist:
+    description: A list of URLs. When this list is non null, including empty, and
+      disable=false, logout redirects are allowed, but limited to the whitelist URLs.
+      If a redirect parameter value is not white listed, redirect will be to the default
+      URL.
+hm9000.properties:
+  domain:
+    description: domain where cloud_controller will listen (api.domain) often the
+      same as the system domain
+  nats.user:
+    description: 
+  nats.password:
+    description: 
+  nats.port:
+    description: 
+  nats.machines:
+    description: 
+  cc.srv_api_uri:
+    description: 
+  cc.bulk_api_user:
+    default: bulk_api
+    description: User used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.bulk_api_password:
+    description: Password used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.internal_api_user:
+    default: internal_user
+    description: Username for hm9000 API
+  cc.internal_api_password:
+    description: Password for hm9000 API
+  dea_next.heartbeat_interval_in_seconds:
+    description: Heartbeat interval for DEAs
+  etcd.machines:
+    description: IPs pointing to the ETCD cluster
+  ssl.skip_cert_verify:
+    description: when connecting over https, ignore bad ssl certificates
+    default: false
+  hm9000.desired_state_batch_size:
+    description: The batch size when fetching desired state information from the CC.
+    default: 5000
+  hm9000.fetcher_network_timeout_in_seconds:
+    description: Each API call to the CC must succeed within this timeout.
+    default: 30
+  hm9000.sender_message_limit:
+    description: The maximum number of messages the sender should send per invocation.
+    default: 60
+nats_stream_forwarder.properties:
+  nats.user:
+    description: Username for server authentication.
+  nats.password:
+    description: Password for server authentication.
+  nats.machines:
+    description: NATS addresses
+  nats.port:
+    description: The port for the NATS server to listen on.
+cloud_controller_ng.properties:
+  ssl.skip_cert_verify:
+    description: specifies that the job is allowed to skip ssl cert verification
+    default: false
+  name:
+    default: vcap
+    description: 
+  build:
+    default: '2222'
+    description: 
+  version:
+    default: '2'
+    description: 
+  support_address:
+    default: 
+    description: 
+  description:
+    default: Cloud Foundry sponsored by Pivotal
+    description: 
+  domain:
+    description: domain where cloud_controller will listen (api.domain) often the
+      same as the system domain
+  system_domain:
+    description: Domain reserved for CF operator, base URL where the login, uaa, and
+      other non-user apps listen
+  system_domain_organization:
+    description: The User Org that owns the system_domain, required if system_domain
+      is defined
+    default: ''
+  app_domains:
+    description: ! 'Array of domains for user apps (example: ''user.app.space.foo'',
+      a user app called ''neat'' will listen at ''http://neat.user.app.space.foo'')'
+  app_ssh.host_key_fingerprint:
+    description: Fingerprint of the host key of the SSH proxy that brokers connections
+      to application instances
+    default: 
+  app_ssh.port:
+    description: External port for SSH access to application instances
+    default: 2222
+  app_ssh.oauth_client_id:
+    description: The oauth client ID of the SSH proxy
+    default: ssh-proxy
+  nats.user:
+    description: Username for cc client to connect to NATS
+  nats.password:
+    description: Password for cc client to connect to NATS
+  nats.port:
+    description: IP port of Cloud Foundry NATS server
+  nats.machines:
+    description: IP of each NATS cluster member.
+  nfs_server.address:
+    description: NFS server for droplets and apps (not used in an AWS deploy, use
+      s3 instead)
+  nfs_server.share_path:
+    description: The location at which to mount the nfs share
+  request_timeout_in_seconds:
+    description: Timeout for requests in seconds.
+    default: 900
+  cc.external_port:
+    description: External Cloud Controller port
+    default: 9022
+  cc.jobs.global.timeout_in_seconds:
+    description: The longest any job can take before it is cancelled unless overriden
+      per job
+    default: 14400
+  cc.jobs.app_bits_packer.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.app_events_cleanup.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.app_usage_events_cleanup.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.blobstore_delete.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.blobstore_upload.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.droplet_deletion.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.jobs.droplet_upload.timeout_in_seconds:
+    description: The longest this job can take before it is cancelled
+  cc.app_events.cutoff_age_in_days:
+    description: How old an app event should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.app_usage_events.cutoff_age_in_days:
+    description: How old an app usage event should stay in cloud controller database
+      before being cleaned up
+    default: 31
+  cc.service_usage_events.cutoff_age_in_days:
+    description: How old a service usage event should stay in cloud controller database
+      before being cleaned up
+    default: 31
+  cc.audit_events.cutoff_age_in_days:
+    description: How old an audit event should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.failed_jobs.cutoff_age_in_days:
+    description: How old a failed job should stay in cloud controller database before
+      being cleaned up
+    default: 31
+  cc.info.name:
+    description: name attribute in the /info endpoint
+  cc.info.build:
+    description: build attribute in the /info endpoint
+  cc.info.version:
+    description: version attribute in the /info endpoint
+  cc.info.description:
+    description: free form description for attribute in the /info endpoint
+  cc.info.custom:
+    description: Custom values for /v2/info endpoint
+  cc.directories.tmpdir:
+    default: /var/vcap/data/cloud_controller_ng/tmp
+    description: The directory to use for temporary files
+  cc.directories.diagnostics:
+    default: /var/vcap/data/cloud_controller_ng/diagnostics
+    description: The directory where operator requested diagnostic files should be
+      placed
+  cc.external_protocol:
+    default: https
+    description: The protocol used to access the CC API from an external entity
+  cc.external_host:
+    default: api
+    description: Host part of the cloud_controller api URI, will be joined with value
+      of 'domain'
+  cc.cc_partition:
+    default: default
+    description: Deprecated. Defines a 'partition' for the health_manager job
+  cc.bulk_api_user:
+    default: bulk_api
+    description: User used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.bulk_api_password:
+    description: Password used to access the bulk_api, health_manager uses it to connect
+      to the cc, announced over NATS
+  cc.internal_api_user:
+    default: internal_user
+    description: User name used by Diego to access internal endpoints
+  cc.internal_api_password:
+    description: Password used by Diego to access internal endpoints
+  cc.diego.nsync_url:
+    default: http://nsync.service.cf.internal:8787
+    description: URL of the Diego nsync service
+  cc.diego.stager_url:
+    default: http://stager.service.cf.internal:8888
+    description: URL of the Diego stager service
+  cc.diego.tps_url:
+    default: http://tps.service.cf.internal:1518
+    description: URL of the Diego tps service
+  cc.min_cli_version:
+    description: Minimum version of the CF CLI to work with the API.
+  cc.min_recommended_cli_version:
+    description: Minimum recommended version of the CF CLI.
+  cc.uaa_resource_id:
+    default: cloud_controller,cloud_controller_service_permissions
+    description: Name of service to register to UAA
+  cc.db_logging_level:
+    default: debug2
+    description: Log level for cc database operations
+  cc.logging_level:
+    default: debug2
+    description: Log level for cc
+  cc.logging_max_retries:
+    default: 1
+    description: Passthru value for Steno logger
+  cc.staging_timeout_in_seconds:
+    default: 900
+    description: Timeout for staging a droplet
+  cc.default_health_check_timeout:
+    default: 60
+    description: Default health check timeout (in seconds) that can be set for the
+      app
+  cc.maximum_health_check_timeout:
+    default: 180
+    description: Maximum health check timeout (in seconds) that can be set for the
+      app
+  cc.stacks:
+    default:
+    - name: cflinuxfs2
+      description: Cloud Foundry Linux-based filesystem
+    description: Tag used by the DEA to describe capabilities (i.e. 'Windows7', 'python-linux').
+      DEA and CC must agree.
+  cc.default_stack:
+    default: cflinuxfs2
+    description: The default stack to use if no custom stack is specified by an app.
+  cc.staging_upload_user:
+    default: ''
+    description: User name used to access internal endpoints of Cloud Controller to
+      upload files when staging
+  cc.staging_upload_password:
+    default: ''
+    description: User's password used to access internal endpoints of Cloud Controller
+      to upload files when staging
+  cc.quota_definitions:
+    description: Hash of default quota definitions. Overriden by custom quota definitions.
+  cc.default_quota_definition:
+    default: default
+    description: Local to use a local (NFS) file system.  AWS to use AWS.
+  cc.default_fog_connection.provider:
+    description: Local fog provider (should always be 'Local'), used if fog_connection
+      hash is not provided in the manifest
+    default: Local
+  cc.default_fog_connection.local_root:
+    description: Local root when fog provider is not overridden (should be an NFS
+      mount if using more than one cloud controller)
+    default: /var/vcap/nfs/shared
+  cc.resource_pool.minimum_size:
+    description: Minimum size of a resource to add to the pool
+    default: 65536
+  cc.resource_pool.maximum_size:
+    description: Maximum size of a resource to add to the pool
+    default: 536870912
+  cc.resource_pool.resource_directory_key:
+    description: Directory (bucket) used store app resources.  It does not have be
+      pre-created.
+    default: cc-resources
+  cc.resource_pool.fog_connection:
+    description: Fog connection hash
+  cc.resource_pool.cdn.uri:
+    description: URI for a CDN to used for resource pool downloads
+    default: ''
+  cc.resource_pool.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.resource_pool.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.packages.app_package_directory_key:
+    description: Directory (bucket) used store app packages.  It does not have be
+      pre-created.
+    default: cc-packages
+  cc.packages.max_package_size:
+    description: Maximum size of application package
+    default: 1073741824
+  cc.packages.max_valid_packages_stored:
+    description: Number of recent, valid packages stored per app (not including package
+      for current droplet)
+    default: 5
+  cc.packages.fog_connection:
+    description: Fog connection hash
+  cc.packages.cdn.uri:
+    description: URI for a CDN to used for app package downloads
+    default: ''
+  cc.packages.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.packages.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.droplets.droplet_directory_key:
+    description: Directory (bucket) used store droplets.  It does not have be pre-created.
+    default: cc-droplets
+  cc.droplets.max_staged_droplets_stored:
+    description: Number of recent, staged droplets stored per app (not including current
+      droplet)
+    default: 5
+  cc.droplets.fog_connection:
+    description: Fog connection hash
+  cc.droplets.cdn.uri:
+    description: URI for a CDN to used for droplet downloads
+    default: ''
+  cc.droplets.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.droplets.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  cc.buildpacks.buildpack_directory_key:
+    description: Directory (bucket) used store buildpacks.  It does not have be pre-created.
+    default: cc-buildpacks
+  cc.buildpacks.fog_connection:
+    description: Fog connection hash
+  cc.buildpacks.cdn.uri:
+    description: URI for a CDN to used for buildpack downloads
+    default: ''
+  cc.buildpacks.cdn.private_key:
+    description: Private key for signing download URIs
+    default: ''
+  cc.buildpacks.cdn.key_pair_id:
+    description: Key pair name for signed download URIs
+    default: ''
+  ccdb.databases:
+    description: 
+  ccdb.roles:
+    description: 
+  ccdb.db_scheme:
+    description: 
+    default: postgres
+  ccdb.address:
+    description: 
+  ccdb.port:
+    description: 
+  ccdb.max_connections:
+    default: 25
+    description: Maximum connections for Sequel
+  ccdb.pool_timeout:
+    default: 10
+    description: 
+  uaa.cc.token_secret:
+    description: 
+  uaa.no_ssl:
+    description: when true, uaa uses http, otherwise it uses https
+    default: false
+  uaa.url:
+    description: 
+  login.url:
+    description: 
+  hm9000.url:
+    description: 
+  uaa.jwt.verification_key:
+    default: ''
+    description: ssl cert defined in the manifest by the UAA, required by the cc to
+      communicate with UAA
+  login.enabled:
+    default: true
+    description: whether use login as the authorization endpoint or not
+  metron_endpoint.host:
+    description: The host used to emit messages to the Metron agent
+    default: 127.0.0.1
+  metron_endpoint.port:
+    description: The port used to emit messages to the Metron agent
+    default: 3457
+  logger_endpoint.use_ssl:
+    description: Whether to use ssl for logger endpoint listed at /v2/info
+    default: true
+  logger_endpoint.port:
+    description: Port for logger endpoint listed at /v2/info
+    default: 443
+  doppler.enabled:
+    description: Whether to expose the doppler_logging_endpoint listed at /v2/info
+    default: true
+  doppler.use_ssl:
+    description: Whether to use ssl for the doppler_logging_endpoint listed at /v2/info
+    default: true
+  doppler.port:
+    description: Port for doppler_logging_endpoint listed at /v2/info
+    default: 443
+  cc.db_encryption_key:
+    default: ''
+    description: key for encrypting sensitive values in the CC database
+  cc.default_app_memory:
+    default: 1024
+    description: How much memory given to an app if not specified
+  cc.default_app_disk_in_mb:
+    default: 1024
+    description: The default disk space an app gets
+  cc.maximum_app_disk_in_mb:
+    default: 2048
+    description: The maximum amount of disk a user can request
+  cc.users_can_select_backend:
+    default: true
+    description: Allow non-admin users to switch their apps between DEA and Diego
+      backends
+  cc.default_to_diego_backend:
+    default: false
+    description: Use Diego backend by default for new apps
+  cc.allow_app_ssh_access:
+    default: true
+    description: Allow users to change the value of the app-level allow_ssh attribute
+  cc.flapping_crash_count_threshold:
+    default: 3
+    description: The threshold of crashes after which the app is marked as flapping
+  cc.client_max_body_size:
+    default: 15M
+    description: Maximum body size for nginx
+  cc.app_bits_max_body_size:
+    default: 1536M
+    description: Maximum body size for nginx bits uploads
+  cc.disable_custom_buildpacks:
+    default: false
+    description: Disable external (i.e. git) buildpacks? (Admin buildpacks and system
+      buildpacks only.)
+  cc.broker_client_timeout_seconds:
+    default: 60
+    description: For requests to service brokers, this is the HTTP (open and read)
+      timeout setting.
+  cc.broker_client_default_async_poll_interval_seconds:
+    default: 60
+    description: Specifies interval on which the CC will poll a service broker for
+      asynchronous actions. If the service broker provides a value, this value is
+      the minimum accepted value the broker can provide.
+  cc.broker_client_max_async_poll_duration_minutes:
+    default: 10080
+    description: The max duration the CC will fetch service instance state from a
+      service broker (in minutes). Default is 1 week
+  cc.development_mode:
+    default: false
+    description: Enable development features for monitoring and insight
+  cc.newrelic.license_key:
+    default: 
+    description: The api key for NewRelic
+  cc.newrelic.environment_name:
+    default: development
+    description: The environment name used by NewRelic
+  cc.newrelic.developer_mode:
+    default: false
+    description: Activate NewRelic developer mode
+  cc.newrelic.monitor_mode:
+    default: false
+    description: Activate NewRelic monitor mode
+  cc.newrelic.log_file_path:
+    default: /var/vcap/sys/log/cloud_controller_ng/newrelic
+    description: The location for NewRelic to log to
+  cc.newrelic.capture_params:
+    default: false
+    description: Capture and send query params to NewRelic
+  cc.newrelic.transaction_tracer.enabled:
+    default: false
+    description: Enable transaction tracing in NewRelic
+  cc.newrelic.transaction_tracer.record_sql:
+    default: 'off'
+    description: ! 'NewRelic''s SQL statement recording mode: [off | obfuscated |
+      raw]'
+  cc.nginx_access_log_destination:
+    description: The nginx access log destination. This can be used to route access
+      logs to a file, syslog, or a memory buffer.
+    default: /var/vcap/sys/log/nginx_cc/nginx.access.log
+  cc.nginx_access_log_format:
+    description: The nginx log format string to use when writing to the access log.
+    default: ! '$host - [$time_local] "$request" $status $bytes_sent "$http_referer"
+      "$http_user_agent" $proxy_add_x_forwarded_for vcap_request_id:$upstream_http_x_vcap_request_id
+      response_time:$upstream_response_time
+
+'
+  cc.nginx_error_log_destination:
+    description: The nginx error log destination. This can be used to route error
+      logs to a file, syslog, or a memory buffer.
+    default: /var/vcap/sys/log/nginx_cc/nginx.error.log
+  cc.nginx_error_log_level:
+    descritpion: The lowest severity nginx log level to capture in the error log.
+    default: error
+  cc.jobs.local.number_of_workers:
+    default: 2
+    description: Number of local cloud_controller_worker workers
+  cc.thresholds.api.alert_if_above_mb:
+    description: The cc will alert if memory remains above this threshold for 3 monit
+      cycles
+    default: 2250
+  cc.thresholds.api.restart_if_consistently_above_mb:
+    description: The cc will restart if memory remains above this threshold for 15
+      monit cycles
+    default: 2250
+  cc.thresholds.api.restart_if_above_mb:
+    description: The cc will restart if memory remains above this threshold for 3
+      monit cycles
+    default: 2450
+  dea_next.staging_memory_limit_mb:
+    description: Memory limit in mb for staging tasks
+    default: 1024
+  dea_next.staging_disk_limit_mb:
+    description: Disk limit in mb for staging tasks
+    default: 6144
+  cc.staging_file_descriptor_limit:
+    description: File descriptor limit for staging tasks
+    default: 16384
+  dea_next.advertise_interval_in_seconds:
+    description: Advertise interval for DEAs
+    default: 5
+  cc.renderer.max_results_per_page:
+    description: Maximum number of results returned per page
+    default: 100
+  cc.renderer.default_results_per_page:
+    description: Default number of results returned per page if user does not specify
+    default: 50
+  cc.renderer.max_inline_relations_depth:
+    description: Maximum depth of inlined relationships in the result
+    default: 2
+  uaa.clients.cc_service_broker_client.secret:
+    description: (DEPRECATED) - Used for generating SSO clients for service brokers.
+  uaa.clients.cc_service_broker_client.scope:
+    description: (DEPRECATED) - Used to grant scope for SSO clients for service brokers
+    default: openid,cloud_controller_service_permissions.read
+  uaa.clients.cc-service-dashboards.secret:
+    description: Used for generating SSO clients for service brokers.
+  uaa.clients.cc-service-dashboards.scope:
+    description: Used to grant scope for SSO clients for service brokers
+    default: openid,cloud_controller_service_permissions.read
+  uaa.clients.cloud_controller_username_lookup.secret:
+    description: Used for fetching usernames from UAA.
+  uaa.clients.cc_routing.secret:
+    description: Used for fetching routing information from the Routing API
+  cc.install_buildpacks:
+    description: Set of buildpacks to install during deploy
+  cc.app_bits_upload_grace_period_in_seconds:
+    description: Extra token expiry time while uploading big apps.
+    default: 1200
+  cc.security_group_definitions:
+    description: Array of security groups that will be seeded into CloudController.
+  cc.default_running_security_groups:
+    description: The default running security groups that will be seeded in CloudController.
+  cc.default_staging_security_groups:
+    description: The default staging security groups that will be seeded in CloudController.
+  cc.feature_disabled_message:
+    description: Custom message to use for a disabled feature.
+  cc.allowed_cors_domains:
+    description: List of domains (including scheme) from which Cross-Origin requests
+      will be accepted, a * can be used as a wildcard for any part of a domain
+    default: []
+  cc.instance_file_descriptor_limit:
+    description: The file descriptors made available to each app instance
+    default: 16384
+  cc.statsd_host:
+    description: The host for the statsd server, defaults to the local metron agent
+    default: 127.0.0.1
+  cc.statsd_port:
+    description: The port for the statsd server, defaults to the local metron agent
+    default: 8125
+  cc.placement_top_stager_percentage:
+    description: The percentage of top stagers considered when choosing a stager
+    default: 10
+postgres.properties:
+  databases.db_scheme:
+    description: The database scheme
+  databases.port:
+    description: The database port
+  databases.address:
+    description: The database address
+  databases.databases:
+    description: A list of databases and associated properties to create
+  databases.roles:
+    description: A list of database roles and associated properties to create
+  databases.max_connections:
+    description: Maximum number of database connections
+  databases.log_line_prefix:
+    description: The postgres `printf` style string that is output at the beginning
+      of each log line
+    default: ! '%m: '
+  databases.collect_statement_statistics:
+    description: Enable the `pg_stat_statements` extension and collect statement execution
+      statistics
+    default: false
+  databases.additional_config:
+    description: A map of additional key/value pairs to include as extra configuration
+      properties
+acceptance-tests.properties:
+  acceptance_tests.api:
+    description: The Elastic Runtime API endpoint URL
+  acceptance_tests.apps_domain:
+    description: The Elastic Runtime Application Domain
+  acceptance_tests.admin_user:
+    description: The Elastic Runtime API admin user
+  acceptance_tests.admin_password:
+    description: The Elastic Runtime API admin user's password
+  acceptance_tests.skip_ssl_validation:
+    default: false
+    description: Toggles cli verification of the Elastic Runtime API SSL certificate
+  acceptance_tests.system_domain:
+    description: The system domain for your CF release
+  acceptance_tests.client_secret:
+    description: The client secret for the uaa gorouter client
+  acceptance_tests.nodes:
+    default: 2
+    description: The number of parallel test executors to spawn. The larger the number
+      the higher the stress on the system.
+  acceptance_tests.verbose:
+    default: false
+    description: Whether to pass the -v flag to cf-acceptance-tests
+  acceptance_tests.include_sso:
+    default: false
+    description: Flag to include the services tests that integrate with SSO.
+  acceptance_tests.include_operator:
+    default: false
+    description: Flag to include the operator tests which may modify the global state
+      of an Elastic Runtime deployment.
+  acceptance_tests.include_logging:
+    default: false
+    description: Flag to include the logging test suite.
+  acceptance_tests.include_security_groups:
+    default: false
+    description: Flag to include the security groups test suite.
+  acceptance_tests.include_internet_dependent:
+    default: false
+    description: Flag to include the internet dependent test suite.
+  acceptance_tests.include_services:
+    default: false
+    description: Flag to include the services API test suite.
+  acceptance_tests.include_v3:
+    default: false
+    description: Flag to include the v3 API test suite.
+  acceptance_tests.include_routing:
+    default: false
+    description: Flag to include the routing test suite.
+  acceptance_tests.include_route_services:
+    default: false
+    description: Flag to include the route services tests. Diego must be deployed
+      for these tests to pass.
+  acceptance_tests.use_diego:
+    default: false
+    description: App tests push their apps using diego if enabled. Route service tests
+      require this flag to run.
+  acceptance_tests.use_http:
+    default: false
+    description: Flag for using HTTP when making api and application requests rather
+      than the default HTTPS
+  acceptance_tests.skip_regex:
+    description: Regex for tests that should be skipped
+  acceptance_tests.skip_diego_unsupported_tests:
+    default: false
+    description: Skip tests that are known to not be supported by Diego. Set to true
+      if your deployment defaults to Diego as its runtime.
+  acceptance_tests.default_timeout:
+    description: Default Timeout
+  acceptance_tests.cf_push_timeout:
+    description: Timeout for cf push
+  acceptance_tests.long_curl_timeout:
+    description: Timeout for long curls
+  acceptance_tests.broker_start_timeout:
+    description: Timeout for broker starts
+  acceptance_tests.enable_color:
+    description: Enable colorized output on ginkgo.
+    default: true
+  acceptance_tests.existing_user:
+    description: The username of an existing user. If set, the acceptance-tests will
+      push apps and perform other actions as this user, otherwise its default behaviour
+      is to create a temporary user for such actions.
+  acceptance_tests.existing_user_password:
+    description: The password of the existing user. Only required if the existing
+      user property is also being set.
+  acceptance_tests.staticfile_buildpack_name:
+    description: The name of the staticfile buildpack to use in acceptance tests that
+      specify a buildpack.
+  acceptance_tests.java_buildpack_name:
+    description: The name of the java buildpack to use in acceptance tests that specify
+      a buildpack.
+  acceptance_tests.ruby_buildpack_name:
+    description: The name of the ruby buildpack to use in acceptance tests that specify
+      a buildpack.
+  acceptance_tests.nodejs_buildpack_name:
+    description: The name of the nodejs buildpack to use in acceptance tests that
+      specify a buildpack.
+  acceptance_tests.go_buildpack_name:
+    description: The name of the go buildpack to use in acceptance tests that specify
+      a buildpack.
+  acceptance_tests.python_buildpack_name:
+    description: The name of the python buildpack to use in acceptance tests that
+      specify a buildpack.
+  acceptance_tests.php_buildpack_name:
+    description: The name of the php buildpack to use in acceptance tests that specify
+      a buildpack.
+  acceptance_tests.binary_buildpack_name:
+    description: The name of the binary buildpack to use in acceptance tests that
+      specify a buildpack.
