@@ -1,6 +1,27 @@
+require 'pp'
+
+
+def lookup_property(collection, name)
+  keys = name.split(".")
+  ref = collection
+
+  keys.each do |key|
+    ref = ref[key]
+    return nil if ref.nil?
+  end
+
+  ref
+end
+
+class Hash
+  def keydump
+    map{|k,v|v.keydump.map{|a|"#{k}.#{a}"} rescue k.to_s}.flatten
+  end
+end
 
 RSpec.describe "base properties" do
   let(:manifest) { manifest_with_defaults }
+  let(:jobspecs) { load_job_specs }
   let(:properties) { manifest.fetch("properties") }
 
   it "sets the top-level manifest name" do
@@ -19,6 +40,74 @@ RSpec.describe "base properties" do
     expect(properties["app_domains"]).to match_array([
       terraform_fixture(:cf_root_domain),
     ])
+  end
+
+  describe "properties" do
+    # use job context for all "in-job" checks
+    specify "only own properties" do
+      # check every job only sets it's own properties and nothing else (e.g. non existing properties)
+      # you need to figure out which job specs that are by the list of templates of that job
+      manifest['jobs'].each {|job|
+        myjobs = []
+        job['templates'].each {|template| myjobs << template['name'] if template['release'] == "cf"}
+#        puts "Jobs for #{job['name']} are #{myjobs}"
+         
+      }
+      expect(true).to eq(true)
+    end
+
+    specify "all own properties" do
+      # check every job has all properties set 
+      # you need to figure out which job specs that are by the list of templates of that job
+      # property can be set in job, globals or by having a default
+      expect(true).to eq(true)
+    end
+
+    it "never uses default credential" do
+      # check if all job's properties and all globals that look like ~pass, password, credential etc. have non default value
+      # you need a list of all jobs' templates and check all pass-like properties, which have default are set either in a job's or global properties
+      expect(true).to eq(true)
+    end
+
+    specify "only existing globals" do
+      # check all global properties exist in 'all' properties list
+      # to do that, you need to create a "full path" property names
+      # ...but some stuff like fog.provider.aws_key don't exist even in 'all_keys', but are fine
+      not_existing = properties.keydump.select {|p|
+#        puts "p is #{p}"
+#        pp jobspecs["all_keys"].select{|k,v| k.start_with?(p)}
+        jobspecs["all_keys"].select{|k,v| k.start_with?(p)}.empty?}
+#         jobspecs["all_keys"][p] == nil) and
+#         (jobspecs["all_keys"].select{|k,v| k.start_with?(p)} == nil)
+#      }
+#      not_existing.each {|p| pp properties[p]}
+      expect(not_existing).to eq([])
+    end
+
+# Do we really want to do this? Maybe we just want to have some properties there sitting unused, in case we need them again
+#    specify "only relevant globals" do
+      # check all global properties are used by any of the jobs
+      # you need to check what you are deploying (a set of all templates by all jobs)
+      # then check if every key from these jobs either has a default or is set in job or in globals...
+#      remaining = properties
+#      remaining.each do { |property|
+#          remaining.delete(property) when property in jobspecs.all
+#      }
+#      expect(remaining).to eq({})
+#    end
+
+# Impossible, see http://stackoverflow.com/questions/4911105/in-ruby-how-to-be-warned-of-duplicate-keys-in-hashes-when-loading-a-yaml-docume
+#    it "never set global property multiple times" do
+#      # check if any value is set twice in globals, second one overriding 1st
+#      # could be also when one is substring of another
+#      flat_keys = properties.keydump
+#      pp flat_keys
+#      multiple = flat_keys.select {|p|
+#        flat_keys.select{|k| k.start_with?(p)}.size > 1
+#      }
+#      expect(multiple).to eq([])
+#    end
+    
   end
 
   describe "cloud controller" do

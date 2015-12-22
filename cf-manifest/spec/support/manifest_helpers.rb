@@ -14,24 +14,34 @@ module ManifestHelpers
 
   private
 
-  def load_default_manifest
-    output, error, status = Open3.capture3(
-      {
-        "TERRAFORM_OUTPUTS" => File.expand_path("../../fixtures/terraform-outputs.yml", __FILE__),
-        "SECRETS"           => File.expand_path("../../fixtures/cf-secrets.yml", __FILE__),
-        "SSL_CERTS"         => File.expand_path("../../fixtures/cf-ssl-certificates.yml", __FILE__),
-      },
-      File.expand_path("../../../build_manifest.sh", __FILE__),
-    )
-    expect(status).to be_success, "build_manifest.sh exited #{status.exitstatus}, stderr:\n#{error}"
+#  def load_default_manifest
+#    output, error, status = Open3.capture3(
+#      {
+#        "TERRAFORM_OUTPUTS" => File.expand_path("../../fixtures/terraform-outputs.yml", __FILE__),
+#        "SECRETS"           => File.expand_path("../../fixtures/cf-secrets.yml", __FILE__),
+#        "SSL_CERTS"         => File.expand_path("../../fixtures/cf-ssl-certificates.yml", __FILE__),
+#      },
+#      File.expand_path("../../../build_manifest.sh", __FILE__),
+#    )
+#    expect(status).to be_success, "build_manifest.sh exited #{status.exitstatus}, stderr:\n#{error}"
+#
+#    # Deep freeze the object so that it's safe to use across multiple examples
+#    # without risk of state leaking.
+#    deep_freeze(YAML.load(output))
+#  end
 
-    # Deep freeze the object so that it's safe to use across multiple examples
-    # without risk of state leaking.
-    deep_freeze(YAML.load(output))
+  def load_default_manifest
+    data = YAML.load_file(File.expand_path("../../../manifest.yml", __FILE__))
+    deep_freeze(data)
   end
 
   def load_terraform_fixture
     data = YAML.load_file(File.expand_path("../../fixtures/terraform-outputs.yml", __FILE__))
+    deep_freeze(data)
+  end
+
+  def load_job_specs
+    data = YAML.load_file(File.expand_path("../../../job_specs.yml", __FILE__))
     deep_freeze(data)
   end
 
