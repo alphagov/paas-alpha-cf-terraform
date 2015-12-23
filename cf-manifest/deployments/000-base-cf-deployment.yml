@@ -8,6 +8,8 @@ meta:
   releases:
   - name: cf
     version: latest
+  - name: nginx
+    version: latest
 
 name: (( grab meta.environment ))
 

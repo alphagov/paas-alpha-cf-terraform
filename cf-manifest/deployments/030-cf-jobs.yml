@@ -128,6 +128,8 @@ meta:
     release: (( grab meta.release.name ))
   - name: consul_agent
     release: (( grab meta.consul_templates.consul_agent.release ))
+  - name: nginx
+    release: nginx
 
   stats_templates:
   - name: collector
@@ -291,7 +293,7 @@ jobs:
 
   - name: postgres_z1
     templates: (( grab meta.postgres_templates ))
-    instances: 0
+    instances: 1
     resource_pool: medium_z1
     persistent_disk: 4096
     networks:
@@ -301,6 +303,7 @@ jobs:
       metron_agent:
         zone: z1
     update: {}
+
 
   - name: uaa_z1
     templates: (( grab meta.uaa_templates ))
@@ -596,6 +599,27 @@ properties:
   dropsonde:
     enabled: true
 
+  nginx_conf: |+
+    worker_processes  1;
+    error_log /dev/stdout   info;
+    events {
+      worker_connections  1024;
+    }
+    http {
+      client_body_temp_path /tmp/nginx_body_cache;
+      proxy_temp_path /tmp/nginx_proxy_cache;
+      fastcgi_temp_path /tmp/nginx_fastcgi_cache;
+      uwsgi_temp_path /tmp/nginx_uwsgi_cache;
+      scgi_temp_path /tmp/nginx_scgi_cache;
+      keepalive_timeout 0;
+      server {
+        listen 80;
+        return 301 https://$host$request_uri;
+        access_log /dev/stdout;
+        error_log /dev/stdout;
+      }
+    }
+
   support_address: "http://support.cloudfoundry.com"
   description: null
   ssl:
@@ -667,16 +691,33 @@ properties:
 
   ha_proxy:
 
-  databases: ~
+  databases:
+     db_scheme: postgres
+     address: ~
+     port: 5524
+     roles:
+       - tag: admin
+         name: ccadmin
+         password: (( grab secrets.ccadmin_password ))
+       - tag: admin
+         name: uaaadmin
+         password: (( grab secrets.uuadmin_password ))
+     databases:
+       - tag: cc
+         name: ccdb
+         citext: true
+       - tag: uaa
+         name: uaadb
+         citext: true
 
   router:
-    enable_ssl:
-    ssl_cert:
-    ssl_key:
-    cipher_suites:
+    enable_ssl: true
+    ssl_cert: (( grab secrets.router_ssl_cert ))
+    ssl_key: (( grab secrets.router_ssl_key ))
+    cipher_suites: TLS_RSA_WITH_RC4_128_SHA:TLS_RSA_WITH_AES_128_CBC_SHA
     requested_route_registration_interval_in_seconds:
     ssl_skip_validation:
-    port:
+    port: 8090
     status:
       port:
     secure_cookies:
