@@ -37,10 +37,10 @@ cf_compile_manifest() {
   cd ~
 
   # Output the director uuid to be populated by spiff
-  echo -e "---\ndirector_uuid: $($BOSH_CLI status --uuid)" > templates/stubs/director-uuid.yml
+  echo -e "---\ndirector_uuid: $($BOSH_CLI status --uuid)" > templates/director-uuid.yml
 
   # Generate the manifest
-  CF_RELEASE_PATH=~/cf-release/ ./generate_deployment_manifest.sh $TARGET_PLATFORM > ~/cf-manifest.yml
+  ./scripts/generate_cf_manifest.sh > ~/cf-manifest.yml
 }
 
 cf_deploy() {
@@ -48,20 +48,5 @@ cf_deploy() {
   time $BOSH_CLI -n deploy
 }
 
-cf_post_deploy() {
-  # Deploy psql broker
-  time bash $SCRIPT_DIR/deploy_psql_broker.sh \
-    admin $(get_cf_secret secrets/uaa_admin_password) \
-    admin $(get_cf_secret secrets/postgres_password)
-  # Deploy graphite nozzle
-  time bash $SCRIPT_DIR/deploy_graphite_nozzle.sh \
-    admin $(get_cf_secret secrets/uaa_admin_password) \
-    graphite-nozzle $(get_cf_secret secrets/uaa_clients_firehose_password)
-  # Deploy grafana dashboards
-  time bash $SCRIPT_DIR/deploy_grafana_dashboards.sh \
-    $terraform_output_grafana_dns_name
-}
-
 cf_compile_manifest
 cf_deploy
-cf_post_deploy
