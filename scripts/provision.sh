@@ -22,7 +22,11 @@ CF_RELEASE=225
 # Releases to upload
 BOSH_RELEASES="
 cf,$CF_RELEASE,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
-"
+nginx,2,https://s3.amazonaws.com/nginx-release/nginx-2.tgz
+diego,0.1441.0,https://bosh.io/d/github.com/cloudfoundry-incubator/diego-release?v=0.1441.0
+garden,0.327.0,https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release?v=0.327.0
+etcd,18,https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release?v=18"
+
 # Dependencies versions
 BOSH_INIT_VERSION=0.0.72
 BOSH_INIT_URL=https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-${BOSH_INIT_VERSION}-linux-amd64
