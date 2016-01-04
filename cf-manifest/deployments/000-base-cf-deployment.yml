@@ -5,15 +5,20 @@ meta:
   # i.e. cf-tabasco
   environment: ~
 
-  releases:
+name: (( grab meta.environment ))
+
+releases:
   - name: cf
     version: latest
   - name: nginx
     version: latest
+  - name: diego
+    version: 0.1441.0
+  - name: garden-linux
+    version: 0.327.0
+  - name: etcd
+    version: 18
 
-name: (( grab meta.environment ))
-
-releases: (( grab meta.releases ))
 
 compilation:
   workers: 6
