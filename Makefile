@@ -17,7 +17,7 @@ set-gce: update-paas-pass
 bastion: check-env-vars
 	$(eval bastion=$(shell DEPLOY_ENV=${DEPLOY_ENV} ./scripts/get_bastion_host.sh ${dir}))
 
-aws: check-env-vars set-aws apply prepare-provision-aws provision
+aws: check-env-vars set-aws apply prepare-provision-aws provision deploy-cf
 gce: check-env-vars set-gce apply prepare-provision-gce provision
 
 apply-aws: set-aws apply
@@ -28,6 +28,8 @@ apply: check-env-vars
 
 manifests/templates/outputs/terraform-outputs-aws.yml: check-env-vars aws/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-aws.yml
+cf-manifest/outputs/terraform-outputs.yml: check-env-vars aws/${DEPLOY_ENV}.tfstate
+	./scripts/extract_terraform_outputs_to_yml.rb < aws/${DEPLOY_ENV}.tfstate > cf-manifest/outputs/terraform-outputs.yml
 manifests/templates/outputs/terraform-outputs-gce.yml: check-env-vars gce/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_yml.rb < gce/${DEPLOY_ENV}.tfstate > manifests/templates/outputs/terraform-outputs-gce.yml
 scripts/terraform-outputs-aws.sh: check-env-vars aws/${DEPLOY_ENV}.tfstate
@@ -35,21 +37,27 @@ scripts/terraform-outputs-aws.sh: check-env-vars aws/${DEPLOY_ENV}.tfstate
 scripts/terraform-outputs-gce.sh: check-env-vars gce/${DEPLOY_ENV}.tfstate
 	./scripts/extract_terraform_outputs_to_sh.rb < gce/${DEPLOY_ENV}.tfstate > scripts/terraform-outputs-gce.sh
 
-prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws.yml scripts/terraform-outputs-aws.sh prepare-provision
+prepare-provision-aws: set-aws manifests/templates/outputs/terraform-outputs-aws.yml cf-manifest/outputs/terraform-outputs.yml scripts/terraform-outputs-aws.sh prepare-provision
 prepare-provision-gce: set-gce manifests/templates/outputs/terraform-outputs-gce.yml scripts/terraform-outputs-gce.sh prepare-provision
 prepare-provision: check-env-vars bastion
+	scp -r -oStrictHostKeyChecking=no cf-manifest \
+	    ubuntu@${bastion}:
 	scp -r -oStrictHostKeyChecking=no manifests/templates \
 	    manifests/generate_bosh_manifest.sh \
 	    ubuntu@${bastion}:
 	scp -r -oStrictHostKeyChecking=no scripts ubuntu@${bastion}:
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-secrets.yml | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > cf-manifest/outputs/cf-secrets.yml'
 	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/bosh-secrets.yml | \
 	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > templates/bosh-secrets.yml'
-
+	PASSWORD_STORE_DIR=~/.paas-pass pass ${ROOT_PASS_DIR}/cloudfoundry/cf-trial-ssl-certificates.yml | \
+	    ssh -oStrictHostKeyChecking=no ubuntu@${bastion} 'cat > cf-manifest/outputs/cf-ssl-certificates.yml'
 provision-aws: set-aws prepare-provision-aws provision
 provision-gce: set-gce prepare-provision-gce provision
 provision: check-env-vars bastion
 	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/provision.sh ${dir}'
-
+deploy-cf: check-env-vars bastion
+	ssh -t -oStrictHostKeyChecking=no ubuntu@${bastion} '/bin/bash ./scripts/deploy_cf.sh aws'
 confirm-execution:
 	@if test "${SKIP_CONFIRM}" = "" ; then \
 		read -sn 1 -p "This is a destructive operation, are you sure you want to do this [Y/N]? "; [[ $${REPLY:0:1} = [Yy] ]]; \
