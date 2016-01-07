@@ -8,17 +8,13 @@ In order to deploy a microbosh, it is necessary to first create subnets, securit
 
 * You will need to be running ssh-agent and have performed an `ssh-add <deployer_key>` to make the credentials available for ssh to be able to connect into the bastion host
 * You need to have the [team password store `paas-pass` setup](https://github.gds/multicloudpaas/credentials)
-* Make available the ssh directory inside aws and gce
+* Copy the deployer keypair from the `paas-pass` store to this project:
 
 ```
-aws/
-    ssh/
-        insecure-deployer
-        insecure-deployer.pub
-gce/
-    ssh/
-        insecure-deployer
-        insecure-deployer.pub
+mkdir -p ssh
+PASSWORD_STORE_DIR=~/.paas-pass pass show ssh_insecure_deployer/id_rsa > ssh/insecure_deployer
+PASSWORD_STORE_DIR=~/.paas-pass pass show ssh_insecure_deployer/id_rsa.pub > ssh/insecure_deployer.pub
+
 ```
 * Provide `account.json` inside gce
 * On AWS: Provide AWS access keys as environment variables. Example in profile:
