@@ -8,7 +8,7 @@ resource "aws_elb" "router" {
   ]
 
   health_check {
-    target = "TCP:443"
+    target = "TCP:22"
     interval = "${var.health_check_interval}"
     timeout = "${var.health_check_timeout}"
     healthy_threshold = "${var.health_check_healthy}"
@@ -24,6 +24,12 @@ resource "aws_elb" "router" {
     instance_port = 443
     instance_protocol = "tcp"
     lb_port = 443
+    lb_protocol = "tcp"
+  }
+  listener {
+    instance_port = 2222
+    instance_protocol = "tcp"
+    lb_port = 2222
     lb_protocol = "tcp"
   }
 }
