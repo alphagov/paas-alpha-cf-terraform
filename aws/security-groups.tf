@@ -181,6 +181,37 @@ resource "aws_security_group" "web" {
   }
 }
 
+resource "aws_security_group" "sshproxy" {
+  name = "${var.env}-sshproxy-cf"
+  description = "Security group for web that allows TCP/2222 for ssh-proxy from the office"
+  vpc_id = "${aws_vpc.default.id}"
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 2222
+    to_port   = 2222
+    protocol  = "tcp"
+    cidr_blocks = [
+      "${split(",", var.web_access_cidrs)}",
+      "${aws_instance.bastion.public_ip}/32",
+      "${var.jenkins_elastic}"
+    ]
+    security_groups = [
+      "${aws_security_group.bosh_vm.id}"
+    ]
+  }
+
+  tags {
+    Name = "${var.env}-cf-sshproxy"
+  }
+}
+
 resource "aws_security_group" "graphite" {
   name = "${var.env}-graphite"
   description = "Security group for graphite that allows web traffic from the office and jenkins"

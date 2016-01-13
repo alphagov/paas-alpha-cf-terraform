@@ -46,6 +46,10 @@ output "elb_name" {
 	value = "${aws_elb.router.name}"
 }
 
+output "ssh_elb_name" {
+	value = "${aws_elb.ssh-proxy-router.name}"
+}
+
 output "graphite_elb_name" {
   value = "${aws_elb.graphite.name}"
 }
