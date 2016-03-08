@@ -39,7 +39,7 @@ CF_RELEASE_REVISION=gds-paas
 # Releases to upload
 BOSH_RELEASES="
 cf,$CF_RELEASE,https://bosh.io/d/github.com/cloudfoundry/cf-release?v=$CF_RELEASE
-graphite,1e8ecd7c7a051c191792e8d440c9a4d0b89c2302,https://github.com/alphagov/graphite-statsd-boshrelease.git,create
+graphite,1e8ecd7c7a051c191792e8d440c9a4d0b89c2302,https://github.com/alphagov/paas-graphite-statsd-boshrelease.git,create
 collectd,ec9de5dc63715237688c3b27154c86a0c22b3aef,https://github.com/alphagov/collectd-graphite-boshrelease.git,create
 grafana,44564533c9d4d656bdcd5633b808f0bf6fb177ae,https://github.com/vito/grafana-boshrelease.git,create
 logsearch,23.0.0,https://bosh.io/d/github.com/logsearch/logsearch-boshrelease?v=23.0.0
