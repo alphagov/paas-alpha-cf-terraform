@@ -385,6 +385,14 @@ properties:
                             "enabled" : false
                         },
                         "index" : "not_analyzed"
+                      },
+                      "log_level" : {
+                        "index" : "not_analyzed",
+                        "type" : "string"
+                      },
+                      "timestamp" : {
+                        "index" : "not_analyzed",
+                        "type" : "string"
                       }
                   },
                   "dynamic_templates" : [
