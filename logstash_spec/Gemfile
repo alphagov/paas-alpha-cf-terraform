@@ -1,0 +1,20 @@
+source 'https://www.rubygems.org'
+
+platform :jruby do
+  gem 'pry'
+  gem 'awesome_print'
+  gem 'rspec'
+  gem 'logstash-core'
+  gem 'logstash-devutils'
+  gem 'logstash-filter-grok'
+  gem 'logstash-filter-json'
+  gem 'logstash-filter-mutate'
+  gem 'logstash-filter-date'
+  gem 'logstash-filter-geoip'
+  gem 'logstash-filter-kv'
+  gem 'logstash-filter-alter'
+  gem 'logstash-filter-ruby'
+  gem 'logstash-filter-syslog_pri'
+  gem 'logstash-filter-translate'
+end
+
