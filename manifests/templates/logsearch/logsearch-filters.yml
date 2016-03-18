@@ -305,6 +305,16 @@ properties:
           remove_field => [ "data" ]
         }
       }
+      # Short term fix (aka definitive solution), drop the data field to avoid
+      # error inserting in ES.
+      # If not, it will insert new fields with the app name, resulting in thousands
+      # of fields in the index, which breaks kibana
+      if [@shipper.name] == "vcap_cloud_controller_ng_relp" {
+        mutate {
+          remove_field => [ "data" ]
+        }
+      }
+
 
   elasticsearch_config:
     templates:
