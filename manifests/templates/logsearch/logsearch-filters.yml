@@ -305,105 +305,123 @@ properties:
           remove_field => [ "data" ]
         }
       }
+      # Short term fix (aka definitive solution), drop the data field to avoid
+      # error inserting in ES.
+      # If not, it will insert new fields with the app name, resulting in thousands
+      # of fields in the index, which breaks kibana
+      if [@shipper.name] == "vcap_cloud_controller_ng_relp" {
+        mutate {
+          remove_field => [ "data" ]
+        }
+      }
+
 
   elasticsearch_config:
     templates:
       - logsearch-for-cloudfoundry: |
           {
-              "template" : "logstash-*",
-              "order" : 50,
-              "settings" : {
-              "number_of_shards" : 5,
-              "number_of_replicas" : 0,
-              "index" : {
-                      "search" : {
-                  "slowlog" : {
-                              "threshold" : {
-                      "query" : {
-                                      "warn" : "15s",
-                                      "info" : "10s",
-                                      "debug" : "5s",
-                                      "trace" : "500ms"
+            "template" : "logstash-*",
+            "settings" : {
+                "number_of_replicas" : 0,
+                "number_of_shards" : 5,
+                "index" : {
+                  "store" : {
+                      "compress" : {
+                        "stored" : true,
+                        "tv" : true
                       }
-                              }
-                  }
-                      },
-                      "query" : {
-                  "default_field" : "@message"
-                      },
-                      "store" : {
-                  "compress" : {
-                              "stored" : true,
-                              "tv": true
-                  }
-                      }
-              }
-              },
-              "mappings": {
-              "_default_": {
-                      "_all": {
-                  "enabled": false
-                      },
-                      "_source": {
-                  "compress": true
-                      },
-                      "dynamic_templates": [
-                  {
-                              "string_template" : {
-                      "match" : "*",
-                      "mapping": {
-                                      "type": "string",
-                                      "index": "not_analyzed",
-                                      "norms" : {
-                          "enabled" : false
-                                      }
-                      },
-                      "match_mapping_type" : "string"
-                              }
-                  }
-                      ],
-                      "properties" : {
-                  "@message" : {
-                              "type" : "string",
-                              "index" : "analyzed",
-                              "norms" : {
-                      "enabled" : false
-                              }
                   },
-                  "@tags": {
-                              "type": "string",
+                  "query" : {
+                      "default_field" : "@message"
+                  },
+                  "search" : {
+                      "slowlog" : {
+                        "threshold" : {
+                            "query" : {
+                              "trace" : "500ms",
+                              "debug" : "5s",
+                              "info" : "10s",
+                              "warn" : "15s"
+                            }
+                        }
+                      }
+                  }
+                }
+            },
+            "mappings" : {
+                "_default_" : {
+                  "_source" : {
+                      "compress" : true
+                  },
+                  "_all" : {
+                      "enabled" : false
+                  },
+                  "properties" : {
+                      "message" : {
+                        "type" : "string",
+                        "norms" : {
+                            "enabled" : false
+                        },
+                        "index" : "analyzed"
+                      },
+                      "@tags" : {
+                        "type" : "string",
+                        "norms" : {
+                            "enabled" : false
+                        },
+                        "index" : "not_analyzed"
+                      },
+                      "geoip" : {
+                        "properties" : {
+                            "location" : {
+                              "type" : "geo_point"
+                            }
+                        }
+                      },
+                      "@timestamp" : {
+                        "index" : "not_analyzed",
+                        "type" : "date"
+                      },
+                      "@message" : {
+                        "index" : "analyzed",
+                        "type" : "string",
+                        "norms" : {
+                            "enabled" : false
+                        }
+                      },
+                      "@type" : {
+                        "type" : "string",
+                        "norms" : {
+                            "enabled" : false
+                        },
+                        "index" : "not_analyzed"
+                      },
+                      "log_level" : {
+                        "index" : "not_analyzed",
+                        "type" : "string"
+                      },
+                      "timestamp" : {
+                        "index" : "not_analyzed",
+                        "type" : "string"
+                      }
+                  },
+                  "dynamic_templates" : [
+                      {
+                        "string_template" : {
+                            "mapping" : {
                               "index" : "not_analyzed",
                               "norms" : {
-                      "enabled" : false
-                              }
-                  },
-                  "@timestamp" : {
-                              "type" : "date",
-                              "index" : "not_analyzed"
-                  },
-                  "@type" : {
-                              "type" : "string",
-                              "index" : "not_analyzed",
-                              "norms" : {
-                      "enabled" : false
-                              }
-                  },
-                  "message" : {
-                              "type" : "string",
-                              "index" : "analyzed",
-                              "norms" : {
-                      "enabled" : false
-                              }
-                  },
-                  "geoip" : {
-                              "properties" : {
-                      "location" : {
-                          "type" : "geo_point"
+                                  "enabled" : false
+                              },
+                              "type" : "string"
+                            },
+                            "match" : "*",
+                            "match_mapping_type" : "string"
+                        }
                       }
-                      }
-                  }
-                      }
-              }
-              }
+                  ]
+                }
+            },
+            "order" : 50
           }
 
